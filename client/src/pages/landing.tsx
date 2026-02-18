@@ -127,37 +127,68 @@ const skillDomains = [
   { name: "Reimagination", icon: Brain, score: 60, description: "See workflows that should exist" },
 ];
 
-type IntroPhase = "typing" | "bang" | "white" | "done";
+type IntroPhase = "line1" | "pause" | "line2" | "countdown" | "bang" | "white" | "done";
 
 function BigBangIntro({ onComplete }: { onComplete: () => void }) {
-  const [phase, setPhase] = useState<IntroPhase>("typing");
-  const [displayedText, setDisplayedText] = useState("");
+  const [phase, setPhase] = useState<IntroPhase>("line1");
+  const [line1Text, setLine1Text] = useState("");
+  const [line2Text, setLine2Text] = useState("");
+  const [countdownNum, setCountdownNum] = useState<number | null>(null);
   const [cursorVisible, setCursorVisible] = useState(true);
-  const fullText = "Humanity is just getting started.";
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
+  const line1Full = "Headlines say this is the end of humanity...";
+  const line2Full = "but we're just getting started.";
+
   useEffect(() => {
-    const blinkInterval = setInterval(() => {
-      setCursorVisible((v) => !v);
-    }, 530);
+    const blinkInterval = setInterval(() => setCursorVisible((v) => !v), 530);
     return () => clearInterval(blinkInterval);
   }, []);
 
   useEffect(() => {
-    if (phase !== "typing") return;
+    if (phase !== "line1") return;
     let i = 0;
-    const typeDelay = setTimeout(() => {
+    const delay = setTimeout(() => {
       const interval = setInterval(() => {
         i++;
-        setDisplayedText(fullText.slice(0, i));
-        if (i >= fullText.length) {
+        setLine1Text(line1Full.slice(0, i));
+        if (i >= line1Full.length) {
           clearInterval(interval);
-          setTimeout(() => setPhase("bang"), 1400);
+          setTimeout(() => setPhase("pause"), 300);
         }
-      }, 95);
+      }, 70);
       return () => clearInterval(interval);
-    }, 600);
-    return () => clearTimeout(typeDelay);
+    }, 800);
+    return () => clearTimeout(delay);
+  }, [phase]);
+
+  useEffect(() => {
+    if (phase !== "pause") return;
+    const timer = setTimeout(() => setPhase("line2"), 1800);
+    return () => clearTimeout(timer);
+  }, [phase]);
+
+  useEffect(() => {
+    if (phase !== "line2") return;
+    let i = 0;
+    const interval = setInterval(() => {
+      i++;
+      setLine2Text(line2Full.slice(0, i));
+      if (i >= line2Full.length) {
+        clearInterval(interval);
+        setTimeout(() => setPhase("countdown"), 1200);
+      }
+    }, 60);
+    return () => clearInterval(interval);
+  }, [phase]);
+
+  useEffect(() => {
+    if (phase !== "countdown") return;
+    setCountdownNum(3);
+    const t2 = setTimeout(() => setCountdownNum(2), 800);
+    const t1 = setTimeout(() => setCountdownNum(1), 1600);
+    const go = setTimeout(() => setPhase("bang"), 2400);
+    return () => { clearTimeout(t2); clearTimeout(t1); clearTimeout(go); };
   }, [phase]);
 
   useEffect(() => {
@@ -174,9 +205,9 @@ function BigBangIntro({ onComplete }: { onComplete: () => void }) {
 
     const particles: { x: number; y: number; vx: number; vy: number; r: number; alpha: number; color: string }[] = [];
     const colors = ["#FFFFFF", "#FFFFFF", "#E8E0FF", "#C4B5FD", "#A78BFA", "#7C3AED", "#FBBF24"];
-    for (let i = 0; i < 200; i++) {
+    for (let i = 0; i < 250; i++) {
       const angle = Math.random() * Math.PI * 2;
-      const speed = 1.5 + Math.random() * 14;
+      const speed = 1.5 + Math.random() * 16;
       particles.push({
         x: cx, y: cy,
         vx: Math.cos(angle) * speed,
@@ -197,12 +228,12 @@ function BigBangIntro({ onComplete }: { onComplete: () => void }) {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
       radius += (Math.max(canvas.width, canvas.height) * 1.2 - radius) * 0.08;
-      glowAlpha = Math.min(1, frame / 15);
+      glowAlpha = Math.min(1, frame / 12);
 
       const grd = ctx.createRadialGradient(cx, cy, 0, cx, cy, radius);
       grd.addColorStop(0, `rgba(255, 255, 255, ${glowAlpha})`);
-      grd.addColorStop(0.3, `rgba(196, 181, 253, ${glowAlpha * 0.6})`);
-      grd.addColorStop(0.6, `rgba(124, 58, 237, ${glowAlpha * 0.3})`);
+      grd.addColorStop(0.25, `rgba(196, 181, 253, ${glowAlpha * 0.7})`);
+      grd.addColorStop(0.5, `rgba(124, 58, 237, ${glowAlpha * 0.4})`);
       grd.addColorStop(1, `rgba(0, 0, 0, 0)`);
       ctx.fillStyle = grd;
       ctx.fillRect(0, 0, canvas.width, canvas.height);
@@ -212,17 +243,15 @@ function BigBangIntro({ onComplete }: { onComplete: () => void }) {
         p.y += p.vy;
         p.vx *= 0.97;
         p.vy *= 0.97;
-        p.alpha = Math.max(0, p.alpha - 0.012);
-        ctx.beginPath();
-        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-        ctx.fillStyle = p.color.replace(")", `, ${p.alpha})`).replace("rgb", "rgba").replace("#", "");
+        p.alpha = Math.max(0, p.alpha - 0.01);
         const hex = p.color;
         const r = parseInt(hex.slice(1, 3), 16);
         const g = parseInt(hex.slice(3, 5), 16);
         const b = parseInt(hex.slice(5, 7), 16);
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
         ctx.fillStyle = `rgba(${r}, ${g}, ${b}, ${p.alpha})`;
         ctx.fill();
-
         ctx.shadowBlur = 15;
         ctx.shadowColor = `rgba(${r}, ${g}, ${b}, ${p.alpha * 0.5})`;
       }
@@ -248,13 +277,13 @@ function BigBangIntro({ onComplete }: { onComplete: () => void }) {
 
   if (phase === "done") return null;
 
+  const showText = phase === "line1" || phase === "pause" || phase === "line2" || phase === "countdown";
+
   return (
     <motion.div
       className="fixed inset-0 z-[100] flex items-center justify-center overflow-hidden"
       style={{ backgroundColor: phase === "white" ? "#ffffff" : "#000000" }}
-      animate={{
-        backgroundColor: phase === "white" ? "#ffffff" : "#000000",
-      }}
+      animate={{ backgroundColor: phase === "white" ? "#ffffff" : "#000000" }}
       transition={{ duration: 0.4 }}
       exit={{ opacity: 0 }}
       data-testid="intro-overlay"
@@ -274,21 +303,75 @@ function BigBangIntro({ onComplete }: { onComplete: () => void }) {
         style={{ opacity: phase === "bang" ? 1 : 0, transition: "opacity 0.3s" }}
       />
 
-      {(phase === "typing" || phase === "bang") && (
-        <motion.h1
-          className="text-3xl md:text-5xl lg:text-6xl font-bold text-white text-center z-10 tracking-tight select-none px-6"
+      {showText && (
+        <motion.div
+          className="z-10 flex flex-col items-center justify-center px-6 select-none"
           animate={{
-            scale: phase === "bang" ? [1, 1.15, 0.5] : 1,
-            opacity: phase === "bang" ? [1, 1, 0] : 1,
+            scale: phase === "countdown" ? 1 : 1,
+            opacity: 1,
           }}
-          transition={{ duration: 0.8, ease: "easeOut" }}
         >
-          {displayedText}
-          <span
-            className="inline-block w-[3px] h-[1em] bg-white ml-1 align-text-bottom"
-            style={{ opacity: phase === "typing" && cursorVisible ? 1 : 0 }}
-          />
-        </motion.h1>
+          <motion.p
+            className="text-2xl md:text-4xl lg:text-5xl font-light text-white/80 text-center tracking-tight leading-snug"
+            animate={{
+              opacity: phase === "countdown" ? 0.4 : 1,
+              y: phase === "line2" || phase === "countdown" ? -10 : 0,
+            }}
+            transition={{ duration: 0.6 }}
+          >
+            {line1Text}
+            {phase === "line1" && (
+              <span
+                className="inline-block w-[2px] h-[0.9em] bg-white/70 ml-1 align-text-bottom"
+                style={{ opacity: cursorVisible ? 1 : 0 }}
+              />
+            )}
+          </motion.p>
+
+          <AnimatePresence>
+            {(phase === "line2" || phase === "countdown") && (
+              <motion.p
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+                className="text-xl md:text-3xl lg:text-4xl font-bold text-white text-center mt-4 tracking-tight"
+              >
+                {line2Text}
+                {phase === "line2" && (
+                  <span
+                    className="inline-block w-[2px] h-[0.85em] bg-white ml-1 align-text-bottom"
+                    style={{ opacity: cursorVisible ? 1 : 0 }}
+                  />
+                )}
+              </motion.p>
+            )}
+          </AnimatePresence>
+
+          <AnimatePresence mode="wait">
+            {phase === "countdown" && countdownNum !== null && (
+              <motion.span
+                key={countdownNum}
+                initial={{ opacity: 0, scale: 2, filter: "blur(10px)" }}
+                animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
+                exit={{ opacity: 0, scale: 0.5, filter: "blur(6px)" }}
+                transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+                className="text-6xl md:text-8xl font-bold text-white mt-10 tabular-nums"
+                style={{ textShadow: "0 0 40px rgba(124, 58, 237, 0.6), 0 0 80px rgba(167, 139, 250, 0.3)" }}
+              >
+                {countdownNum}
+              </motion.span>
+            )}
+          </AnimatePresence>
+        </motion.div>
+      )}
+
+      {phase === "bang" && (
+        <motion.div
+          className="z-10 flex flex-col items-center justify-center px-6"
+          initial={{ scale: 1, opacity: 1 }}
+          animate={{ scale: 0.3, opacity: 0 }}
+          transition={{ duration: 0.6, ease: "easeIn" }}
+        />
       )}
     </motion.div>
   );
