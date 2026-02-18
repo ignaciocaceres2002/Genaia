@@ -1,4 +1,4 @@
-import { motion, useScroll, useTransform } from "framer-motion";
+import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Link } from "wouter";
@@ -6,7 +6,7 @@ import { ArrowRight, Zap, Target, BookOpen, ChevronRight, Sparkles, Brain, Trend
 import { SQRing } from "@/components/nq-ring";
 import { SEO } from "@/components/seo";
 import logoImg from "@assets/1_1771445946739.png";
-import { useRef } from "react";
+import { useRef, useState, useEffect, useCallback } from "react";
 
 const fadeUp = {
   hidden: { opacity: 0, y: 40 },
@@ -74,17 +74,191 @@ const skillDomains = [
   { name: "Reimagination", icon: Brain, score: 60, description: "See workflows that should exist" },
 ];
 
+type IntroPhase = "typing" | "bang" | "white" | "done";
+
+function BigBangIntro({ onComplete }: { onComplete: () => void }) {
+  const [phase, setPhase] = useState<IntroPhase>("typing");
+  const [displayedText, setDisplayedText] = useState("");
+  const [cursorVisible, setCursorVisible] = useState(true);
+  const fullText = "Humanity is just getting started.";
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+
+  useEffect(() => {
+    const blinkInterval = setInterval(() => {
+      setCursorVisible((v) => !v);
+    }, 530);
+    return () => clearInterval(blinkInterval);
+  }, []);
+
+  useEffect(() => {
+    if (phase !== "typing") return;
+    let i = 0;
+    const interval = setInterval(() => {
+      i++;
+      setDisplayedText(fullText.slice(0, i));
+      if (i >= fullText.length) {
+        clearInterval(interval);
+        setTimeout(() => setPhase("bang"), 800);
+      }
+    }, 65);
+    return () => clearInterval(interval);
+  }, [phase]);
+
+  useEffect(() => {
+    if (phase !== "bang") return;
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return;
+
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    const cx = canvas.width / 2;
+    const cy = canvas.height / 2;
+
+    const particles: { x: number; y: number; vx: number; vy: number; r: number; alpha: number; color: string }[] = [];
+    const colors = ["#FFFFFF", "#E8E0FF", "#C4B5FD", "#A78BFA", "#7C3AED", "#FBBF24"];
+    for (let i = 0; i < 120; i++) {
+      const angle = Math.random() * Math.PI * 2;
+      const speed = 2 + Math.random() * 12;
+      particles.push({
+        x: cx, y: cy,
+        vx: Math.cos(angle) * speed,
+        vy: Math.sin(angle) * speed,
+        r: 1 + Math.random() * 3,
+        alpha: 1,
+        color: colors[Math.floor(Math.random() * colors.length)],
+      });
+    }
+
+    let radius = 0;
+    let glowAlpha = 0;
+    let frame = 0;
+    const maxFrames = 60;
+
+    const animate = () => {
+      frame++;
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      radius += (Math.max(canvas.width, canvas.height) * 1.2 - radius) * 0.08;
+      glowAlpha = Math.min(1, frame / 15);
+
+      const grd = ctx.createRadialGradient(cx, cy, 0, cx, cy, radius);
+      grd.addColorStop(0, `rgba(255, 255, 255, ${glowAlpha})`);
+      grd.addColorStop(0.3, `rgba(196, 181, 253, ${glowAlpha * 0.6})`);
+      grd.addColorStop(0.6, `rgba(124, 58, 237, ${glowAlpha * 0.3})`);
+      grd.addColorStop(1, `rgba(0, 0, 0, 0)`);
+      ctx.fillStyle = grd;
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      for (const p of particles) {
+        p.x += p.vx;
+        p.y += p.vy;
+        p.vx *= 0.97;
+        p.vy *= 0.97;
+        p.alpha = Math.max(0, p.alpha - 0.012);
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+        ctx.fillStyle = p.color.replace(")", `, ${p.alpha})`).replace("rgb", "rgba").replace("#", "");
+        const hex = p.color;
+        const r = parseInt(hex.slice(1, 3), 16);
+        const g = parseInt(hex.slice(3, 5), 16);
+        const b = parseInt(hex.slice(5, 7), 16);
+        ctx.fillStyle = `rgba(${r}, ${g}, ${b}, ${p.alpha})`;
+        ctx.fill();
+
+        ctx.shadowBlur = 15;
+        ctx.shadowColor = `rgba(${r}, ${g}, ${b}, ${p.alpha * 0.5})`;
+      }
+      ctx.shadowBlur = 0;
+
+      if (frame < maxFrames) {
+        requestAnimationFrame(animate);
+      } else {
+        setPhase("white");
+      }
+    };
+    requestAnimationFrame(animate);
+  }, [phase]);
+
+  useEffect(() => {
+    if (phase !== "white") return;
+    const timer = setTimeout(() => {
+      setPhase("done");
+      onComplete();
+    }, 600);
+    return () => clearTimeout(timer);
+  }, [phase, onComplete]);
+
+  if (phase === "done") return null;
+
+  return (
+    <motion.div
+      className="fixed inset-0 z-[100] flex items-center justify-center overflow-hidden"
+      style={{ backgroundColor: phase === "white" ? "#ffffff" : "#000000" }}
+      animate={{
+        backgroundColor: phase === "white" ? "#ffffff" : "#000000",
+      }}
+      transition={{ duration: 0.4 }}
+      exit={{ opacity: 0 }}
+      data-testid="intro-overlay"
+    >
+      {phase === "white" && (
+        <motion.div
+          className="absolute inset-0 bg-white"
+          initial={{ opacity: 1 }}
+          animate={{ opacity: 0 }}
+          transition={{ duration: 0.6, ease: "easeOut" }}
+        />
+      )}
+
+      <canvas
+        ref={canvasRef}
+        className="absolute inset-0 pointer-events-none"
+        style={{ opacity: phase === "bang" ? 1 : 0, transition: "opacity 0.3s" }}
+      />
+
+      {(phase === "typing" || phase === "bang") && (
+        <motion.h1
+          className="text-3xl md:text-5xl lg:text-6xl font-bold text-white text-center z-10 tracking-tight select-none px-6"
+          animate={{
+            scale: phase === "bang" ? [1, 1.15, 0.5] : 1,
+            opacity: phase === "bang" ? [1, 1, 0] : 1,
+          }}
+          transition={{ duration: 0.8, ease: "easeOut" }}
+        >
+          {displayedText}
+          <span
+            className="inline-block w-[3px] h-[1em] bg-white ml-1 align-text-bottom"
+            style={{ opacity: phase === "typing" && cursorVisible ? 1 : 0 }}
+          />
+        </motion.h1>
+      )}
+    </motion.div>
+  );
+}
+
 export default function LandingPage() {
   const heroRef = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({ target: heroRef, offset: ["start start", "end start"] });
   const heroOpacity = useTransform(scrollYProgress, [0, 0.5], [1, 0]);
   const heroScale = useTransform(scrollYProgress, [0, 0.5], [1, 0.95]);
+  const [introComplete, setIntroComplete] = useState(false);
+  const handleIntroComplete = useCallback(() => setIntroComplete(true), []);
 
   return (
     <div className="min-h-screen bg-background overflow-x-hidden">
       <SEO title="Génesis - AI Adoption Platform | Inverse Training" description="Transform your organization with Génesis. Measure AI readiness with our SQ Calculator, deliver gamified learning, and drive enterprise-wide AI adoption." ogTitle="Génesis - The AI Adoption Platform" />
 
-      <nav className="fixed top-0 left-0 right-0 z-50 backdrop-blur-xl bg-background/70 border-b border-border/50">
+      <AnimatePresence>
+        {!introComplete && <BigBangIntro onComplete={handleIntroComplete} />}
+      </AnimatePresence>
+
+      <motion.nav
+        className="fixed top-0 left-0 right-0 z-50 backdrop-blur-xl bg-background/70 border-b border-border/50"
+        initial={{ opacity: 0, y: -20 }}
+        animate={introComplete ? { opacity: 1, y: 0 } : { opacity: 0, y: -20 }}
+        transition={{ duration: 0.6, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}>
         <div className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between gap-4">
           <Link href="/">
             <img src={logoImg} alt="Génesis" className="h-14 w-auto" data-testid="link-logo" />
@@ -108,7 +282,7 @@ export default function LandingPage() {
             </Link>
           </div>
         </div>
-      </nav>
+      </motion.nav>
 
       <main>
         <section ref={heroRef} className="relative pt-28 pb-8 px-6 min-h-[90vh] flex flex-col justify-center overflow-hidden" style={{ position: "relative" }}>
