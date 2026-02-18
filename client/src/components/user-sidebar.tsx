@@ -13,6 +13,7 @@ import {
 } from "@/components/ui/sidebar";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
+import logoImg from "@assets/1_1771445946739.png";
 
 const navItems = [
   { title: "Home", path: "/dashboard", icon: Home },
@@ -43,6 +44,9 @@ export function UserSidebar({ user }: UserSidebarProps) {
   return (
     <Sidebar>
       <SidebarHeader className="p-4">
+        <Link href="/">
+          <img src={logoImg} alt="Génesis" className="h-7 w-auto mb-3" data-testid="sidebar-logo" />
+        </Link>
         <div className="flex items-center gap-3">
           <Avatar className="w-10 h-10">
             <AvatarFallback className="bg-[#7C3AED] text-white text-sm font-medium">

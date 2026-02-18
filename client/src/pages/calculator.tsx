@@ -9,6 +9,7 @@ import { ROLE_TASKS, calculateNQ } from "@/lib/constants";
 import { NQRing } from "@/components/nq-ring";
 import { apiRequest } from "@/lib/queryClient";
 import { SEO } from "@/components/seo";
+import logoImg from "@assets/1_1771445946739.png";
 
 const roles = Object.keys(ROLE_TASKS);
 const roleIcons: Record<string, string> = {
@@ -58,9 +59,7 @@ export default function CalculatorPage() {
       <nav className="fixed top-0 left-0 right-0 z-50 backdrop-blur-xl bg-background/70 border-b border-border/50">
         <div className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between gap-4">
           <Link href="/">
-            <span className="text-xl font-bold bg-gradient-to-r from-[#7C3AED] to-[#A78BFA] bg-clip-text text-transparent" data-testid="link-logo-calc">
-              Génesis
-            </span>
+            <img src={logoImg} alt="Génesis" className="h-8 w-auto" data-testid="link-logo-calc" />
           </Link>
           <Link href="/">
             <Button variant="ghost" size="sm" data-testid="button-back-home">

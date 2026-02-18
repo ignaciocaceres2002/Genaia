@@ -5,6 +5,7 @@ import { Link } from "wouter";
 import { ArrowRight, BarChart3, RefreshCw, ShieldCheck, Users, Rocket, Lightbulb, Zap, Target, BookOpen, ChevronRight } from "lucide-react";
 import { NQRing } from "@/components/nq-ring";
 import { SEO } from "@/components/seo";
+import logoImg from "@assets/1_1771445946739.png";
 
 const fadeUp = {
   hidden: { opacity: 0, y: 30 },
@@ -53,9 +54,7 @@ export default function LandingPage() {
       <nav className="fixed top-0 left-0 right-0 z-50 backdrop-blur-xl bg-background/70 border-b border-border/50">
         <div className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between gap-4">
           <Link href="/">
-            <span className="text-xl font-bold bg-gradient-to-r from-[#7C3AED] to-[#A78BFA] bg-clip-text text-transparent" data-testid="link-logo">
-              Génesis
-            </span>
+            <img src={logoImg} alt="Génesis" className="h-8 w-auto" data-testid="link-logo" />
           </Link>
           <div className="hidden md:flex items-center gap-8">
             <a href="#product" className="text-sm text-muted-foreground hover:text-foreground transition-colors" data-testid="link-product">Product</a>
@@ -296,9 +295,7 @@ export default function LandingPage() {
               </Link>
               <Button variant="outline" className="rounded-full" data-testid="button-book-demo-footer">Book a demo</Button>
             </div>
-            <p className="text-xs text-muted-foreground">
-              Génesis — AI Adoption Platform
-            </p>
+            <img src={logoImg} alt="Génesis" className="h-6 w-auto opacity-60 mx-auto" />
           </div>
         </footer>
       </main>

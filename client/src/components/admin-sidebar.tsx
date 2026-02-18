@@ -13,6 +13,7 @@ import {
 } from "@/components/ui/sidebar";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
+import logoImg from "@assets/1_1771445946739.png";
 
 const navItems = [
   { title: "Overview", path: "/admin", icon: BarChart3 },
@@ -33,6 +34,9 @@ export function AdminSidebar() {
   return (
     <Sidebar>
       <SidebarHeader className="p-4">
+        <Link href="/">
+          <img src={logoImg} alt="Génesis" className="h-7 w-auto mb-3" data-testid="admin-sidebar-logo" />
+        </Link>
         <div className="flex items-center gap-3">
           <Avatar className="w-10 h-10">
             <AvatarFallback className="bg-[#5B21B6] text-white text-sm font-medium">
