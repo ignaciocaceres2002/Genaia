@@ -61,9 +61,12 @@ export default function LandingPage() {
             <a href="#manifesto" className="text-sm text-muted-foreground hover:text-foreground transition-colors" data-testid="link-manifesto">Manifesto</a>
             <a href="#pricing" className="text-sm text-muted-foreground hover:text-foreground transition-colors" data-testid="link-pricing">Pricing</a>
           </div>
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2">
             <Link href="/dashboard">
-              <Button variant="ghost" size="sm" data-testid="link-login">Log in</Button>
+              <Button variant="ghost" size="sm" data-testid="button-demo-user">Demo Usuario</Button>
+            </Link>
+            <Link href="/admin">
+              <Button variant="outline" size="sm" data-testid="button-demo-admin">Demo Admin</Button>
             </Link>
             <Link href="/calculator">
               <Button size="sm" className="rounded-full bg-[#7C3AED] hover:bg-[#5B21B6] text-white no-default-hover-elevate" data-testid="button-calculate-nq-nav">
