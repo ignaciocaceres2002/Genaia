@@ -17,7 +17,7 @@ import logoImg from "@assets/1_1771445946739.png";
 
 const navItems = [
   { title: "Home", path: "/dashboard", icon: Home },
-  { title: "My NQ", path: "/dashboard/nq", icon: BarChart3 },
+  { title: "My SQ", path: "/dashboard/sq", icon: BarChart3 },
   { title: "Learning", path: "/dashboard/learning", icon: GraduationCap },
   { title: "Assessments", path: "/dashboard/assessments", icon: Target },
   { title: "AI Tools", path: "/dashboard/tools", icon: Wrench },
@@ -68,7 +68,7 @@ export function UserSidebar({ user }: UserSidebarProps) {
         </div>
         <div className="mt-3 flex items-center justify-between text-xs text-muted-foreground">
           <span>{currentUser.xp.toLocaleString()} XP</span>
-          <span>NQ {currentUser.nqScore}</span>
+          <span>SQ {currentUser.nqScore}</span>
         </div>
       </SidebarHeader>
       <SidebarContent>

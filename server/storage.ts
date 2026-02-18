@@ -8,8 +8,8 @@ import {
   type ToolRequest, type InsertToolRequest,
   type Policy, type InsertPolicy,
   type Alert, type InsertAlert,
-  type NqCalculation, type InsertNqCalculation,
-  users, teams, activities, courses, userProgress, aiTools, toolRequests, policies, alerts, nqCalculations,
+  type SqCalculation, type InsertSqCalculation,
+  users, teams, activities, courses, userProgress, aiTools, toolRequests, policies, alerts, sqCalculations,
 } from "@shared/schema";
 import { db } from "./db";
 import { eq, desc } from "drizzle-orm";
@@ -46,7 +46,7 @@ export interface IStorage {
   getAlerts(): Promise<Alert[]>;
   createAlert(alert: InsertAlert): Promise<Alert>;
 
-  createNqCalculation(calc: InsertNqCalculation): Promise<NqCalculation>;
+  createSqCalculation(calc: InsertSqCalculation): Promise<SqCalculation>;
 }
 
 export class DatabaseStorage implements IStorage {
@@ -150,8 +150,8 @@ export class DatabaseStorage implements IStorage {
     return created;
   }
 
-  async createNqCalculation(calc: InsertNqCalculation): Promise<NqCalculation> {
-    const [created] = await db.insert(nqCalculations).values(calc).returning();
+  async createSqCalculation(calc: InsertSqCalculation): Promise<SqCalculation> {
+    const [created] = await db.insert(sqCalculations).values(calc).returning();
     return created;
   }
 }

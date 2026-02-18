@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { NQRing } from "@/components/nq-ring";
+import { SQRing } from "@/components/nq-ring";
 import { useQuery } from "@tanstack/react-query";
 import type { Team } from "@shared/schema";
 import { TrendingUp, AlertTriangle, Trophy, Users } from "lucide-react";
@@ -34,7 +34,7 @@ export default function CompanyPage() {
       <motion.div variants={fadeUp}>
         <Card className="p-6">
           <div className="flex flex-col md:flex-row items-center gap-6">
-            <NQRing score={agenticScore} size={140} label={agenticLevel} />
+            <SQRing score={agenticScore} size={140} label={agenticLevel} />
             <div className="flex-1 text-center md:text-left">
               <h3 className="text-lg font-semibold">Agentic Enterprise Score</h3>
               <p className="text-muted-foreground text-sm mt-1">Your organization is <span className="font-semibold text-foreground">{agenticLevel}</span></p>
@@ -62,7 +62,7 @@ export default function CompanyPage() {
               <div className="flex items-center gap-4 mb-3">
                 <div>
                   <p className="text-xl font-bold">{team.avgNq}</p>
-                  <p className="text-[10px] text-muted-foreground">Avg NQ</p>
+                  <p className="text-[10px] text-muted-foreground">Avg SQ</p>
                 </div>
                 <div>
                   <p className="text-xl font-bold">{team.completionPct}%</p>
@@ -89,7 +89,7 @@ export default function CompanyPage() {
           {[
             { type: "warning", message: "5 team members inactive for 14+ days", team: "Sales" },
             { type: "info", message: "Marketing team hit Catalyst level!", team: "Marketing" },
-            { type: "warning", message: "Sales NQ dropped 3pts this week", team: "Sales" },
+            { type: "warning", message: "Sales SQ dropped 3pts this week", team: "Sales" },
           ].map((alert, i) => (
             <Card key={i} className="p-3">
               <div className="flex items-center gap-3">

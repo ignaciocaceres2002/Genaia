@@ -5,8 +5,8 @@ import { Card } from "@/components/ui/card";
 import { Slider } from "@/components/ui/slider";
 import { Link } from "wouter";
 import { ArrowLeft, Briefcase, DollarSign, Clock, Calendar, ArrowRight } from "lucide-react";
-import { ROLE_TASKS, calculateNQ } from "@/lib/constants";
-import { NQRing } from "@/components/nq-ring";
+import { ROLE_TASKS, calculateSQ } from "@/lib/constants";
+import { SQRing } from "@/components/nq-ring";
 import { apiRequest } from "@/lib/queryClient";
 import { SEO } from "@/components/seo";
 import logoImg from "@assets/1_1771445946739.png";
@@ -27,7 +27,7 @@ export default function CalculatorPage() {
   const [step, setStep] = useState<Step>("role");
   const [selectedRole, setSelectedRole] = useState("");
   const [taskHours, setTaskHours] = useState<number[]>([]);
-  const [result, setResult] = useState<ReturnType<typeof calculateNQ> | null>(null);
+  const [result, setResult] = useState<ReturnType<typeof calculateSQ> | null>(null);
 
   const handleRoleSelect = (role: string) => {
     setSelectedRole(role);
@@ -38,9 +38,9 @@ export default function CalculatorPage() {
 
   const handleCalculate = async () => {
     setStep("loading");
-    const calc = calculateNQ(selectedRole, taskHours);
+    const calc = calculateSQ(selectedRole, taskHours);
     try {
-      await apiRequest("POST", "/api/nq-calculations", {
+      await apiRequest("POST", "/api/sq-calculations", {
         role: selectedRole,
         tasks: ROLE_TASKS[selectedRole].map((t, i) => ({ name: t.name, hours: taskHours[i] })),
         score: calc.score,
@@ -55,7 +55,7 @@ export default function CalculatorPage() {
 
   return (
     <div className="min-h-screen bg-background">
-      <SEO title="NQ Calculator - Génesis" description="Calculate your Native Quotient (NQ) score to measure your AI readiness across key competencies. Free assessment by Génesis." />
+      <SEO title="SQ Calculator - Génesis" description="Calculate your Superagency Quotient (SQ) score to measure your AI readiness across key competencies. Free assessment by Génesis." />
       <nav className="fixed top-0 left-0 right-0 z-50 backdrop-blur-xl bg-background/70 border-b border-border/50">
         <div className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between gap-4">
           <Link href="/">
@@ -74,7 +74,7 @@ export default function CalculatorPage() {
           {step === "role" && (
             <motion.div key="role" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }}>
               <div className="text-center mb-10">
-                <p className="text-xs font-semibold tracking-[0.2em] uppercase text-[#7C3AED] mb-3">NQ CALCULATOR</p>
+                <p className="text-xs font-semibold tracking-[0.2em] uppercase text-[#7C3AED] mb-3">SQ CALCULATOR</p>
                 <h1 className="text-3xl md:text-4xl font-bold mb-3">Select your role</h1>
                 <p className="text-muted-foreground">Choose the role that best describes your daily work.</p>
               </div>
@@ -135,8 +135,8 @@ export default function CalculatorPage() {
                 <Button variant="outline" className="rounded-full" onClick={() => setStep("role")} data-testid="button-back-role">
                   <ArrowLeft className="w-4 h-4 mr-1" /> Back
                 </Button>
-                <Button className="rounded-full flex-1 bg-[#7C3AED] hover:bg-[#5B21B6] text-white no-default-hover-elevate" onClick={handleCalculate} data-testid="button-reveal-nq">
-                  Reveal my NQ <ArrowRight className="w-4 h-4 ml-1" />
+                <Button className="rounded-full flex-1 bg-[#7C3AED] text-white border-[#7C3AED]" onClick={handleCalculate} data-testid="button-reveal-sq">
+                  Reveal my SQ <ArrowRight className="w-4 h-4 ml-1" />
                 </Button>
               </div>
             </motion.div>
@@ -163,9 +163,9 @@ export default function CalculatorPage() {
           {step === "result" && result && (
             <motion.div key="result" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
               <div className="text-center mb-10">
-                <p className="text-xs font-semibold tracking-[0.2em] uppercase text-[#7C3AED] mb-3">YOUR NQ SCORE</p>
+                <p className="text-xs font-semibold tracking-[0.2em] uppercase text-[#7C3AED] mb-3">YOUR SQ SCORE</p>
                 <div className="flex justify-center mb-4">
-                  <NQRing score={result.score} size={200} label={result.level} />
+                  <SQRing score={result.score} size={200} label={result.level} />
                 </div>
                 <p className="text-muted-foreground">You're a <span className="font-semibold text-foreground">{result.level}</span> in AI readiness.</p>
               </div>
@@ -204,7 +204,7 @@ export default function CalculatorPage() {
               </Card>
 
               <div className="flex flex-wrap gap-4 justify-center">
-                <Button className="rounded-full bg-[#7C3AED] hover:bg-[#5B21B6] text-white no-default-hover-elevate" data-testid="button-book-demo-result">
+                <Button className="rounded-full bg-[#7C3AED] text-white border-[#7C3AED]" data-testid="button-book-demo-result">
                   Run for your team <ArrowRight className="w-4 h-4 ml-1" />
                 </Button>
                 <Button variant="outline" className="rounded-full" onClick={() => { setStep("role"); setResult(null); }} data-testid="button-retake">

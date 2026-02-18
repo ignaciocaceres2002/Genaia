@@ -67,7 +67,7 @@ export default function AdminTeamsPage() {
                     <tr className="border-b">
                       <th className="text-left p-3 text-xs text-muted-foreground font-medium">Team</th>
                       <th className="text-center p-3 text-xs text-muted-foreground font-medium">Size</th>
-                      <th className="text-center p-3 text-xs text-muted-foreground font-medium">Avg NQ</th>
+                      <th className="text-center p-3 text-xs text-muted-foreground font-medium">Avg SQ</th>
                       <th className="text-center p-3 text-xs text-muted-foreground font-medium">Trend</th>
                       <th className="text-center p-3 text-xs text-muted-foreground font-medium">Completion</th>
                       <th className="text-center p-3 text-xs text-muted-foreground font-medium">Engagement</th>

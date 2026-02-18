@@ -1,7 +1,7 @@
 import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
-import { insertNqCalculationSchema } from "@shared/schema";
+import { insertSqCalculationSchema } from "@shared/schema";
 import { z } from "zod";
 
 const toolRequestStatusSchema = z.object({
@@ -152,13 +152,13 @@ export async function registerRoutes(
     }
   });
 
-  app.post("/api/nq-calculations", async (req, res) => {
+  app.post("/api/sq-calculations", async (req, res) => {
     try {
-      const parsed = insertNqCalculationSchema.safeParse(req.body);
+      const parsed = insertSqCalculationSchema.safeParse(req.body);
       if (!parsed.success) {
         return res.status(400).json({ message: "Invalid calculation data", errors: parsed.error.flatten() });
       }
-      const calc = await storage.createNqCalculation(parsed.data);
+      const calc = await storage.createSqCalculation(parsed.data);
       res.json(calc);
     } catch (error) {
       res.status(500).json({ message: "Internal server error" });

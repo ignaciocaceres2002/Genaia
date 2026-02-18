@@ -55,7 +55,7 @@ export const ROLE_TASKS: Record<string, Array<{ name: string; defaultHours: numb
   ],
 };
 
-export function calculateNQ(role: string, taskHours: number[]): { score: number; level: string; hoursPerWeek: number; recoverableHours: number; dollarsSaved: number; taskBreakdown: Array<{ name: string; hours: number; category: string }> } {
+export function calculateSQ(role: string, taskHours: number[]): { score: number; level: string; hoursPerWeek: number; recoverableHours: number; dollarsSaved: number; taskBreakdown: Array<{ name: string; hours: number; category: string }> } {
   const tasks = ROLE_TASKS[role];
   if (!tasks) return { score: 0, level: "Unknown", hoursPerWeek: 0, recoverableHours: 0, dollarsSaved: 0, taskBreakdown: [] };
 

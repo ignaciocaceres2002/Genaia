@@ -49,7 +49,7 @@ export default function ChampionsPage() {
                   <p className="text-sm font-semibold truncate">{champ.name}</p>
                   <p className="text-xs text-muted-foreground">{champ.department}</p>
                   <div className="flex items-center gap-2 mt-2 flex-wrap">
-                    <Badge variant="secondary" className="text-[10px]">NQ {champ.nqScore}</Badge>
+                    <Badge variant="secondary" className="text-[10px]">SQ {champ.nqScore}</Badge>
                     <Badge variant="secondary" className="text-[10px]">{champ.specialty}</Badge>
                   </div>
                 </div>
@@ -99,11 +99,11 @@ export default function ChampionsPage() {
           <div className="text-center">
             <Trophy className="w-8 h-8 text-[#7C3AED] mx-auto mb-3" />
             <h3 className="font-semibold mb-1">Become a Champion</h3>
-            <p className="text-sm text-muted-foreground mb-4">Reach NQ 65+ and high engagement to unlock your invitation</p>
+            <p className="text-sm text-muted-foreground mb-4">Reach SQ 65+ and high engagement to unlock your invitation</p>
             <div className="flex justify-center gap-6">
               <div className="text-center">
                 <p className="text-lg font-bold">67/65</p>
-                <p className="text-xs text-muted-foreground">NQ Score</p>
+                <p className="text-xs text-muted-foreground">SQ Score</p>
               </div>
               <div className="text-center">
                 <p className="text-lg font-bold">72/80</p>

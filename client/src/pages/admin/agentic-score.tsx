@@ -1,14 +1,14 @@
 import { motion } from "framer-motion";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { NQRing } from "@/components/nq-ring";
+import { SQRing } from "@/components/nq-ring";
 import { TrendingUp, ChevronRight } from "lucide-react";
 import { ResponsiveContainer, RadarChart, PolarGrid, PolarAngleAxis, Radar, BarChart, Bar, XAxis, YAxis, Tooltip, CartesianGrid } from "recharts";
 
 const fadeUp = { hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0 } };
 
 const compositionData = [
-  { component: "Avg NQ", score: 62, weight: "25%", fullName: "Average NQ Score" },
+  { component: "Avg SQ", score: 62, weight: "25%", fullName: "Average SQ Score" },
   { component: "Training", score: 68, weight: "20%", fullName: "Training Completion" },
   { component: "Tools", score: 55, weight: "20%", fullName: "Tool Adoption" },
   { component: "Champions", score: 40, weight: "10%", fullName: "Champion Coverage" },
@@ -43,7 +43,7 @@ export default function AgenticScorePage() {
       <motion.div variants={fadeUp}>
         <Card className="p-6">
           <div className="flex flex-col md:flex-row items-center gap-8">
-            <NQRing score={agenticScore} size={180} label={agenticLevel} />
+            <SQRing score={agenticScore} size={180} label={agenticLevel} />
             <div className="flex-1 text-center md:text-left">
               <h2 className="text-3xl font-bold">{agenticScore}/100</h2>
               <p className="text-muted-foreground mt-1">Your organization is <span className="font-semibold text-foreground">{agenticLevel}</span></p>

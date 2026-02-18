@@ -10,10 +10,10 @@ const fadeUp = { hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0 } };
 
 const defaultAlerts = [
   { id: "1", type: "Inactivity", severity: "warning", title: "5 team members inactive 14+ days", description: "Sales team members haven't completed any training modules in the last 14 days. Consider sending a nudge or scheduling a check-in.", team: "Sales", dismissed: false, createdAt: new Date(Date.now() - 86400000).toISOString() },
-  { id: "2", type: "NQ Decline", severity: "warning", title: "Sales NQ dropped 3pts", description: "The Sales team average NQ has declined from 47 to 44 over the past week. Low engagement and missed streaks are contributing factors.", team: "Sales", dismissed: false, createdAt: new Date(Date.now() - 172800000).toISOString() },
+  { id: "2", type: "SQ Decline", severity: "warning", title: "Sales SQ dropped 3pts", description: "The Sales team average SQ has declined from 47 to 44 over the past week. Low engagement and missed streaks are contributing factors.", team: "Sales", dismissed: false, createdAt: new Date(Date.now() - 172800000).toISOString() },
   { id: "3", type: "Shadow AI", severity: "critical", title: "Unapproved tool detected", description: "3 users in Engineering have been using an unapproved AI code generation tool. Review and take action to ensure compliance.", team: "Engineering", dismissed: false, createdAt: new Date(Date.now() - 259200000).toISOString() },
   { id: "4", type: "Streak Loss", severity: "info", title: "12 users lost their streak", description: "12 users across multiple teams lost their learning streak this week. Consider enabling streak freeze reminders.", team: "Multiple", dismissed: false, createdAt: new Date(Date.now() - 345600000).toISOString() },
-  { id: "5", type: "Achievement", severity: "info", title: "Marketing hit Catalyst level!", description: "The Marketing team's average NQ has reached 58, qualifying them for Catalyst status. Consider recognizing this achievement.", team: "Marketing", dismissed: false, createdAt: new Date(Date.now() - 432000000).toISOString() },
+  { id: "5", type: "Achievement", severity: "info", title: "Marketing hit Catalyst level!", description: "The Marketing team's average SQ has reached 58, qualifying them for Catalyst status. Consider recognizing this achievement.", team: "Marketing", dismissed: false, createdAt: new Date(Date.now() - 432000000).toISOString() },
 ];
 
 const severityConfig = {

@@ -108,7 +108,7 @@ export default function PoliciesPage() {
                 onKeyDown={(e) => e.key === "Enter" && handleSendChat()}
                 data-testid="input-policy-chat"
               />
-              <Button size="icon" onClick={handleSendChat} className="bg-[#7C3AED] hover:bg-[#5B21B6] text-white no-default-hover-elevate flex-shrink-0" data-testid="button-send-policy-chat">
+              <Button size="icon" onClick={handleSendChat} className="bg-[#7C3AED] text-white border-[#7C3AED] flex-shrink-0" data-testid="button-send-policy-chat">
                 <Send className="w-3.5 h-3.5" />
               </Button>
             </div>

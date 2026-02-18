@@ -72,7 +72,7 @@ export default function SettingsPage() {
           </div>
           <div className="space-y-4">
             {[
-              { label: "Weekly NQ Report", desc: "Receive weekly team NQ summaries" },
+              { label: "Weekly SQ Report", desc: "Receive weekly team SQ summaries" },
               { label: "Alert Notifications", desc: "Get notified of critical alerts" },
               { label: "Champion Activity", desc: "Updates from champion network" },
             ].map((item) => (
@@ -106,7 +106,7 @@ export default function SettingsPage() {
       </motion.div>
 
       <motion.div variants={fadeUp}>
-        <Button className="rounded-full bg-[#7C3AED] hover:bg-[#5B21B6] text-white no-default-hover-elevate" data-testid="button-save-settings">
+        <Button className="rounded-full bg-[#7C3AED] text-white border-[#7C3AED]" data-testid="button-save-settings">
           Save Changes
         </Button>
       </motion.div>

@@ -53,7 +53,7 @@ export default function AssessmentsPage() {
                 )}
                 <div className="mt-4">
                   {assessment.available ? (
-                    <Button size="sm" className="w-full rounded-full bg-[#7C3AED] hover:bg-[#5B21B6] text-white no-default-hover-elevate" data-testid={`button-take-${skill.key}`}>
+                    <Button size="sm" className="w-full rounded-full bg-[#7C3AED] text-white border-[#7C3AED]" data-testid={`button-take-${skill.key}`}>
                       {assessment.lastScore !== null ? "Retake" : "Take Assessment"}
                     </Button>
                   ) : (

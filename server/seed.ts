@@ -65,10 +65,10 @@ export async function seedDatabase() {
 
     const alertData = [
       { type: "Inactivity", severity: "warning", title: "5 team members inactive 14+ days", description: "Sales team members haven't completed any training modules in the last 14 days.", team: "Sales", dismissed: false },
-      { type: "NQ Decline", severity: "warning", title: "Sales NQ dropped 3pts", description: "The Sales team average NQ has declined from 47 to 44 over the past week.", team: "Sales", dismissed: false },
+      { type: "SQ Decline", severity: "warning", title: "Sales SQ dropped 3pts", description: "The Sales team average SQ has declined from 47 to 44 over the past week.", team: "Sales", dismissed: false },
       { type: "Shadow AI", severity: "critical", title: "Unapproved tool detected", description: "3 users in Engineering have been using an unapproved AI code generation tool.", team: "Engineering", dismissed: false },
       { type: "Streak Loss", severity: "info", title: "12 users lost their streak", description: "12 users across multiple teams lost their learning streak this week.", team: "Multiple", dismissed: false },
-      { type: "Achievement", severity: "info", title: "Marketing hit Catalyst level!", description: "The Marketing team's average NQ has reached 58, qualifying them for Catalyst status.", team: "Marketing", dismissed: false },
+      { type: "Achievement", severity: "info", title: "Marketing hit Catalyst level!", description: "The Marketing team's average SQ has reached 58, qualifying them for Catalyst status.", team: "Marketing", dismissed: false },
     ];
     for (const a of alertData) await storage.createAlert(a);
 

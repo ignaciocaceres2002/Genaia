@@ -105,7 +105,7 @@ export const alerts = pgTable("alerts", {
   createdAt: timestamp("created_at").defaultNow(),
 });
 
-export const nqCalculations = pgTable("nq_calculations", {
+export const sqCalculations = pgTable("nq_calculations", {
   id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
   role: text("role").notNull(),
   tasks: jsonb("tasks").$type<Array<{ name: string; hours: number }>>(),
@@ -123,7 +123,7 @@ export const insertAiToolSchema = createInsertSchema(aiTools).omit({ id: true })
 export const insertToolRequestSchema = createInsertSchema(toolRequests).omit({ id: true, createdAt: true });
 export const insertPolicySchema = createInsertSchema(policies).omit({ id: true, updatedAt: true });
 export const insertAlertSchema = createInsertSchema(alerts).omit({ id: true, createdAt: true });
-export const insertNqCalculationSchema = createInsertSchema(nqCalculations).omit({ id: true, createdAt: true });
+export const insertSqCalculationSchema = createInsertSchema(sqCalculations).omit({ id: true, createdAt: true });
 
 export type User = typeof users.$inferSelect;
 export type InsertUser = z.infer<typeof insertUserSchema>;
@@ -143,18 +143,18 @@ export type Policy = typeof policies.$inferSelect;
 export type InsertPolicy = z.infer<typeof insertPolicySchema>;
 export type Alert = typeof alerts.$inferSelect;
 export type InsertAlert = z.infer<typeof insertAlertSchema>;
-export type NqCalculation = typeof nqCalculations.$inferSelect;
-export type InsertNqCalculation = z.infer<typeof insertNqCalculationSchema>;
+export type SqCalculation = typeof sqCalculations.$inferSelect;
+export type InsertSqCalculation = z.infer<typeof insertSqCalculationSchema>;
 
-export const NQ_LEVELS = [
-  { name: "Beginner", minXp: 0, minNq: 0 },
-  { name: "Learner", minXp: 500, minNq: 15 },
-  { name: "Explorer", minXp: 1500, minNq: 30 },
-  { name: "Builder", minXp: 3500, minNq: 45 },
-  { name: "Achiever", minXp: 7000, minNq: 55 },
-  { name: "Expert", minXp: 12000, minNq: 65 },
-  { name: "Master", minXp: 20000, minNq: 80 },
-  { name: "Superagent", minXp: 35000, minNq: 90 },
+export const SQ_LEVELS = [
+  { name: "Beginner", minXp: 0, minSq: 0 },
+  { name: "Learner", minXp: 500, minSq: 15 },
+  { name: "Explorer", minXp: 1500, minSq: 30 },
+  { name: "Builder", minXp: 3500, minSq: 45 },
+  { name: "Achiever", minXp: 7000, minSq: 55 },
+  { name: "Expert", minXp: 12000, minSq: 65 },
+  { name: "Master", minXp: 20000, minSq: 80 },
+  { name: "Superagent", minXp: 35000, minSq: 90 },
 ] as const;
 
 export const SKILLS = [
@@ -166,20 +166,20 @@ export const SKILLS = [
   { key: "processReimagination", name: "Process Reimagination", icon: "Lightbulb" },
 ] as const;
 
-export function getNqLevel(nq: number) {
-  let level = NQ_LEVELS[0];
-  for (const l of NQ_LEVELS) {
-    if (nq >= l.minNq) level = l;
+export function getSqLevel(sq: number) {
+  let level = SQ_LEVELS[0];
+  for (const l of SQ_LEVELS) {
+    if (sq >= l.minSq) level = l;
   }
   return level;
 }
 
 export function getXpLevel(xp: number) {
-  let level = NQ_LEVELS[0];
+  let level = SQ_LEVELS[0];
   let idx = 0;
-  for (let i = 0; i < NQ_LEVELS.length; i++) {
-    if (xp >= NQ_LEVELS[i].minXp) {
-      level = NQ_LEVELS[i];
+  for (let i = 0; i < SQ_LEVELS.length; i++) {
+    if (xp >= SQ_LEVELS[i].minXp) {
+      level = SQ_LEVELS[i];
       idx = i;
     }
   }

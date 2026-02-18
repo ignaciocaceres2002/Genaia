@@ -10,7 +10,7 @@ import { SEO } from "@/components/seo";
 
 const fadeUp = { hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0 } };
 
-const nqDistribution = [
+const sqDistribution = [
   { range: "0-25", count: 12, level: "Novice", color: "#ef4444" },
   { range: "26-50", count: 38, level: "Aware", color: "#f59e0b" },
   { range: "51-75", count: 52, level: "Practitioner", color: "#7C3AED" },
@@ -24,31 +24,31 @@ const engagementData = [
 ];
 
 const heatmapData = [
-  { name: "Engineering", size: 45, nq: 62 },
-  { name: "Marketing", size: 22, nq: 58 },
-  { name: "Finance", size: 18, nq: 51 },
-  { name: "Product", size: 15, nq: 66 },
-  { name: "Sales", size: 30, nq: 44 },
-  { name: "Legal", size: 10, nq: 55 },
-  { name: "People Ops", size: 12, nq: 60 },
+  { name: "Engineering", size: 45, sq: 62 },
+  { name: "Marketing", size: 22, sq: 58 },
+  { name: "Finance", size: 18, sq: 51 },
+  { name: "Product", size: 15, sq: 66 },
+  { name: "Sales", size: 30, sq: 44 },
+  { name: "Legal", size: 10, sq: 55 },
+  { name: "People Ops", size: 12, sq: 60 },
 ];
 
-function getHeatColor(nq: number) {
-  if (nq >= 65) return "#7C3AED";
-  if (nq >= 50) return "#A78BFA";
+function getHeatColor(sq: number) {
+  if (sq >= 65) return "#7C3AED";
+  if (sq >= 50) return "#A78BFA";
   return "#f59e0b";
 }
 
 const CustomTreemapContent = (props: any) => {
-  const { x, y, width, height, name, nq } = props;
+  const { x, y, width, height, name, sq } = props;
   if (width < 40 || height < 30) return null;
   return (
     <g>
-      <rect x={x} y={y} width={width} height={height} fill={getHeatColor(nq)} rx={4} opacity={0.85} stroke="hsl(var(--background))" strokeWidth={2} />
+      <rect x={x} y={y} width={width} height={height} fill={getHeatColor(sq)} rx={4} opacity={0.85} stroke="hsl(var(--background))" strokeWidth={2} />
       {width > 60 && height > 40 && (
         <>
           <text x={x + width / 2} y={y + height / 2 - 6} textAnchor="middle" fill="white" fontSize={11} fontWeight="600">{name}</text>
-          <text x={x + width / 2} y={y + height / 2 + 10} textAnchor="middle" fill="rgba(255,255,255,0.8)" fontSize={10}>NQ {nq}</text>
+          <text x={x + width / 2} y={y + height / 2 + 10} textAnchor="middle" fill="rgba(255,255,255,0.8)" fontSize={10}>SQ {sq}</text>
         </>
       )}
     </g>
@@ -69,7 +69,7 @@ export default function AdminOverview() {
 
       <motion.div variants={fadeUp} className="grid grid-cols-2 lg:grid-cols-4 gap-4">
         {[
-          { label: "Org Avg NQ", value: "54", trend: "+3", icon: TrendingUp, color: "text-[#7C3AED]" },
+          { label: "Org Avg SQ", value: "54", trend: "+3", icon: TrendingUp, color: "text-[#7C3AED]" },
           { label: "Active Users", value: "91%", trend: "120 DAU", icon: Users, color: "text-blue-500" },
           { label: "Training Completion", value: "68%", trend: "+12%", icon: GraduationCap, color: "text-green-500" },
           { label: "Hours Recovered", value: "1,420", trend: "This quarter", icon: Clock, color: "text-amber-500" },
@@ -88,16 +88,16 @@ export default function AdminOverview() {
       <div className="grid lg:grid-cols-2 gap-6">
         <motion.div variants={fadeUp}>
           <Card className="p-5">
-            <h3 className="font-semibold text-sm mb-4">NQ Distribution</h3>
+            <h3 className="font-semibold text-sm mb-4">SQ Distribution</h3>
             <div className="h-[220px]">
               <ResponsiveContainer width="100%" height="100%">
-                <BarChart data={nqDistribution}>
+                <BarChart data={sqDistribution}>
                   <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
                   <XAxis dataKey="range" tick={{ fontSize: 11, fill: "hsl(var(--muted-foreground))" }} />
                   <YAxis tick={{ fontSize: 11, fill: "hsl(var(--muted-foreground))" }} />
                   <Tooltip contentStyle={{ backgroundColor: "hsl(var(--card))", border: "1px solid hsl(var(--border))", borderRadius: "6px", fontSize: "12px" }} />
                   <Bar dataKey="count" radius={[4, 4, 0, 0]}>
-                    {nqDistribution.map((entry, i) => (
+                    {sqDistribution.map((entry, i) => (
                       <rect key={i} fill={entry.color} />
                     ))}
                   </Bar>

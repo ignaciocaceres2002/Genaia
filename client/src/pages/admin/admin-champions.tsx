@@ -10,16 +10,16 @@ import { Trophy, Users, TrendingUp, Send } from "lucide-react";
 const fadeUp = { hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0 } };
 
 const championCandidates = [
-  { name: "Sarah Chen", department: "Marketing", nq: 67, engagement: 72, influence: 45, composite: 62 },
-  { name: "Alex Rivera", department: "Product", nq: 62, engagement: 68, influence: 52, composite: 60 },
-  { name: "Priya Patel", department: "Finance", nq: 59, engagement: 65, influence: 38, composite: 54 },
+  { name: "Sarah Chen", department: "Marketing", sq: 67, engagement: 72, influence: 45, composite: 62 },
+  { name: "Alex Rivera", department: "Product", sq: 62, engagement: 68, influence: 52, composite: 60 },
+  { name: "Priya Patel", department: "Finance", sq: 59, engagement: 65, influence: 38, composite: 54 },
 ];
 
 const activeChampions = [
-  { name: "Marcus Johnson", department: "Engineering", nq: 88, peopleHelped: 32, activities: 45, tasksCompleted: 28 },
-  { name: "Elena Rodriguez", department: "Marketing", nq: 82, peopleHelped: 24, activities: 38, tasksCompleted: 22 },
-  { name: "James Wright", department: "Finance", nq: 79, peopleHelped: 18, activities: 30, tasksCompleted: 15 },
-  { name: "Aisha Patel", department: "Product", nq: 85, peopleHelped: 28, activities: 42, tasksCompleted: 25 },
+  { name: "Marcus Johnson", department: "Engineering", sq: 88, peopleHelped: 32, activities: 45, tasksCompleted: 28 },
+  { name: "Elena Rodriguez", department: "Marketing", sq: 82, peopleHelped: 24, activities: 38, tasksCompleted: 22 },
+  { name: "James Wright", department: "Finance", sq: 79, peopleHelped: 18, activities: 30, tasksCompleted: 15 },
+  { name: "Aisha Patel", department: "Product", sq: 85, peopleHelped: 28, activities: 42, tasksCompleted: 25 },
 ];
 
 export default function AdminChampionsPage() {
@@ -36,7 +36,7 @@ export default function AdminChampionsPage() {
         {[
           { label: "Active Champions", value: "4", icon: Trophy },
           { label: "People Helped", value: "102", icon: Users },
-          { label: "Avg Champion NQ", value: "83.5", icon: TrendingUp },
+          { label: "Avg Champion SQ", value: "83.5", icon: TrendingUp },
           { label: "Coverage", value: "57%", icon: Users },
         ].map((m) => (
           <Card key={m.label} className="p-4">
@@ -58,7 +58,7 @@ export default function AdminChampionsPage() {
                 <tr className="border-b">
                   <th className="text-left p-3 text-xs text-muted-foreground font-medium">Champion</th>
                   <th className="text-left p-3 text-xs text-muted-foreground font-medium">Dept</th>
-                  <th className="text-center p-3 text-xs text-muted-foreground font-medium">NQ</th>
+                  <th className="text-center p-3 text-xs text-muted-foreground font-medium">SQ</th>
                   <th className="text-center p-3 text-xs text-muted-foreground font-medium">Helped</th>
                   <th className="text-center p-3 text-xs text-muted-foreground font-medium">Activities</th>
                   <th className="text-center p-3 text-xs text-muted-foreground font-medium">Tasks</th>
@@ -78,7 +78,7 @@ export default function AdminChampionsPage() {
                       </div>
                     </td>
                     <td className="p-3 text-muted-foreground">{c.department}</td>
-                    <td className="p-3 text-center font-semibold">{c.nq}</td>
+                    <td className="p-3 text-center font-semibold">{c.sq}</td>
                     <td className="p-3 text-center">{c.peopleHelped}</td>
                     <td className="p-3 text-center">{c.activities}</td>
                     <td className="p-3 text-center">{c.tasksCompleted}</td>
@@ -93,7 +93,7 @@ export default function AdminChampionsPage() {
       <motion.div variants={fadeUp}>
         <Card className="p-5">
           <h3 className="font-semibold text-sm mb-3">Champion Candidates</h3>
-          <p className="text-xs text-muted-foreground mb-4">Ranked by composite score (NQ 40% + Engagement 30% + Influence 30%)</p>
+          <p className="text-xs text-muted-foreground mb-4">Ranked by composite score (SQ 40% + Engagement 30% + Influence 30%)</p>
           <div className="space-y-3">
             {championCandidates.map((c) => (
               <div key={c.name} className="flex items-center justify-between gap-4 p-3 bg-muted/50 rounded-md">
@@ -110,9 +110,9 @@ export default function AdminChampionsPage() {
                 </div>
                 <div className="flex items-center gap-2">
                   <div className="text-right text-xs text-muted-foreground hidden md:block">
-                    <span>NQ {c.nq}</span> · <span>Eng {c.engagement}</span> · <span>Inf {c.influence}</span>
+                    <span>SQ {c.sq}</span> · <span>Eng {c.engagement}</span> · <span>Inf {c.influence}</span>
                   </div>
-                  <Button size="sm" className="rounded-full bg-[#7C3AED] hover:bg-[#5B21B6] text-white no-default-hover-elevate text-xs">
+                  <Button size="sm" className="rounded-full bg-[#7C3AED] text-white border-[#7C3AED] text-xs">
                     <Send className="w-3 h-3 mr-1" /> Invite
                   </Button>
                 </div>

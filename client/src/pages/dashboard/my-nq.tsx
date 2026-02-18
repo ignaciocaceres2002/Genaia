@@ -2,7 +2,7 @@ import { motion } from "framer-motion";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { NQRing } from "@/components/nq-ring";
+import { SQRing } from "@/components/nq-ring";
 import { SKILLS } from "@shared/schema";
 import { TrendingUp, TrendingDown, Minus, ArrowRight } from "lucide-react";
 import { Link } from "wouter";
@@ -12,7 +12,7 @@ import { ResponsiveContainer, RadarChart, PolarGrid, PolarAngleAxis, Radar, Line
 
 const fadeUp = { hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0 } };
 
-export default function MyNQPage() {
+export default function MySQPage() {
   const { data: user } = useQuery<User>({ queryKey: ["/api/user/me"] });
 
   const currentUser = user || {
@@ -68,9 +68,9 @@ export default function MyNQPage() {
   return (
     <motion.div className="max-w-4xl mx-auto space-y-8" initial="hidden" animate="visible" variants={{ visible: { transition: { staggerChildren: 0.08 } } }}>
       <motion.div variants={fadeUp} className="flex flex-col md:flex-row items-center gap-8">
-        <NQRing score={currentUser.nqScore || 67} size={180} label="Expert" />
+        <SQRing score={currentUser.nqScore || 67} size={180} label="Expert" />
         <div>
-          <h1 className="text-2xl font-bold">Your NQ Score</h1>
+          <h1 className="text-2xl font-bold">Your SQ Score</h1>
           <p className="text-muted-foreground text-sm mt-1">
             Top 34% of {currentUser.department || "Marketing"} professionals
           </p>
@@ -137,7 +137,7 @@ export default function MyNQPage() {
       <div className="grid md:grid-cols-2 gap-6">
         <motion.div variants={fadeUp}>
           <Card className="p-6">
-            <h3 className="font-semibold mb-4">NQ History</h3>
+            <h3 className="font-semibold mb-4">SQ History</h3>
             <div className="h-[200px]">
               <ResponsiveContainer width="100%" height="100%">
                 <LineChart data={historyData}>

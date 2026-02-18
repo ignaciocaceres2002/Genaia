@@ -34,7 +34,7 @@ export default function ToolsPage() {
           <h1 className="text-2xl font-bold">AI Tools</h1>
           <p className="text-muted-foreground text-sm mt-1">Your approved tools and requests</p>
         </div>
-        <Button size="sm" className="rounded-full bg-[#7C3AED] hover:bg-[#5B21B6] text-white no-default-hover-elevate" data-testid="button-request-tool">
+        <Button size="sm" className="rounded-full bg-[#7C3AED] text-white border-[#7C3AED]" data-testid="button-request-tool">
           <Plus className="w-4 h-4 mr-1" /> Request Tool
         </Button>
       </motion.div>

@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 
-interface NQRingProps {
+interface SQRingProps {
   score: number;
   size?: number;
   strokeWidth?: number;
@@ -9,7 +9,7 @@ interface NQRingProps {
   className?: string;
 }
 
-export function NQRing({ score, size = 180, strokeWidth = 10, label, animated = true, className = "" }: NQRingProps) {
+export function SQRing({ score, size = 180, strokeWidth = 10, label, animated = true, className = "" }: SQRingProps) {
   const radius = (size - strokeWidth) / 2;
   const circumference = 2 * Math.PI * radius;
   const progress = (score / 100) * circumference;
@@ -19,7 +19,7 @@ export function NQRing({ score, size = 180, strokeWidth = 10, label, animated = 
     <div className={`relative inline-flex items-center justify-center ${className}`}>
       <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`}>
         <defs>
-          <linearGradient id={`nq-gradient-${size}`} x1="0%" y1="0%" x2="100%" y2="100%">
+          <linearGradient id={`sq-gradient-${size}`} x1="0%" y1="0%" x2="100%" y2="100%">
             <stop offset="0%" stopColor="#7C3AED" />
             <stop offset="50%" stopColor="#A78BFA" />
             <stop offset="100%" stopColor="#5B21B6" />
@@ -39,7 +39,7 @@ export function NQRing({ score, size = 180, strokeWidth = 10, label, animated = 
           cy={center}
           r={radius}
           fill="none"
-          stroke={`url(#nq-gradient-${size})`}
+          stroke={`url(#sq-gradient-${size})`}
           strokeWidth={strokeWidth}
           strokeLinecap="round"
           strokeDasharray={circumference}

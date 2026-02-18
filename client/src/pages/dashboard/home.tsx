@@ -2,7 +2,7 @@ import { motion } from "framer-motion";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { NQRing } from "@/components/nq-ring";
+import { SQRing } from "@/components/nq-ring";
 import { GraduationCap, Target, Wrench, Lightbulb, Flame, Zap, Trophy } from "lucide-react";
 import { Link } from "wouter";
 import { useQuery } from "@tanstack/react-query";
@@ -32,15 +32,15 @@ export default function DashboardHome() {
 
   return (
     <motion.div className="max-w-4xl mx-auto space-y-8" initial="hidden" animate="visible" variants={{ visible: { transition: { staggerChildren: 0.08 } } }}>
-      <SEO title="Dashboard - Génesis" description="Your personal AI adoption dashboard. Track your NQ score, streaks, learning progress, and more." />
+      <SEO title="Dashboard - Génesis" description="Your personal AI adoption dashboard. Track your SQ score, streaks, learning progress, and more." />
       <motion.div variants={fadeUp} className="flex flex-col md:flex-row items-start gap-6">
         <div className="flex-shrink-0">
-          <NQRing score={currentUser.nqScore} size={160} label={levelNames[(currentUser.level || 1) - 1]} />
+          <SQRing score={currentUser.nqScore} size={160} label={levelNames[(currentUser.level || 1) - 1]} />
         </div>
         <div className="flex-1 space-y-4">
           <div>
             <h1 className="text-2xl font-bold" data-testid="text-welcome">Welcome back, {currentUser.name?.split(" ")[0]}</h1>
-            <p className="text-muted-foreground text-sm mt-1">Your NQ is <span className="font-semibold text-foreground">{currentUser.nqScore}</span> — keep going!</p>
+            <p className="text-muted-foreground text-sm mt-1">Your SQ is <span className="font-semibold text-foreground">{currentUser.nqScore}</span> — keep going!</p>
           </div>
 
           <Card className="p-4 border-l-4 border-l-[#7C3AED]">
@@ -52,7 +52,7 @@ export default function DashboardHome() {
               <div className="flex items-center gap-3">
                 <Badge variant="secondary" className="text-xs">5 min</Badge>
                 <Badge variant="secondary" className="text-xs"><Zap className="w-3 h-3 mr-0.5" />+150 XP</Badge>
-                <Button size="sm" className="rounded-full bg-[#7C3AED] hover:bg-[#5B21B6] text-white no-default-hover-elevate" data-testid="button-daily-challenge">
+                <Button size="sm" className="rounded-full bg-[#7C3AED] text-white border-[#7C3AED]" data-testid="button-daily-challenge">
                   Start
                 </Button>
               </div>

@@ -10,7 +10,7 @@ import CalculatorPage from "@/pages/calculator";
 import { UserSidebar } from "@/components/user-sidebar";
 import { AdminSidebar } from "@/components/admin-sidebar";
 import DashboardHome from "@/pages/dashboard/home";
-import MyNQPage from "@/pages/dashboard/my-nq";
+import MySQPage from "@/pages/dashboard/my-nq";
 import LearningPage from "@/pages/dashboard/learning";
 import AssessmentsPage from "@/pages/dashboard/assessments";
 import ToolsPage from "@/pages/dashboard/tools";
@@ -83,7 +83,7 @@ function UserDashboardRouter() {
     <UserDashboardLayout>
       <Switch>
         <Route path="/dashboard" component={DashboardHome} />
-        <Route path="/dashboard/nq" component={MyNQPage} />
+        <Route path="/dashboard/sq" component={MySQPage} />
         <Route path="/dashboard/learning" component={LearningPage} />
         <Route path="/dashboard/assessments" component={AssessmentsPage} />
         <Route path="/dashboard/tools" component={ToolsPage} />

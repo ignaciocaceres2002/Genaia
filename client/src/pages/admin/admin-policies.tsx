@@ -32,7 +32,7 @@ export default function AdminPoliciesPage() {
           <h1 className="text-2xl font-bold">Policy Management</h1>
           <p className="text-muted-foreground text-sm mt-1">Analytics, compliance, and gap analysis</p>
         </div>
-        <Button size="sm" className="rounded-full bg-[#7C3AED] hover:bg-[#5B21B6] text-white no-default-hover-elevate" data-testid="button-create-policy">
+        <Button size="sm" className="rounded-full bg-[#7C3AED] text-white border-[#7C3AED]" data-testid="button-create-policy">
           Create Policy
         </Button>
       </motion.div>
