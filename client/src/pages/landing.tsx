@@ -137,9 +137,14 @@ export default function LandingPage() {
               </motion.p>
 
               <motion.div variants={fadeUp} className="flex flex-wrap items-center justify-center gap-4 mb-16">
+                <Link href="/assessment">
+                  <Button size="lg" className="rounded-full bg-[#7C3AED] text-white border-[#7C3AED]" data-testid="button-take-assessment-hero">
+                    Take the SQ Assessment
+                  </Button>
+                </Link>
                 <Link href="/calculator">
-                  <Button size="lg" className="rounded-full bg-[#7C3AED] text-white border-[#7C3AED]" data-testid="button-calculate-sq-hero">
-                    Calculate your SQ
+                  <Button size="lg" variant="outline" className="rounded-full" data-testid="button-calculate-sq-hero">
+                    Quick Calculator
                   </Button>
                 </Link>
                 <a href="#manifesto" className="text-[#7C3AED] text-sm font-medium flex items-center gap-1 hover:gap-2 transition-all" data-testid="link-manifesto-hero">

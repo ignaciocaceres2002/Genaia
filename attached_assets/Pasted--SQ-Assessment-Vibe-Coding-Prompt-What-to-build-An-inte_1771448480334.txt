@@ -1,0 +1,228 @@
+# SQ Assessment — Vibe Coding Prompt
+
+## What to build
+
+An interactive assessment that measures someone's readiness to work with AI — without ever asking about AI. It measures 6 cognitive patterns through everyday scenarios anyone can relate to. It also captures the person's real work tasks to estimate automation potential. The output: an SQ score (0–100), a 6-skill radar, a task automation map, and personalized recommendations. Total time: ~10 minutes in 3 parts. Design: Apple-clean, violet palette (`#7C3AED` primary, `#5B21B6` deep, `#A78BFA` lavender, `#EDE9FE` soft, `#FAFAFE` bg, `#1A1A2E` ink). Full-screen, one element at a time, no clutter, generous animations (Framer Motion). Must feel like a premium personality experience, not a corporate quiz.
+
+---
+
+## The 6 skills being measured
+
+1. **Data Fluency** — Interpreting information critically, questioning sources, understanding probability and confidence
+2. **Adaptive Mindset** — Composure with change, learning agility, openness to new tools and methods
+3. **Verification Instinct** — Questioning confident sources, detecting errors, not trusting blindly
+4. **Orchestration** — Knowing when to delegate, co-create, or override; calibrating trust; briefing effectively
+5. **Proactive Experimentation** — Self-directed exploration, building before being asked, tinkering instinct
+6. **Systems Redesign** — Thinking from zero, questioning legacy processes, designing new workflows instead of patching old ones
+
+---
+
+## SCREEN: Opening
+
+Black screen. Text fades in line by line (1.5s between lines):
+
+"This isn't about AI."
+"It's about how you think."
+"10 minutes. No right answers."
+
+Button: "Let's go" (violet pill, subtle pulse)
+
+---
+
+## PART 1: "Instinct" — 12 binary choices (~2 min)
+
+Full-screen, one question at a time. Two large tappable cards per question. No back button. Auto-advance on tap (0.6s delay). 12 dots as progress indicator at top. Response time measured silently.
+
+**Data Fluency:**
+Q1: "A chart contradicts your intuition." → "Dig into the data" / "Trust my experience"
+Q2: "Weather app says 30% chance of rain." → "Probably won't rain" / "I'm bringing an umbrella"
+
+**Adaptive Mindset:**
+Q3: "A tool you've used for years gets replaced." → "Excited to explore" / "Frustrated to relearn"
+Q4: "Asked to do something you've never done." → "Energized" / "Anxious"
+
+**Verification Instinct:**
+Q5: "GPS says left. Your gut says right." → "Follow the GPS" / "Check the map myself"
+Q6: "An expert says something surprising on TV." → "I'd want a second source" / "They're the expert"
+
+**Orchestration:**
+Q7: "Someone offers to handle a task you care about." → "Delegate and review" / "Do it myself"
+Q8: "A colleague's draft isn't great but has good ideas." → "Build on it" / "Start fresh"
+
+**Proactive Experimentation:**
+Q9: "Your afternoon unexpectedly frees up." → "Explore something new" / "Get ahead on existing work"
+Q10: "You don't know how to do something." → "Figure it out myself" / "Ask someone who knows"
+
+**Systems Redesign:**
+Q11: "A process at work has always been done one way." → "Ask why" / "If it works, leave it"
+Q12: "A problem keeps coming back despite fixes." → "Redesign the system" / "Execute the fix better"
+
+### Transition screen after Q12:
+"Interesting."
+[pause] "We're starting to see your pattern."
+[pause] "Now let's go deeper."
+Button: "Continue"
+
+---
+
+## PART 2: "Dilemmas" — 10 scenarios, 4 options each (~5 min)
+
+Full-screen per scenario. Short narrative (3 lines max), then 4 option cards below. Tap to select, others fade, auto-advance. Progress: "3 of 10" top corner. Subtle abstract background shapes shift per scenario.
+
+Every option is valid — no obviously "right" answer. Each maps to 1–3 skills with different weights.
+
+**S1: The Restaurant** (Data Fluency)
+Picking a restaurant for a special dinner. A friend swears by a place. An app shows a different one: 4.8 stars, 2,000 reviews.
+→ "Go with my friend — personal taste beats ratings"
+→ "Go with the app — 2,000 reviews can't be wrong"
+→ "Read 10 recent reviews of the app pick to check if they match what I want"
+→ "Look up both on Instagram to see real photos"
+
+**S2: The Numbers** (Verification + Data Fluency)
+In a meeting. A colleague presents numbers that feel off. Nothing obviously wrong, but your gut flags something. Everyone else is nodding.
+→ "Stay quiet — I don't have proof"
+→ "Ask: Can you walk me through how we got that number?"
+→ "Note it down, check after the meeting"
+→ "Say: Something feels off — can we pause on this?"
+
+**S3: The Detour** (Adaptive Mindset)
+Driving to something important. Usual route completely blocked. 20 minutes left.
+→ "Follow the detour signs"
+→ "Open the map, find a completely different route"
+→ "Call ahead to say I might be late, then figure it out calmly"
+→ "Push through as fast as possible"
+
+**S4: The Deal** (Verification)
+Online deal: 80% off something you've wanted. Website looks professional. All 5-star reviews. But the price is way below market.
+→ "Buy it — reviews are good, site looks legit"
+→ "Google the website name + 'scam'"
+→ "Read reviews carefully — look for fake patterns"
+→ "Skip it — too good to be true"
+
+**S5: The Delegation** (Orchestration)
+Leading a project. One team member is better than you at the critical part. High stakes. You're responsible.
+→ "Let them lead it, review everything before it ships"
+→ "Let them lead it, trust their expertise fully"
+→ "Work on it together — my oversight plus their skill"
+→ "Handle it myself — can't afford mistakes"
+
+**S6: The Brief** (Orchestration)
+You need someone else to execute a task that matters a lot. How do you brief them?
+→ "Step-by-step instructions with regular check-ins"
+→ "Explain the goal and constraints, let them figure out the how"
+→ "Do a trial run together, then let them go solo"
+→ "Show them a great example: make it like this"
+
+**S7: The Broken Process** (Proactive Experimentation + Systems Redesign)
+A weekly report everyone does takes 4 hours because of a clunky step. Nobody complains. It's "how it's done."
+→ "Spend personal time figuring out how to fix it"
+→ "Flag it to my manager"
+→ "Build a fix for myself — share it if it works"
+→ "Not my problem — focus on my priorities"
+
+**S8: The Tradition** (Systems Redesign)
+Weekly all-hands meeting. 200 people. 10 years running. Most check their phones. Leadership says it's "important for culture."
+→ "Replace it: async update + monthly real discussion"
+→ "Keep it but completely redesign the format"
+→ "It has subtle value even if engagement is low"
+→ "Run a 4-week experiment: new format vs. old, measure the difference"
+
+**S9: The Free Saturday** (Proactive Experimentation)
+Free Saturday, nothing planned. What actually happens?
+→ "Deep rabbit hole — YouTube, podcasts, something I'm curious about"
+→ "Catch up on things I've been putting off"
+→ "Hang out, go out, relax"
+→ "Tinker with something — a project, a tool, an idea"
+
+**S10: The Worried Friend** (Adaptive Mindset + Verification)
+A friend is genuinely anxious about AI taking their job. Asks: "Should I be scared?"
+→ "Some jobs will change. Yours will probably evolve, not disappear."
+→ "People have worried about this with every technology."
+→ "Look at which parts of your job are routine vs. creative. The routine parts might change."
+→ "I don't know enough yet. Let's both look into it."
+
+### Transition after S10: "The Tease"
+
+The 6 skill scores appear as abstract organic shapes — different sizes, shades of violet. NOT numbers yet. No labels. Just shapes.
+
+"This is your mind."
+[pause] "Every choice revealed a pattern."
+[pause] "One more step to see the full picture."
+Button: "Show me"
+
+---
+
+## PART 3: "Your Week" — 4 steps (~3 min)
+
+### Step 1: Your world (15 sec)
+Two card selects:
+- Role: Marketing / Sales / People & HR / Finance / Product / Legal / Operations / Engineering / Leadership / Customer Service / Other
+- AI usage: 🤷 "What AI tools?" / 👀 "Tried them" / 🔄 "Sometimes" / ⚡ "Most days" / 🧠 "Can't work without them"
+
+### Step 2: Build your week (90 sec)
+Header: "Here's a typical week in [role]. Make it yours."
+
+Pre-loaded task cards (8 per role) with horizontal slider 0–15h each. Pre-filled with defaults. Each card has "I don't do this" dismiss link. Running total at bottom: "Your week: 38h". Optional "+ Add something" for custom tasks.
+
+**Task lists by role (name + default hours):**
+
+Marketing: Writing copy & content (8), Social media creation (5), Campaign analysis (4), Market research (3), Presentations & reports (4), Meetings & alignment (6), Strategic planning (5), Admin & coordination (3)
+
+Sales: Prospecting & research (6), Outreach emails (6), CRM & pipeline (4), Proposals & decks (5), Data analysis & forecasting (3), Client calls & relationships (8), Negotiation & closing (4), Internal meetings (3)
+
+People & HR: Resume screening (6), Job descriptions & policies (3), Employee data & compliance (5), Onboarding processes (4), Performance management (3), Coaching & conflict resolution (5), Culture & engagement (4), Benefits & queries (3)
+
+Finance: Data & spreadsheets (7), Reporting (5), Variance & reconciliation (5), Forecasting & models (4), Presentations (3), Strategic planning (4), Budget reviews (3), Audit & compliance (3)
+
+Product: Status & documentation (4), Meeting notes (3), Specs & requirements (5), User research synthesis (4), Roadmap management (4), Stakeholder communication (6), Prioritization (5), Sprint planning (3)
+
+Legal: Contract review (7), Legal research (5), Compliance docs (5), Policy drafting (3), Due diligence (4), Advisory (5), Negotiation (4), Regulatory monitoring (3)
+
+Operations: Process documentation (5), Data entry & systems (5), Reporting & dashboards (4), Vendor management (4), QC & audits (4), Coordination (5), Problem-solving (4), Budget tracking (3)
+
+Engineering: Writing code (12), Code review & debug (5), Documentation (3), Architecture & design (4), Testing (3), Meetings & sprints (4), Research & learning (3), DevOps (3)
+
+Leadership: Email management (5), Meetings & 1:1s (10), Report review (4), Strategy & decisions (6), Presentations & board prep (4), People management (4), External relationships (4), Admin & scheduling (3)
+
+Customer Service: Tickets & inquiries (10), Templated responses (5), Escalations (4), Knowledge base (3), CRM updates (3), Metrics & reporting (3), Training docs (3), Team meetings (3)
+
+**Hidden automation scores per task (0–100):** Each task has a preset score determining its category: 0–30 = Human Essential (violet), 31–65 = Augmentable (amber), 66–100 = Automatable (green). The user never sees these numbers — only the resulting categories in the results.
+
+### Step 3: What drains you? (15 sec)
+"Which of these drain your energy the most? Tap up to 3."
+Task cards reappear as compact list. Tap to mark with ⚡ icon + orange-red left border. Max 3.
+
+### Step 4: Fear & hope (15 sec)
+Two single-tap selects:
+- "Biggest concern about AI at work?" → Replacing my job / Skills becoming irrelevant / Can't keep up / Don't trust outputs / Not concerned / Haven't thought about it
+- "Most valuable thing AI could do for you?" → Kill boring tasks / Better decisions / Grow faster / Free time for creative work / Not sure yet
+
+---
+
+## THE REVEAL
+
+### Build-up (8 seconds)
+Abstract shapes from the tease morph into the 6-axis radar chart. Labels fade in. Chart shrinks and moves to upper section. A large number counts up from 0 to their SQ score (ease-out). Ring draws around it (violet gradient, 1.5s). Level name fades in below. Then: "Top X% of [Role] professionals."
+
+2 seconds of breathing room. No interaction.
+
+Then the full results page scrolls in below.
+
+### Results page (single scrollable page, 7 blocks)
+
+**Block 1 — SQ Score:** Ring + number + level + one-line personality summary combining their top pattern. Example: "You think in patterns, act on instinct, and trust too quickly. That's a superpower with one blind spot."
+
+**Block 2 — Skill Map:** 6-axis radar (violet fill, gray dashed benchmark). Below: 6 horizontal cards. Each: skill name, score, progress bar, one-line SPECIFIC insight (not generic praise). Example — Verification: 41 — "You trust confident sources. AI is confident about everything — even when it's wrong."
+
+**Block 3 — Your Week Decoded:** Horizontal stacked bar (violet = Human Essential, amber = Augmentable, green = Automatable). Three numbers: hours/week recoverable, hours/year, estimated $/year. Then task-by-task cards with category tag + AI opportunity line + drain flag where applicable: "⚡ This drains you. It's 78% automatable."
+
+**Block 4 — Your 3 Unlocks:** Three cards, each: a concrete personalized recommendation combining their weakest skill + most automatable task + drain data. Format: what to free up, what skill to build, which course to take.
+
+**Block 5 — The Fear Bridge:** Only shows if they selected a concern. Takes their stated fear, reframes it using their actual SQ data. Example for "skills becoming irrelevant": "The skills that become irrelevant are the automatable ones — you spend 13h/week on those. The skills that become MORE valuable are where you're already strong. The move: free the 13 hours, invest in the 11 where you're irreplaceable."
+
+**Block 6 — Share Card:** Auto-generated visual card (violet gradient bg, SQ number, mini radar, level, "genesis.ai/sq — What's yours?"). Buttons: "Share on LinkedIn" (pre-written post with their lowest skill mentioned) + "Copy link". Below: "14,382 people have discovered their SQ."
+
+**Block 7 — Next Steps:** Three cards:
+- "Start training" → signup/platform, mentions their recommended first course
+- "Invite your team" → "5+ colleagues unlock a free Team SQ Dashboard"
+- "Book a demo" → enterprise CTA

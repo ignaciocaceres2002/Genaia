@@ -1,7 +1,7 @@
 import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
-import { insertSqCalculationSchema } from "@shared/schema";
+import { insertSqCalculationSchema, insertSqAssessmentSchema } from "@shared/schema";
 import { z } from "zod";
 
 const toolRequestStatusSchema = z.object({
@@ -160,6 +160,19 @@ export async function registerRoutes(
       }
       const calc = await storage.createSqCalculation(parsed.data);
       res.json(calc);
+    } catch (error) {
+      res.status(500).json({ message: "Internal server error" });
+    }
+  });
+
+  app.post("/api/sq-assessments", async (req, res) => {
+    try {
+      const parsed = insertSqAssessmentSchema.safeParse(req.body);
+      if (!parsed.success) {
+        return res.status(400).json({ message: "Invalid assessment data", errors: parsed.error.flatten() });
+      }
+      const assessment = await storage.createSqAssessment(parsed.data);
+      res.json(assessment);
     } catch (error) {
       res.status(500).json({ message: "Internal server error" });
     }

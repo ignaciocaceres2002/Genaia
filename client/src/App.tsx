@@ -27,6 +27,7 @@ import AdminAssessmentsPage from "@/pages/admin/admin-assessments";
 import AdminPoliciesPage from "@/pages/admin/admin-policies";
 import AdminChampionsPage from "@/pages/admin/admin-champions";
 import SettingsPage from "@/pages/admin/settings";
+import AssessmentPage from "@/pages/assessment";
 
 function UserDashboardLayout({ children }: { children: React.ReactNode }) {
   const style = {
@@ -121,6 +122,7 @@ function Router() {
     <Switch>
       <Route path="/" component={LandingPage} />
       <Route path="/calculator" component={CalculatorPage} />
+      <Route path="/assessment" component={AssessmentPage} />
       <Route path="/dashboard/:rest*" component={UserDashboardRouter} />
       <Route path="/dashboard" component={UserDashboardRouter} />
       <Route path="/admin/:rest*" component={AdminDashboardRouter} />

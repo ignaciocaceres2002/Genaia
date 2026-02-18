@@ -15,6 +15,7 @@ client/src/
   pages/
     landing.tsx          - Public landing page (aspirational, visual)
     calculator.tsx       - SQ Calculator
+    assessment.tsx       - Full SQ Assessment (3-part interactive flow with reveal)
     dashboard/
       home.tsx           - User dashboard home
       my-nq.tsx          - SQ score and skill radar
@@ -52,6 +53,7 @@ shared/
 ## Key Routes
 - `/` - Landing page
 - `/calculator` - SQ Calculator
+- `/assessment` - Full SQ Assessment (multi-phase interactive, ~10 min)
 - `/dashboard` - User dashboard (all sub-routes)
 - `/dashboard/sq` - My SQ score page
 - `/admin` - Admin dashboard (all sub-routes)

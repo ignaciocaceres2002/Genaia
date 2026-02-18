@@ -9,7 +9,8 @@ import {
   type Policy, type InsertPolicy,
   type Alert, type InsertAlert,
   type SqCalculation, type InsertSqCalculation,
-  users, teams, activities, courses, userProgress, aiTools, toolRequests, policies, alerts, sqCalculations,
+  type SqAssessment, type InsertSqAssessment,
+  users, teams, activities, courses, userProgress, aiTools, toolRequests, policies, alerts, sqCalculations, sqAssessments,
 } from "@shared/schema";
 import { db } from "./db";
 import { eq, desc } from "drizzle-orm";
@@ -47,6 +48,7 @@ export interface IStorage {
   createAlert(alert: InsertAlert): Promise<Alert>;
 
   createSqCalculation(calc: InsertSqCalculation): Promise<SqCalculation>;
+  createSqAssessment(assessment: InsertSqAssessment): Promise<SqAssessment>;
 }
 
 export class DatabaseStorage implements IStorage {
@@ -152,6 +154,11 @@ export class DatabaseStorage implements IStorage {
 
   async createSqCalculation(calc: InsertSqCalculation): Promise<SqCalculation> {
     const [created] = await db.insert(sqCalculations).values(calc).returning();
+    return created;
+  }
+
+  async createSqAssessment(assessment: InsertSqAssessment): Promise<SqAssessment> {
+    const [created] = await db.insert(sqAssessments).values(assessment).returning();
     return created;
   }
 }

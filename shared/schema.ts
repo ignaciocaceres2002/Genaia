@@ -114,6 +114,22 @@ export const sqCalculations = pgTable("nq_calculations", {
   createdAt: timestamp("created_at").defaultNow(),
 });
 
+export const sqAssessments = pgTable("sq_assessments", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  role: text("role").notNull(),
+  aiUsage: text("ai_usage").notNull(),
+  overallScore: integer("overall_score").notNull(),
+  level: text("level").notNull(),
+  skillScores: jsonb("skill_scores").$type<Record<string, number>>().notNull(),
+  taskBreakdown: jsonb("task_breakdown").$type<Array<{ name: string; hours: number; automationScore: number; category: string; isDrain: boolean }>>(),
+  recoverableHours: real("recoverable_hours").notNull().default(0),
+  estimatedDollarsSaved: integer("estimated_dollars_saved").notNull().default(0),
+  personalitySummary: text("personality_summary"),
+  concern: text("concern"),
+  hope: text("hope"),
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
 export const insertUserSchema = createInsertSchema(users).omit({ id: true, createdAt: true, lastActive: true });
 export const insertTeamSchema = createInsertSchema(teams).omit({ id: true });
 export const insertActivitySchema = createInsertSchema(activities).omit({ id: true, createdAt: true });
@@ -124,6 +140,7 @@ export const insertToolRequestSchema = createInsertSchema(toolRequests).omit({ i
 export const insertPolicySchema = createInsertSchema(policies).omit({ id: true, updatedAt: true });
 export const insertAlertSchema = createInsertSchema(alerts).omit({ id: true, createdAt: true });
 export const insertSqCalculationSchema = createInsertSchema(sqCalculations).omit({ id: true, createdAt: true });
+export const insertSqAssessmentSchema = createInsertSchema(sqAssessments).omit({ id: true, createdAt: true });
 
 export type User = typeof users.$inferSelect;
 export type InsertUser = z.infer<typeof insertUserSchema>;
@@ -145,6 +162,8 @@ export type Alert = typeof alerts.$inferSelect;
 export type InsertAlert = z.infer<typeof insertAlertSchema>;
 export type SqCalculation = typeof sqCalculations.$inferSelect;
 export type InsertSqCalculation = z.infer<typeof insertSqCalculationSchema>;
+export type SqAssessment = typeof sqAssessments.$inferSelect;
+export type InsertSqAssessment = z.infer<typeof insertSqAssessmentSchema>;
 
 export const SQ_LEVELS = [
   { name: "Beginner", minXp: 0, minSq: 0 },
