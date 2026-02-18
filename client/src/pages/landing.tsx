@@ -33,27 +33,27 @@ const heroRevealContainer = {
   visible: { transition: { staggerChildren: 0.12, delayChildren: 0.15 } },
 };
 
-const wordDrop = {
-  hidden: { opacity: 0, y: -50, rotateX: 45, filter: "blur(8px)" },
+const wordMaterialize = {
+  hidden: { opacity: 0, scale: 0.6, filter: "blur(12px)" },
   visible: {
-    opacity: 1, y: 0, rotateX: 0, filter: "blur(0px)",
-    transition: { duration: 0.7, ease: [0.22, 1, 0.36, 1] },
+    opacity: 1, scale: 1, filter: "blur(0px)",
+    transition: { duration: 0.9, ease: [0.22, 1, 0.36, 1] },
   },
 };
 
-const subtleFadeUp = {
-  hidden: { opacity: 0, y: 30 },
+const subtleMaterialize = {
+  hidden: { opacity: 0, filter: "blur(8px)", y: 10 },
   visible: {
-    opacity: 1, y: 0,
-    transition: { duration: 0.8, ease: [0.22, 1, 0.36, 1] },
+    opacity: 1, filter: "blur(0px)", y: 0,
+    transition: { duration: 1.0, ease: [0.22, 1, 0.36, 1] },
   },
 };
 
 const metricReveal = {
-  hidden: { opacity: 0, y: 25, scale: 0.92 },
+  hidden: { opacity: 0, scale: 0.85, filter: "blur(6px)" },
   visible: {
-    opacity: 1, y: 0, scale: 1,
-    transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] },
+    opacity: 1, scale: 1, filter: "blur(0px)",
+    transition: { duration: 0.7, ease: [0.22, 1, 0.36, 1] },
   },
 };
 
@@ -64,9 +64,8 @@ function WordByWord({ text, className, gradient }: { text: string; className?: s
       {words.map((word, i) => (
         <motion.span
           key={i}
-          variants={wordDrop}
+          variants={wordMaterialize}
           className="inline-block mr-[0.3em]"
-          style={{ perspective: "600px" }}
         >
           {gradient ? (
             <span className="bg-gradient-to-r from-[#7C3AED] via-[#A78BFA] to-[#5B21B6] bg-clip-text text-transparent">
@@ -221,7 +220,7 @@ function BigBangIntro({ onComplete }: { onComplete: () => void }) {
     let radius = 0;
     let glowAlpha = 0;
     let frame = 0;
-    const maxFrames = 75;
+    const maxFrames = 110;
 
     const animate = () => {
       frame++;
@@ -243,7 +242,7 @@ function BigBangIntro({ onComplete }: { onComplete: () => void }) {
         p.y += p.vy;
         p.vx *= 0.97;
         p.vy *= 0.97;
-        p.alpha = Math.max(0, p.alpha - 0.01);
+        p.alpha = Math.max(0, p.alpha - 0.007);
         const hex = p.color;
         const r = parseInt(hex.slice(1, 3), 16);
         const g = parseInt(hex.slice(3, 5), 16);
@@ -271,7 +270,7 @@ function BigBangIntro({ onComplete }: { onComplete: () => void }) {
     const timer = setTimeout(() => {
       setPhase("done");
       onComplete();
-    }, 600);
+    }, 900);
     return () => clearTimeout(timer);
   }, [phase, onComplete]);
 
@@ -437,25 +436,25 @@ export default function LandingPage() {
               animate={introComplete ? "visible" : "hidden"}
               variants={heroRevealContainer}
             >
-              <motion.p variants={subtleFadeUp} className="text-xs font-semibold tracking-[0.2em] uppercase text-[#7C3AED] mb-6">
+              <motion.p variants={subtleMaterialize} className="text-xs font-semibold tracking-[0.2em] uppercase text-[#7C3AED] mb-6">
                 INVERSE TRAINING
               </motion.p>
 
               <motion.h1
                 variants={heroRevealContainer}
                 className="text-5xl md:text-6xl lg:text-7xl font-bold text-foreground leading-tight mb-6 tracking-tight"
-                style={{ perspective: "800px" }}
+                style={{ perspective: "none" }}
               >
                 <WordByWord text="Humanity is just" />
                 <br />
                 <WordByWord text="getting started." gradient />
               </motion.h1>
 
-              <motion.p variants={subtleFadeUp} className="text-lg text-muted-foreground max-w-xl mx-auto mb-10 leading-relaxed">
+              <motion.p variants={subtleMaterialize} className="text-lg text-muted-foreground max-w-xl mx-auto mb-10 leading-relaxed">
                 For decades, humans trained AI with their collective knowledge. Now AI trains us back — to unlock a version of ourselves we've never seen before.
               </motion.p>
 
-              <motion.div variants={subtleFadeUp} className="flex flex-wrap items-center justify-center gap-4 mb-16">
+              <motion.div variants={subtleMaterialize} className="flex flex-wrap items-center justify-center gap-4 mb-16">
                 <Link href="/assessment">
                   <Button size="lg" className="rounded-full bg-[#7C3AED] text-white border-[#7C3AED]" data-testid="button-take-assessment-hero">
                     Take the SQ Assessment
