@@ -1,0 +1,281 @@
+VIEW 1: LANDING PAGE (Public, no auth)
+Layout
+Top nav (glass, fixed): Logo "Génesis" left, links center (Product, Manifesto, Pricing), CTA "Calculate your NQ" right as violet pill button.
+Sections in order:
+1 — Hero
+
+Eyebrow: "INVERSE TRAINING" (violet, uppercase, 12px, letter-spaced)
+Headline: "Humanity is just getting started." (64px, weight 700, Ink, centered, max-w 720px)
+Sub: "For decades, humans trained AI with their collective knowledge. Now AI trains us back — to unlock a version of ourselves we've never seen before." (18px, Stone, max-w 540px)
+CTA: "Calculate your NQ" (violet pill) + "Read the manifesto →" (violet text link)
+
+2 — The Tension
+
+Narrow centered text (max-w 600px)
+"The world is afraid." (bold, 28px, Ink)
+Body: "Every week, a new headline: AI will take your job. Entire departments replaced overnight. Companies building a future that doesn't need people. The fear is real. But the conclusion is wrong. AI isn't the end of human relevance — it's the beginning of human potential. The problem? 70% of AI initiatives fail. Not because the tools don't work — because the humans using them were never trained to think, decide, and create alongside AI."
+Punch: "We believe the opposite." (bold, 28px, standalone)
+
+3 — Inverse Training Thesis
+
+Two cards side by side, loop icon (⟲) between them
+Left card (Snow bg): "1950–2024 / Humans → trained → AI / We poured our collective genius into machines. Every book, dataset, conversation."
+Right card (Deep Violet bg, white text): "Now / AI → trains → Humans / Their intelligence unlocks our superhumanity. The return begins."
+Below: "This is Inverse Training: the process through which AI trains humans to reach a level of capability that was never possible before."
+
+4 — Superagency
+
+Headline: "From employee to superagent." (40px, centered)
+Body: "Superagency is what happens when a human learns to work with AI at the highest level. AI handles the repetitive, the mechanical, the brute-force — and the human focuses on what only humans can do: decide, create, empathize, question, lead, imagine."
+3 example cards (role, before, after):
+
+Marketing Manager: "Used to spend 15h/week writing copy. Now spends 2 — and uses the other 13 for strategy no competitor has imagined."
+Financial Analyst: "Used to spend days building models. Now builds them in minutes — and spots patterns that change the company's direction."
+HR Leader: "Used to drown in screening resumes. Now reviews AI-curated shortlists — and invests time in conversations that determine cultural fit."
+
+
+Tagline: "This is not automation. This is augmentation. The human doesn't disappear — the human becomes more."
+
+5 — What Génesis Does (3 Pillars)
+
+3 cards, each with icon, verb, title, description:
+
+DIAGNOSE / Skills Map: "Gamified assessments that reveal AI readiness through decisions, not surveys. Every person gets an NQ Score (0–100) across 6 skill domains."
+DEVELOP / Training Engine: "Close gaps through Inverse Training: 8 personalized courses, AI practice agents, role-specific playbooks. 5 minutes a day. Gamified."
+EMBED / Catalyst Network: "Find champions by algorithm, build governance, track adoption. The infrastructure that makes AI adoption permanent."
+
+
+
+6 — The 6 Skills
+
+Headline: "What NQ measures."
+6 cards (2x3 grid), each with name, icon, one-paragraph description:
+
+Data Fluency: "Can you read what the machine is telling you? Spot when it's wrong? Understand the difference between a confident prediction and a reliable one?"
+Adaptive Mindset: "When your tools change, do you freeze or adapt? When a new AI capability appears, do you wait or explore? Learning agility is the meta-skill of the AI era."
+Verification Mindset: "AI hallucinates with perfect confidence. The people who thrive aren't those who trust blindly — they're those who know exactly when and how to question."
+Co-Intelligence: "Working with AI is a new collaboration skill. When do you delegate? Co-create? Override? The best human-AI partnerships are designed, not accidental."
+Autonomous Drive: "The employees who transform first aren't waiting for permission. They're experimenting, building personal workflows, discovering tools on their own."
+Process Reimagination: "The biggest gains don't come from speeding up old processes. They come from reimagining them entirely. Can you see the workflow that should exist?"
+
+
+
+7 — Counter-narrative
+
+"While others automate humans out, we elevate humans up."
+Body: "There are companies building tools to eliminate human roles. That's one vision. It's not ours. The companies that win won't have the fewest humans — they'll have the most capable humans. Automation makes companies efficient. Superagency makes companies extraordinary."
+
+8 — NQ Calculator CTA
+
+Dark section (Deep Violet bg)
+"What's your NQ?" (white, 36px)
+Mock result preview: ring chart, score 47, "Practitioner", task breakdown preview
+CTA: "Calculate now — free, 5 minutes" (white pill)
+
+9 — For Buyers
+
+"For CHROs, VPs, and transformation leaders."
+Bullet points: NQ by team, engagement that beats LMS, champions by data, governance built in, ROI dashboard
+"A 3-month pilot. 50–100 people. If NQ scores don't improve and engagement doesn't beat every e-learning program you've tried, we'll know — and so will you."
+CTA: "Book a demo" (violet pill) / "See pricing"
+
+10 — Footer
+
+"Humanity is just getting started."
+CTAs: "Calculate your NQ" + "Book a demo"
+
+NQ Calculator Page
+
+Select role (6 cards: Marketing, Sales, People Ops, Finance, Product, Legal)
+Adjust hours per task (7 tasks per role, sliders 0–15h)
+"Reveal my NQ" → loading spinner 2s
+Result: NQ in animated SVG ring (violet gradient), level name, 3 impact cards (hrs/week, hrs/year, $/year saved), task breakdown (green=Automatable, amber=Augmentable, red=Human Essential), 6 skill bars preview, CTA "Run for your team → Book demo"
+
+
+
+VIEW 2: USER DASHBOARD (Authenticated employee)
+Layout
+
+Fixed left sidebar (240px, white bg, violet active states)
+Top bar: search, notifications bell, user avatar + name
+Main content area: Snow bg, max-w 960px centered
+
+Sidebar items:
+🏠 Home
+📊 My NQ
+🎓 Learning
+🎯 Assessments
+⚡ My Tasks
+🛠 AI Tools
+📋 Policies
+💡 Use Cases
+🏆 Champions
+🏢 My Company
+Sidebar header: user avatar, name, level badge, streak 🔥, XP count.
+HOME
+
+NQ Ring (180px, violet gradient, animated): score centered, level below
+Daily Challenge Card: white card, violet left border, title + "5 min" + XP reward + "Start" button. If done: checkmark + "+150 XP"
+Streak Row: 7 circles (Mon–Sun), filled=violet, empty=Mist, today=pulsing. "🔥 12-day streak" or "⚠️ Don't lose your streak!"
+Quick Links (2x2 cards): Learning, Assessments, AI Tools, Use Cases
+Activity Feed: last 5 actions (icon + "Completed Trust But Verify Module 3" + timestamp + "+200 XP")
+Team Leaderboard: top 3 (avatar, name, XP this week) + your rank
+
+MY NQ
+
+Big Ring + level + "Top 34% of Marketing professionals"
+Radar Chart (6 axes, violet fill, gray dashed benchmark line): Data Fluency, Adaptive Mindset, Verification, Co-Intelligence, Autonomous Drive, Process Reimagination
+6 Skill Cards (2x3): icon, name, score/100, trend arrow (↑↓→), modules X/Y done, "Continue →" or "Start"
+NQ History: line chart, weekly points, annotated milestones
+Benchmarks: horizontal bars — you vs. team vs. company vs. industry
+
+LEARNING
+
+Path View: Duolingo-style vertical tree. Each course = section with circular module nodes connected by line. Done=violet filled, current=pulsing violet border, locked=gray. Course title + progress % at each section header.
+8 Courses: Reading the Machine (Data Fluency, 6 modules), The Change Lab (Adaptive, 5), Trust But Verify (Verification, 6), The Tandem (Co-Intelligence, 6), The Self-Starter (Drive, 5), Reimagine Everything (Process, 6), Your AI Playbook (Role-specific, 4), The Superagent Path (Advanced, 4)
+Module Player: full-screen. Hook (scenario) → Concept (interactive cards) → Challenge (branching decisions, timed) → Reflection (text input) → Score (XP animation, skill update)
+Practice Agents (tab): 6 chat interfaces (DataSense, FluxBot, VerifyAI, Co-Pilot, Pioneer, Architect). Each: avatar, description, "Start session". Chat UI. Session summary with XP and skill impact.
+Playbooks (tab): role-specific guides. Cards with title, role, time, "Open". Content: context → tools → prompts → workflow → exercise.
+Recommended Next: violet badge on the course the system suggests based on gaps.
+
+ASSESSMENTS
+
+Available Assessments: 6 cards (one per skill). Each: skill icon, name, "5–8 min", last score (if taken), "Take Assessment" or "Retake (available in X days)".
+Assessment Player: full-screen immersive. Dark bg. Narrative text appears cinematically. Choices as cards. Progress bar top. 8–12 decisions per assessment. Timer on some decisions.
+Results: per-skill score, NQ delta, strength/gap callout, recommended actions (links to courses/agents), share option.
+
+MY TASKS
+
+Task List: table — task name, hrs/week (editable), category tag (green/amber/red), AI tool suggestion, actual time saved (self-reported)
+Automation Map: horizontal stacked bar (red→amber→green), totals below
+Impact Summary: "You spend 38h/week. 14.2h (37%) recoverable. That's 682 hrs/year ≈ $37K."
+Time Saved Log: weekly prompt "Did you save time with AI?" + running total
+
+AI TOOLS
+
+My Tools: grid of cards (icon, name, category, usage count, "Launch" button)
+Request New Tool: form — tool name, what task, estimated savings, priority → goes to admin queue → status tracking (Submitted/Reviewing/Approved/Denied)
+Tool Directory: all org tools, status badges, "Request Access" for unavailable ones
+
+POLICIES
+
+Policy List: cards by category (General, Privacy, Client-Facing, Ethics, Dept-Specific). Each: title, updated date, version, summary expandable to full text.
+Policy Chat: chat interface, text input "Ask about any policy..." Responses cite specific policy sections with links. If not covered: "Submit question to admin?"
+
+USE CASES
+
+For You: 3–5 recommended cards (title, time saved, difficulty badge, tools needed, matching task)
+Library: searchable grid, filters (dept, difficulty, tools, skill). Each: title, description, submitter, upvotes, "Try this"
+Submit: form — title, description, steps, tools, estimated savings → admin review. Earns 250 XP + Innovator badge.
+
+CHAMPIONS
+
+Champion Board: list (avatar, name, dept, NQ, specialty skills, influence radius). Filter by dept/skill.
+Connect: "Find a Champion" → matched by your gap area → message or schedule call
+Feed: activity stream from champions (tips, use cases, recommendations). Follow/bookmark.
+Become One: invitation card appears when eligible (NQ>65, engagement>80)
+
+MY COMPANY
+
+Agentic Score (0–100): large gauge, level (Traditional/AI-Curious/AI-Enabled/Agentic Enterprise), trend
+Teams: cards (name, size, avg NQ, completion %, champion). Click → drill into members.
+Timeline: horizontal milestones + projections
+Alerts: "5 team members inactive 14+ days", "Sales NQ dropped 3pts", "Marketing hit Catalyst! 🎉"
+
+GAMIFICATION (present across all views)
+
+XP: module=100–200, challenge=150, assessment=300, practice=100, use case=250, speed bonus=+50, perfect week=500
+8 Levels: Beginner(0)→Learner(500)→Explorer(1500)→Builder(3500)→Achiever(7000)→Expert(12000)→Master(20000)→Superagent(35000)
+Streaks: 7d=bronze badge, 30d=silver, 100d=gold, 365d=diamond. 1 freeze/week. At-risk push notification.
+Leaderboards: team weekly, company all-time, per-skill
+Badges: First Assessment, NQ 50+, NQ 75+, streak milestones, Perfect Score, Speed Demon, Innovator, Champion, Course Complete ×8, Superagent
+Level-up animation: full-screen confetti + badge reveal + sound
+
+
+
+VIEW 3: ADMIN DASHBOARD (HR/Leadership)
+Layout
+
+Same sidebar structure but different items, violet accent
+Content: wider (max-w 1100px), data-dense, more tables/charts
+
+Sidebar:
+📊 Overview
+👥 Teams
+🎓 Learning
+🎯 Assessments
+🛠 Tools
+📋 Policies
+🏆 Champions
+🏢 Agentic Score
+⚠️ Alerts
+⚙️ Settings
+OVERVIEW
+
+4 KPI Cards: Org Avg NQ (+ trend), Active Users (DAU/MAU), Training Completion %, Hours Recovered This Quarter
+NQ Distribution: histogram, 4 buckets color-coded by level
+Org Heat Map: treemap of teams, sized by headcount, colored by avg NQ (red→amber→violet)
+Engagement Timeline: line chart, 30/90 day toggle, event annotations
+Quick Actions: "Launch assessment cycle", "Nudge inactive users", "Review tool requests (3 pending)", "Export report"
+
+TEAMS
+
+Table: team name, headcount, avg NQ, NQ trend arrow, completion %, top champion, engagement score. Sortable, searchable.
+Team Detail (click): header with team avg NQ ring + level distribution pie. Member table (name, NQ, level, last active, streak, strongest/weakest skill). Team radar chart. Comparison to company + industry. Team-specific alerts.
+
+LEARNING
+
+Completion by Course: table — course name, assigned users, completed %, avg score, avg time
+Completion by Team: which teams are ahead/behind
+Drop-off Analysis: where within courses users stop
+Engagement: DAU/MAU, avg streak, practice sessions/user/month, challenge completion rate
+Content Performance: per-module analytics (time, accuracy, satisfaction rating)
+
+ASSESSMENTS
+
+Results Overview: per-assessment avg scores, distribution charts, trend over cycles
+Question Performance: which scenarios are too easy/hard, discrimination analysis
+Team Comparison: radar charts overlaid per team
+
+TOOLS
+
+Inventory Table: name, category, vendor, status (Approved/Review/Blocked), users, usage/month, cost. Editable status.
+Approval Queue: pending requests. Each: user, tool, reason, task, priority. Actions: Approve/Deny/More Info.
+Usage Analytics: per-tool charts, underutilized tools alert, cost-per-user
+Shadow AI Report: detected unapproved tools, frequency, users involved
+
+POLICIES
+
+Editor: WYSIWYG, template library (6 templates), version control, approval workflow (Draft→Review→Published)
+Analytics: view counts, chat question log, gap report (unanswered questions), acknowledgment status per policy
+Distribution: assign to teams/roles, require acknowledgment, track compliance
+
+CHAMPIONS
+
+Finder: ranked candidate list (composite: NQ 40% + Engagement 30% + Influence 30%). One-click invite.
+Active Dashboard: champion list, impact metrics (people helped, activities, tasks completed). Champion leaderboard.
+Program Tools: onboarding sequence editor, toolkit management, task board, communications hub
+
+AGENTIC SCORE
+
+Big Number: 0–100 gauge, level, trend, projection
+Composition Radar: avg NQ (25%), training completion (20%), tool adoption (20%), champion coverage (10%), policy maturity (10%), use case density (10%), engagement (5%)
+Each Component: expandable panel with detail, score, and "what would improve this" recommendations
+Benchmarks: company vs. industry, vs. size cohort, improvement velocity comparison
+
+ALERTS
+
+Alert Feed: filterable by type, severity, team
+Types: Inactivity (14+ days), NQ Decline (>5pts), Shadow AI, Streak Loss, Policy Violation, Low Assessment
+Each: severity badge (info/warning/critical), description, affected users/teams, recommended action
+Actions: Dismiss / Snooze / Take Action (opens relevant section)
+
+SETTINGS
+
+Organization profile, branding (logo upload)
+SSO/SAML configuration
+User management (invite, roles, deactivate)
+Billing
+Notification preferences
+Data export / API keys
+
