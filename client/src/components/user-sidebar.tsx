@@ -45,7 +45,7 @@ export function UserSidebar({ user }: UserSidebarProps) {
     <Sidebar>
       <SidebarHeader className="p-4">
         <Link href="/">
-          <img src={logoImg} alt="Génesis" className="h-7 w-auto mb-3" data-testid="sidebar-logo" />
+          <img src={logoImg} alt="Génesis" className="h-12 w-auto mb-3" data-testid="sidebar-logo" />
         </Link>
         <div className="flex items-center gap-3">
           <Avatar className="w-10 h-10">

@@ -54,7 +54,7 @@ export default function LandingPage() {
       <nav className="fixed top-0 left-0 right-0 z-50 backdrop-blur-xl bg-background/70 border-b border-border/50">
         <div className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between gap-4">
           <Link href="/">
-            <img src={logoImg} alt="Génesis" className="h-8 w-auto" data-testid="link-logo" />
+            <img src={logoImg} alt="Génesis" className="h-14 w-auto" data-testid="link-logo" />
           </Link>
           <div className="hidden md:flex items-center gap-8">
             <a href="#product" className="text-sm text-muted-foreground hover:text-foreground transition-colors" data-testid="link-product">Product</a>
@@ -298,7 +298,7 @@ export default function LandingPage() {
               </Link>
               <Button variant="outline" className="rounded-full" data-testid="button-book-demo-footer">Book a demo</Button>
             </div>
-            <img src={logoImg} alt="Génesis" className="h-6 w-auto opacity-60 mx-auto" />
+            <img src={logoImg} alt="Génesis" className="h-10 w-auto opacity-60 mx-auto" />
           </div>
         </footer>
       </main>

@@ -59,7 +59,7 @@ export default function CalculatorPage() {
       <nav className="fixed top-0 left-0 right-0 z-50 backdrop-blur-xl bg-background/70 border-b border-border/50">
         <div className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between gap-4">
           <Link href="/">
-            <img src={logoImg} alt="Génesis" className="h-8 w-auto" data-testid="link-logo-calc" />
+            <img src={logoImg} alt="Génesis" className="h-14 w-auto" data-testid="link-logo-calc" />
           </Link>
           <Link href="/">
             <Button variant="ghost" size="sm" data-testid="button-back-home">
