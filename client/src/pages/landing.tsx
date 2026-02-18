@@ -82,7 +82,7 @@ export default function LandingPage() {
 
   return (
     <div className="min-h-screen bg-background overflow-x-hidden">
-      <SEO title="Génesis - From Employee to Human Superagent" description="Boost organizational superagency with Génesis. Measure, develop, and embed AI capabilities across your workforce with the Superagency Quotient." ogTitle="Génesis - Superagency Platform" />
+      <SEO title="Génesis - AI Adoption Platform | Inverse Training" description="Transform your organization with Génesis. Measure AI readiness with our SQ Calculator, deliver gamified learning, and drive enterprise-wide AI adoption." ogTitle="Génesis - The AI Adoption Platform" />
 
       <nav className="fixed top-0 left-0 right-0 z-50 backdrop-blur-xl bg-background/70 border-b border-border/50">
         <div className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between gap-4">
@@ -91,7 +91,7 @@ export default function LandingPage() {
           </Link>
           <div className="hidden md:flex items-center gap-8">
             <a href="#product" className="text-sm text-muted-foreground hover:text-foreground transition-colors" data-testid="link-product">Product</a>
-            <a href="#superagency" className="text-sm text-muted-foreground hover:text-foreground transition-colors" data-testid="link-superagency">Superagency</a>
+            <a href="#manifesto" className="text-sm text-muted-foreground hover:text-foreground transition-colors" data-testid="link-manifesto">Manifesto</a>
             <a href="#pricing" className="text-sm text-muted-foreground hover:text-foreground transition-colors" data-testid="link-pricing">Pricing</a>
           </div>
           <div className="flex items-center gap-2">
@@ -118,35 +118,33 @@ export default function LandingPage() {
             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full bg-[#5B21B6]/3 blur-[150px]" />
           </div>
 
-          <motion.div className="max-w-5xl mx-auto text-center relative z-10" style={{ opacity: heroOpacity, scale: heroScale }}>
+          <motion.div className="max-w-3xl mx-auto text-center relative z-10" style={{ opacity: heroOpacity, scale: heroScale }}>
             <motion.div initial="hidden" animate="visible" variants={staggerContainer}>
-              <motion.div variants={fadeUp} className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-[#7C3AED]/20 bg-[#7C3AED]/5 mb-8">
-                <Sparkles className="w-3.5 h-3.5 text-[#7C3AED]" />
-                <span className="text-xs font-semibold tracking-wide text-[#7C3AED] uppercase">Inverse Training Platform</span>
-              </motion.div>
+              <motion.p variants={fadeUp} className="text-xs font-semibold tracking-[0.2em] uppercase text-[#7C3AED] mb-6">
+                INVERSE TRAINING
+              </motion.p>
 
-              <motion.h1 variants={fadeUp} className="text-5xl md:text-7xl lg:text-8xl font-bold text-foreground leading-[0.95] mb-8 tracking-tight">
-                From employee
+              <motion.h1 variants={fadeUp} className="text-5xl md:text-6xl lg:text-7xl font-bold text-foreground leading-tight mb-6 tracking-tight">
+                Humanity is just
                 <br />
                 <span className="bg-gradient-to-r from-[#7C3AED] via-[#A78BFA] to-[#5B21B6] bg-clip-text text-transparent">
-                  to human superagent.
+                  getting started.
                 </span>
               </motion.h1>
 
-              <motion.p variants={fadeUp} className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto mb-12 leading-relaxed">
-                Boost organizational superagency. The platform that transforms
-                how your people think, create, and perform alongside AI.
+              <motion.p variants={fadeUp} className="text-lg text-muted-foreground max-w-xl mx-auto mb-10 leading-relaxed">
+                For decades, humans trained AI with their collective knowledge. Now AI trains us back — to unlock a version of ourselves we've never seen before.
               </motion.p>
 
               <motion.div variants={fadeUp} className="flex flex-wrap items-center justify-center gap-4 mb-16">
                 <Link href="/calculator">
                   <Button size="lg" className="rounded-full bg-[#7C3AED] text-white border-[#7C3AED]" data-testid="button-calculate-sq-hero">
-                    Discover your SQ <ArrowRight className="w-4 h-4 ml-2" />
+                    Calculate your SQ
                   </Button>
                 </Link>
-                <Button variant="outline" size="lg" className="rounded-full" data-testid="button-book-demo-hero">
-                  Book a demo
-                </Button>
+                <a href="#manifesto" className="text-[#7C3AED] text-sm font-medium flex items-center gap-1 hover:gap-2 transition-all" data-testid="link-manifesto-hero">
+                  Read the manifesto <ArrowRight className="w-4 h-4" />
+                </a>
               </motion.div>
             </motion.div>
 
@@ -167,11 +165,25 @@ export default function LandingPage() {
           </motion.div>
         </section>
 
-        <section className="py-24 px-6 relative">
+        <section id="manifesto" className="py-24 px-6">
+          <motion.div className="max-w-2xl mx-auto text-center" initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-100px" }} variants={staggerContainer}>
+            <motion.h2 variants={fadeUp} className="text-3xl md:text-4xl font-bold text-foreground mb-6 tracking-tight">
+              The world is afraid.
+            </motion.h2>
+            <motion.p variants={fadeUp} className="text-muted-foreground leading-relaxed mb-8">
+              Every week, a new headline: AI will take your job. Entire departments replaced overnight. Companies building a future that doesn't need people. The fear is real. But the conclusion is wrong. AI isn't the end of human relevance — it's the beginning of human potential. The problem? 70% of AI initiatives fail. Not because the tools don't work — because the humans using them were never trained to think, decide, and create alongside AI.
+            </motion.p>
+            <motion.h3 variants={fadeUp} className="text-2xl font-bold text-foreground">
+              We believe the opposite.
+            </motion.h3>
+          </motion.div>
+        </section>
+
+        <section className="py-24 px-6 bg-muted/30 relative">
           <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[#7C3AED]/[0.02] to-transparent pointer-events-none" />
           <motion.div className="max-w-5xl mx-auto" initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-100px" }} variants={staggerContainer}>
             <motion.div variants={fadeUp} className="text-center mb-16">
-              <p className="text-xs font-semibold tracking-[0.2em] uppercase text-[#7C3AED] mb-4">THE TRANSFORMATION</p>
+              <p className="text-xs font-semibold tracking-[0.2em] uppercase text-[#7C3AED] mb-4">FROM EMPLOYEE TO SUPERAGENT</p>
               <h2 className="text-4xl md:text-5xl font-bold tracking-tight">
                 AI doesn't replace humans.
                 <br />
