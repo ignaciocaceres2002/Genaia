@@ -28,6 +28,59 @@ const staggerFast = {
   visible: { transition: { staggerChildren: 0.06 } },
 };
 
+const heroRevealContainer = {
+  hidden: {},
+  visible: { transition: { staggerChildren: 0.12, delayChildren: 0.15 } },
+};
+
+const wordDrop = {
+  hidden: { opacity: 0, y: -50, rotateX: 45, filter: "blur(8px)" },
+  visible: {
+    opacity: 1, y: 0, rotateX: 0, filter: "blur(0px)",
+    transition: { duration: 0.7, ease: [0.22, 1, 0.36, 1] },
+  },
+};
+
+const subtleFadeUp = {
+  hidden: { opacity: 0, y: 30 },
+  visible: {
+    opacity: 1, y: 0,
+    transition: { duration: 0.8, ease: [0.22, 1, 0.36, 1] },
+  },
+};
+
+const metricReveal = {
+  hidden: { opacity: 0, y: 25, scale: 0.92 },
+  visible: {
+    opacity: 1, y: 0, scale: 1,
+    transition: { duration: 0.6, ease: [0.22, 1, 0.36, 1] },
+  },
+};
+
+function WordByWord({ text, className, gradient }: { text: string; className?: string; gradient?: boolean }) {
+  const words = text.split(" ");
+  return (
+    <span className={className}>
+      {words.map((word, i) => (
+        <motion.span
+          key={i}
+          variants={wordDrop}
+          className="inline-block mr-[0.3em]"
+          style={{ perspective: "600px" }}
+        >
+          {gradient ? (
+            <span className="bg-gradient-to-r from-[#7C3AED] via-[#A78BFA] to-[#5B21B6] bg-clip-text text-transparent">
+              {word}
+            </span>
+          ) : (
+            word
+          )}
+        </motion.span>
+      ))}
+    </span>
+  );
+}
+
 const metrics = [
   { value: "73%", label: "Avg SQ improvement", sublabel: "in 90 days" },
   { value: "12h", label: "Hours recovered", sublabel: "per person / week" },
@@ -93,15 +146,18 @@ function BigBangIntro({ onComplete }: { onComplete: () => void }) {
   useEffect(() => {
     if (phase !== "typing") return;
     let i = 0;
-    const interval = setInterval(() => {
-      i++;
-      setDisplayedText(fullText.slice(0, i));
-      if (i >= fullText.length) {
-        clearInterval(interval);
-        setTimeout(() => setPhase("bang"), 800);
-      }
-    }, 65);
-    return () => clearInterval(interval);
+    const typeDelay = setTimeout(() => {
+      const interval = setInterval(() => {
+        i++;
+        setDisplayedText(fullText.slice(0, i));
+        if (i >= fullText.length) {
+          clearInterval(interval);
+          setTimeout(() => setPhase("bang"), 1400);
+        }
+      }, 95);
+      return () => clearInterval(interval);
+    }, 600);
+    return () => clearTimeout(typeDelay);
   }, [phase]);
 
   useEffect(() => {
@@ -117,15 +173,15 @@ function BigBangIntro({ onComplete }: { onComplete: () => void }) {
     const cy = canvas.height / 2;
 
     const particles: { x: number; y: number; vx: number; vy: number; r: number; alpha: number; color: string }[] = [];
-    const colors = ["#FFFFFF", "#E8E0FF", "#C4B5FD", "#A78BFA", "#7C3AED", "#FBBF24"];
-    for (let i = 0; i < 120; i++) {
+    const colors = ["#FFFFFF", "#FFFFFF", "#E8E0FF", "#C4B5FD", "#A78BFA", "#7C3AED", "#FBBF24"];
+    for (let i = 0; i < 200; i++) {
       const angle = Math.random() * Math.PI * 2;
-      const speed = 2 + Math.random() * 12;
+      const speed = 1.5 + Math.random() * 14;
       particles.push({
         x: cx, y: cy,
         vx: Math.cos(angle) * speed,
         vy: Math.sin(angle) * speed,
-        r: 1 + Math.random() * 3,
+        r: 0.5 + Math.random() * 4,
         alpha: 1,
         color: colors[Math.floor(Math.random() * colors.length)],
       });
@@ -134,7 +190,7 @@ function BigBangIntro({ onComplete }: { onComplete: () => void }) {
     let radius = 0;
     let glowAlpha = 0;
     let frame = 0;
-    const maxFrames = 60;
+    const maxFrames = 75;
 
     const animate = () => {
       frame++;
@@ -293,24 +349,30 @@ export default function LandingPage() {
           </div>
 
           <motion.div className="max-w-3xl mx-auto text-center relative z-10" style={{ opacity: heroOpacity, scale: heroScale }}>
-            <motion.div initial="hidden" animate="visible" variants={staggerContainer}>
-              <motion.p variants={fadeUp} className="text-xs font-semibold tracking-[0.2em] uppercase text-[#7C3AED] mb-6">
+            <motion.div
+              initial="hidden"
+              animate={introComplete ? "visible" : "hidden"}
+              variants={heroRevealContainer}
+            >
+              <motion.p variants={subtleFadeUp} className="text-xs font-semibold tracking-[0.2em] uppercase text-[#7C3AED] mb-6">
                 INVERSE TRAINING
               </motion.p>
 
-              <motion.h1 variants={fadeUp} className="text-5xl md:text-6xl lg:text-7xl font-bold text-foreground leading-tight mb-6 tracking-tight">
-                Humanity is just
+              <motion.h1
+                variants={heroRevealContainer}
+                className="text-5xl md:text-6xl lg:text-7xl font-bold text-foreground leading-tight mb-6 tracking-tight"
+                style={{ perspective: "800px" }}
+              >
+                <WordByWord text="Humanity is just" />
                 <br />
-                <span className="bg-gradient-to-r from-[#7C3AED] via-[#A78BFA] to-[#5B21B6] bg-clip-text text-transparent">
-                  getting started.
-                </span>
+                <WordByWord text="getting started." gradient />
               </motion.h1>
 
-              <motion.p variants={fadeUp} className="text-lg text-muted-foreground max-w-xl mx-auto mb-10 leading-relaxed">
+              <motion.p variants={subtleFadeUp} className="text-lg text-muted-foreground max-w-xl mx-auto mb-10 leading-relaxed">
                 For decades, humans trained AI with their collective knowledge. Now AI trains us back — to unlock a version of ourselves we've never seen before.
               </motion.p>
 
-              <motion.div variants={fadeUp} className="flex flex-wrap items-center justify-center gap-4 mb-16">
+              <motion.div variants={subtleFadeUp} className="flex flex-wrap items-center justify-center gap-4 mb-16">
                 <Link href="/assessment">
                   <Button size="lg" className="rounded-full bg-[#7C3AED] text-white border-[#7C3AED]" data-testid="button-take-assessment-hero">
                     Take the SQ Assessment
@@ -329,12 +391,12 @@ export default function LandingPage() {
 
             <motion.div
               initial="hidden"
-              animate="visible"
-              variants={staggerFast}
+              animate={introComplete ? "visible" : "hidden"}
+              variants={{ hidden: {}, visible: { transition: { staggerChildren: 0.08, delayChildren: 1.0 } } }}
               className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-3xl mx-auto"
             >
               {metrics.map((m) => (
-                <motion.div key={m.label} variants={fadeScale} className="text-center p-4">
+                <motion.div key={m.label} variants={metricReveal} className="text-center p-4">
                   <p className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-[#7C3AED] to-[#A78BFA] bg-clip-text text-transparent">{m.value}</p>
                   <p className="text-xs text-muted-foreground mt-1 font-medium">{m.label}</p>
                   <p className="text-[10px] text-muted-foreground/60">{m.sublabel}</p>
