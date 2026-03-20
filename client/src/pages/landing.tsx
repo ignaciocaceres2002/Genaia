@@ -871,7 +871,7 @@ export default function LandingPage() {
                 <h1 className="text-4xl md:text-5xl lg:text-[3.4rem] font-bold text-foreground leading-[1.1] mb-2 tracking-tight">
                   One platform to
                 </h1>
-                <div className="h-[2.6em] md:h-[1.3em] relative overflow-hidden mb-6" style={{ fontSize: "clamp(2.25rem, 5vw, 3.4rem)" }}>
+                <div className="h-[2.6em] relative overflow-hidden mb-6" style={{ fontSize: "clamp(1.85rem, 3.5vw, 3rem)" }}>
                   <AnimatePresence mode="wait">
                     <motion.span
                       key={heroRotations[heroIdx].key}
