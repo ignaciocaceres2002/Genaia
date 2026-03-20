@@ -396,6 +396,378 @@ function BigBangIntro({ onComplete }: { onComplete: () => void }) {
   );
 }
 
+const heroRotations = [
+  { text: "measure who's ready.", key: "measure" },
+  { text: "find who can lead the change.", key: "champions" },
+  { text: "train what's missing.", key: "train" },
+  { text: "prove it's working.", key: "prove" },
+  { text: "build AI into every role.", key: "cases" },
+  { text: "hire AI-ready talent.", key: "recruit" },
+];
+
+function MockupFrame({ children }: { children: React.ReactNode }) {
+  return (
+    <div className="relative" style={{ perspective: "1200px" }}>
+      <div
+        className="rounded-xl border border-border/60 bg-background shadow-2xl shadow-violet-500/10 overflow-hidden"
+        style={{ transform: "rotateY(-3deg) rotateX(2deg)" }}
+      >
+        <div className="flex items-center gap-1.5 px-4 py-2.5 bg-muted/50 border-b border-border/40">
+          <div className="w-2.5 h-2.5 rounded-full bg-red-400/60" />
+          <div className="w-2.5 h-2.5 rounded-full bg-yellow-400/60" />
+          <div className="w-2.5 h-2.5 rounded-full bg-green-400/60" />
+          <div className="flex-1 mx-8">
+            <div className="h-5 rounded-full bg-muted/80 max-w-[180px] mx-auto flex items-center justify-center">
+              <span className="text-[9px] text-muted-foreground/50 font-medium">app.genaia.ai</span>
+            </div>
+          </div>
+        </div>
+        <div className="p-4 min-h-[320px] md:min-h-[380px]">{children}</div>
+      </div>
+    </div>
+  );
+}
+
+function MockupSQResults() {
+  const skills = [
+    { name: "Data Fluency", score: 78 },
+    { name: "Adaptive Mindset", score: 65 },
+    { name: "Verification", score: 82 },
+    { name: "Orchestration", score: 58 },
+    { name: "Experimentation", score: 72 },
+    { name: "Systems Redesign", score: 60 },
+  ];
+  const angles = skills.map((_, i) => (Math.PI * 2 * i) / skills.length - Math.PI / 2);
+  const r = 65;
+  const cx = 80;
+  const cy = 80;
+  const points = skills.map((s, i) => {
+    const pct = s.score / 100;
+    return `${cx + Math.cos(angles[i]) * r * pct},${cy + Math.sin(angles[i]) * r * pct}`;
+  }).join(" ");
+  const outerPoints = angles.map((a) => `${cx + Math.cos(a) * r},${cy + Math.sin(a) * r}`).join(" ");
+
+  return (
+    <div className="space-y-3">
+      <div className="flex items-center justify-between">
+        <div>
+          <p className="text-[10px] font-semibold tracking-wider text-[#7C3AED] uppercase">SQ Assessment Results</p>
+          <p className="text-[9px] text-muted-foreground">Personal AI Readiness Profile</p>
+        </div>
+        <div className="px-2 py-0.5 rounded-full bg-[#7C3AED]/10 text-[9px] font-semibold text-[#7C3AED]">Catalyst</div>
+      </div>
+      <div className="flex items-center gap-6">
+        <div className="relative flex-shrink-0">
+          <svg width="160" height="160" viewBox="0 0 160 160">
+            <polygon points={outerPoints} fill="none" stroke="currentColor" className="text-border" strokeWidth="0.5" />
+            {[0.25, 0.5, 0.75].map((s) => (
+              <polygon key={s} points={angles.map((a) => `${cx + Math.cos(a) * r * s},${cy + Math.sin(a) * r * s}`).join(" ")} fill="none" stroke="currentColor" className="text-border/50" strokeWidth="0.3" />
+            ))}
+            {angles.map((a, i) => (
+              <line key={i} x1={cx} y1={cy} x2={cx + Math.cos(a) * r} y2={cy + Math.sin(a) * r} stroke="currentColor" className="text-border/30" strokeWidth="0.3" />
+            ))}
+            <polygon points={points} fill="rgba(124, 58, 237, 0.15)" stroke="#7C3AED" strokeWidth="1.5" />
+            {skills.map((s, i) => (
+              <circle key={i} cx={cx + Math.cos(angles[i]) * r * (s.score / 100)} cy={cy + Math.sin(angles[i]) * r * (s.score / 100)} r="3" fill="#7C3AED" />
+            ))}
+          </svg>
+          <div className="absolute inset-0 flex flex-col items-center justify-center">
+            <span className="text-3xl font-bold text-foreground">67</span>
+            <span className="text-[8px] text-muted-foreground font-medium">/ 100</span>
+          </div>
+        </div>
+        <div className="space-y-2 flex-1 min-w-0">
+          {skills.map((s) => (
+            <div key={s.name} className="flex items-center gap-2">
+              <span className="text-[9px] text-muted-foreground w-[80px] truncate">{s.name}</span>
+              <div className="flex-1 h-1.5 bg-muted rounded-full overflow-hidden">
+                <div className="h-full bg-gradient-to-r from-[#7C3AED] to-[#A78BFA] rounded-full" style={{ width: `${s.score}%` }} />
+              </div>
+              <span className="text-[9px] font-semibold text-foreground w-[22px] text-right">{s.score}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function MockupChampions() {
+  const candidates = [
+    { name: "Elena Vasquez", role: "Product Lead", sq: 84, engagement: 96, influence: 88, rank: 1 },
+    { name: "James Chen", role: "Engineering Mgr", sq: 79, engagement: 91, influence: 82, rank: 2 },
+    { name: "Sofia Andersson", role: "Data Analyst", sq: 76, engagement: 88, influence: 74, rank: 3 },
+    { name: "Marcus Williams", role: "Operations Dir", sq: 71, engagement: 85, influence: 79, rank: 4 },
+  ];
+  const colors = ["bg-[#7C3AED]", "bg-violet-400", "bg-violet-300", "bg-violet-200"];
+  const initials = (n: string) => n.split(" ").map((w) => w[0]).join("");
+
+  return (
+    <div className="space-y-3">
+      <div>
+        <p className="text-[10px] font-semibold tracking-wider text-[#7C3AED] uppercase">Champion Candidates</p>
+        <p className="text-[9px] text-muted-foreground">Ranked by algorithm: SQ 40% + Engagement 30% + Influence 30%</p>
+      </div>
+      <div className="space-y-2">
+        {candidates.map((c) => (
+          <div key={c.name} className="flex items-center gap-3 p-2.5 rounded-lg bg-muted/30 border border-border/30">
+            <div className={`w-8 h-8 rounded-full ${colors[c.rank - 1]} flex items-center justify-center text-white text-[10px] font-bold flex-shrink-0`}>
+              {initials(c.name)}
+            </div>
+            <div className="flex-1 min-w-0">
+              <div className="flex items-center gap-2">
+                <span className="text-[11px] font-semibold text-foreground truncate">{c.name}</span>
+                <span className="text-[8px] px-1.5 py-0.5 rounded-full bg-[#7C3AED]/10 text-[#7C3AED] font-semibold">#{c.rank}</span>
+              </div>
+              <p className="text-[9px] text-muted-foreground">{c.role}</p>
+            </div>
+            <div className="flex items-center gap-3 flex-shrink-0">
+              <div className="text-center">
+                <p className="text-[9px] font-bold text-foreground">{c.sq}</p>
+                <p className="text-[7px] text-muted-foreground">SQ</p>
+              </div>
+              <div className="text-center">
+                <p className="text-[9px] font-bold text-foreground">{c.engagement}%</p>
+                <p className="text-[7px] text-muted-foreground">Eng</p>
+              </div>
+              <div className="text-center">
+                <p className="text-[9px] font-bold text-foreground">{c.influence}</p>
+                <p className="text-[7px] text-muted-foreground">Inf</p>
+              </div>
+            </div>
+            {c.rank === 1 && (
+              <span className="px-2.5 py-1 rounded-full bg-[#7C3AED] text-white text-[9px] font-semibold flex-shrink-0" aria-hidden="true">Invite</span>
+            )}
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function MockupLearning() {
+  const modules = [
+    { title: "What is Verification?", status: "done", xp: 25 },
+    { title: "Spot the Hallucination", status: "done", xp: 30 },
+    { title: "Source Cross-Check", status: "done", xp: 35 },
+    { title: "Verify or Trust?", status: "current", xp: 40 },
+    { title: "Chain of Evidence", status: "locked", xp: 45 },
+    { title: "Final Challenge", status: "locked", xp: 50 },
+  ];
+
+  return (
+    <div className="space-y-3">
+      <div className="flex items-center justify-between">
+        <div>
+          <p className="text-[11px] font-bold text-foreground">Trust But Verify</p>
+          <p className="text-[9px] text-muted-foreground">Verification Instinct · 6 modules</p>
+        </div>
+        <div className="flex items-center gap-3">
+          <div className="flex items-center gap-1 px-2 py-0.5 rounded-full bg-orange-500/10">
+            <Flame className="w-3 h-3 text-orange-500" />
+            <span className="text-[9px] font-bold text-orange-600">12-day streak</span>
+          </div>
+          <div className="px-2 py-0.5 rounded-full bg-[#7C3AED]/10">
+            <span className="text-[9px] font-bold text-[#7C3AED]">+150 XP</span>
+          </div>
+        </div>
+      </div>
+      <div className="space-y-1">
+        {modules.map((m, i) => (
+          <div key={m.title} className={`flex items-center gap-3 p-2.5 rounded-lg border ${m.status === "current" ? "border-[#7C3AED]/40 bg-[#7C3AED]/5 shadow-sm shadow-violet-500/10" : "border-border/30 bg-muted/20"}`}>
+            <div className="relative flex-shrink-0">
+              {m.status === "done" ? (
+                <div className="w-7 h-7 rounded-full bg-green-500 flex items-center justify-center">
+                  <Check className="w-4 h-4 text-white" />
+                </div>
+              ) : m.status === "current" ? (
+                <div className="w-7 h-7 rounded-full bg-[#7C3AED] flex items-center justify-center ring-2 ring-[#7C3AED]/30 ring-offset-1">
+                  <Zap className="w-3.5 h-3.5 text-white" />
+                </div>
+              ) : (
+                <div className="w-7 h-7 rounded-full bg-muted flex items-center justify-center">
+                  <Lock className="w-3 h-3 text-muted-foreground/50" />
+                </div>
+              )}
+            </div>
+            <div className="flex-1 min-w-0">
+              <p className={`text-[10px] font-medium ${m.status === "locked" ? "text-muted-foreground/50" : "text-foreground"}`}>{m.title}</p>
+            </div>
+            <span className={`text-[8px] font-semibold ${m.status === "locked" ? "text-muted-foreground/30" : "text-muted-foreground"}`}>{m.xp} XP</span>
+          </div>
+        ))}
+      </div>
+      <div className="p-3 rounded-lg border border-dashed border-[#7C3AED]/30 bg-[#7C3AED]/[0.03]">
+        <div className="flex items-center gap-2">
+          <Star className="w-3.5 h-3.5 text-[#7C3AED]" />
+          <div>
+            <p className="text-[10px] font-semibold text-foreground">Daily Challenge</p>
+            <p className="text-[9px] text-muted-foreground">Complete "Verify or Trust?" scenario — 5 min</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function MockupDashboard() {
+  const kpis = [
+    { label: "Org Avg SQ", value: "54", badge: "+3", up: true },
+    { label: "Active Users", value: "91%", badge: null, up: true },
+    { label: "Training Done", value: "68%", badge: "+12%", up: true },
+    { label: "Hours Recovered", value: "1,420", badge: "this quarter", up: false },
+  ];
+
+  return (
+    <div className="space-y-3">
+      <p className="text-[10px] font-semibold tracking-wider text-[#7C3AED] uppercase">Organization Overview</p>
+      <div className="grid grid-cols-4 gap-2">
+        {kpis.map((k) => (
+          <div key={k.label} className="p-2.5 rounded-lg bg-muted/30 border border-border/30">
+            <p className="text-[8px] text-muted-foreground mb-1">{k.label}</p>
+            <div className="flex items-end gap-1">
+              <span className="text-lg font-bold text-foreground leading-none">{k.value}</span>
+              {k.badge && (
+                <span className={`text-[8px] font-semibold ${k.up ? "text-green-600" : "text-muted-foreground"}`}>
+                  {k.up && <TrendingUp className="w-2.5 h-2.5 inline mr-0.5" />}
+                  {k.badge}
+                </span>
+              )}
+            </div>
+          </div>
+        ))}
+      </div>
+      <div className="p-3 rounded-lg bg-muted/20 border border-border/30">
+        <p className="text-[9px] font-semibold text-foreground mb-2">Engagement — Last 30 Days</p>
+        <svg viewBox="0 0 280 80" className="w-full h-auto">
+          <defs>
+            <linearGradient id="chartGrad" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stopColor="#7C3AED" stopOpacity="0.2" />
+              <stop offset="100%" stopColor="#7C3AED" stopOpacity="0" />
+            </linearGradient>
+          </defs>
+          <path d="M0,65 Q20,60 40,55 T80,48 T120,42 T160,38 T200,30 T240,25 T280,18" fill="none" stroke="#7C3AED" strokeWidth="2" />
+          <path d="M0,65 Q20,60 40,55 T80,48 T120,42 T160,38 T200,30 T240,25 T280,18 V80 H0 Z" fill="url(#chartGrad)" />
+          {[0, 56, 112, 168, 224, 280].map((x, i) => (
+            <text key={i} x={x} y="78" className="text-[7px] fill-muted-foreground">{["W1", "W2", "W3", "W4", "W5", "W6"][i]}</text>
+          ))}
+        </svg>
+      </div>
+    </div>
+  );
+}
+
+function MockupCaseBuilder() {
+  return (
+    <div className="space-y-3">
+      <p className="text-[10px] font-semibold tracking-wider text-[#7C3AED] uppercase">AI Case Builder</p>
+      <div className="p-3.5 rounded-lg border border-border/40 bg-background space-y-2.5">
+        <div className="flex items-start justify-between">
+          <div>
+            <p className="text-[11px] font-bold text-foreground">Automate weekly client reporting</p>
+            <p className="text-[9px] text-muted-foreground">María González · Sales</p>
+          </div>
+          <span className="text-[8px] font-semibold px-2 py-0.5 rounded-full bg-amber-100 text-amber-700">Under Review</span>
+        </div>
+        <div className="flex items-center gap-4 pt-1 border-t border-border/20">
+          <div>
+            <p className="text-[8px] text-muted-foreground">Est. Impact</p>
+            <p className="text-[10px] font-semibold text-green-600">6h/week recovered</p>
+          </div>
+          <div>
+            <p className="text-[8px] text-muted-foreground">AI Tools</p>
+            <p className="text-[10px] font-semibold text-foreground">Claude + Sheets</p>
+          </div>
+          <div>
+            <p className="text-[8px] text-muted-foreground">Score</p>
+            <p className="text-[10px] font-semibold text-[#7C3AED]">78/100</p>
+          </div>
+        </div>
+      </div>
+      <div className="p-3.5 rounded-lg border border-border/40 bg-background space-y-2 opacity-60">
+        <div className="flex items-start justify-between">
+          <div>
+            <p className="text-[11px] font-bold text-foreground">Customer onboarding chatbot</p>
+            <p className="text-[9px] text-muted-foreground">Raj Patel · Customer Success</p>
+          </div>
+          <span className="text-[8px] font-semibold px-2 py-0.5 rounded-full bg-green-100 text-green-700">Approved</span>
+        </div>
+        <div className="flex items-center gap-4 pt-1 border-t border-border/20">
+          <div>
+            <p className="text-[8px] text-muted-foreground">Est. Impact</p>
+            <p className="text-[10px] font-semibold text-green-600">12h/week recovered</p>
+          </div>
+          <div>
+            <p className="text-[8px] text-muted-foreground">AI Tools</p>
+            <p className="text-[10px] font-semibold text-foreground">GPT-4 + Intercom</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function MockupRecruiting() {
+  const candidates = [
+    { name: "Ana López", sq: 71, badge: "AI-Ready", badgeColor: "bg-green-100 text-green-700", scores: [80, 65, 75, 70, 68, 60] },
+    { name: "Tom Fischer", sq: 43, badge: "Developing", badgeColor: "bg-amber-100 text-amber-700", scores: [45, 40, 50, 38, 42, 48] },
+    { name: "Mei Zhang", sq: 62, badge: "Practitioner", badgeColor: "bg-blue-100 text-blue-700", scores: [70, 55, 65, 60, 58, 64] },
+  ];
+  const skillLabels = ["DF", "AM", "VI", "OR", "PE", "SR"];
+
+  function MiniRadar({ scores, color }: { scores: number[]; color: string }) {
+    const r = 18;
+    const cx = 22;
+    const cy = 22;
+    const angles = scores.map((_, i) => (Math.PI * 2 * i) / scores.length - Math.PI / 2);
+    const pts = scores.map((s, i) => `${cx + Math.cos(angles[i]) * r * (s / 100)},${cy + Math.sin(angles[i]) * r * (s / 100)}`).join(" ");
+    return (
+      <svg width="44" height="44" viewBox="0 0 44 44">
+        <polygon points={angles.map((a) => `${cx + Math.cos(a) * r},${cy + Math.sin(a) * r}`).join(" ")} fill="none" stroke="currentColor" className="text-border/50" strokeWidth="0.5" />
+        <polygon points={pts} fill={color} stroke={color.replace("0.15", "0.6")} strokeWidth="1" />
+      </svg>
+    );
+  }
+
+  return (
+    <div className="space-y-3">
+      <div>
+        <p className="text-[10px] font-semibold tracking-wider text-[#7C3AED] uppercase">AI-First Recruiting</p>
+        <p className="text-[9px] text-muted-foreground">Product Manager — 3 candidates assessed</p>
+      </div>
+      <div className="space-y-2">
+        {candidates.map((c) => (
+          <div key={c.name} className="flex items-center gap-3 p-2.5 rounded-lg bg-muted/30 border border-border/30">
+            <MiniRadar scores={c.scores} color="rgba(124, 58, 237, 0.15)" />
+            <div className="flex-1 min-w-0">
+              <p className="text-[11px] font-semibold text-foreground">{c.name}</p>
+              <div className="flex items-center gap-2 mt-0.5">
+                <span className="text-[9px] font-bold text-[#7C3AED]">SQ {c.sq}</span>
+                <span className={`text-[8px] font-semibold px-1.5 py-0.5 rounded-full ${c.badgeColor}`}>{c.badge}</span>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+      <div className="flex items-center gap-2 pt-1">
+        {skillLabels.map((l) => (
+          <span key={l} className="text-[7px] text-muted-foreground/60 font-medium">{l}</span>
+        ))}
+        <span className="text-[7px] text-muted-foreground/40 ml-auto">DF=Data Fluency · AM=Adaptive · VI=Verification · OR=Orchestration · PE=Experimentation · SR=Systems</span>
+      </div>
+    </div>
+  );
+}
+
+const heroMockups: Record<string, () => JSX.Element> = {
+  measure: MockupSQResults,
+  champions: MockupChampions,
+  train: MockupLearning,
+  prove: MockupDashboard,
+  cases: MockupCaseBuilder,
+  recruit: MockupRecruiting,
+};
+
 export default function LandingPage() {
   const heroRef = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({ target: heroRef, offset: ["start start", "end start"] });
@@ -404,6 +776,33 @@ export default function LandingPage() {
   const [introComplete, setIntroComplete] = useState(false);
   const handleIntroComplete = useCallback(() => setIntroComplete(true), []);
   const [platformTab, setPlatformTab] = useState<"employees" | "leaders">("employees");
+  const [heroIdx, setHeroIdx] = useState(0);
+  const [heroPaused, setHeroPaused] = useState(false);
+  const heroTimerRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  const heroResumeRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  useEffect(() => {
+    if (heroPaused) return;
+    heroTimerRef.current = setInterval(() => {
+      setHeroIdx((prev) => (prev + 1) % heroRotations.length);
+    }, 4000);
+    return () => { if (heroTimerRef.current) clearInterval(heroTimerRef.current); };
+  }, [heroPaused]);
+
+  useEffect(() => {
+    return () => {
+      if (heroTimerRef.current) clearInterval(heroTimerRef.current);
+      if (heroResumeRef.current) clearTimeout(heroResumeRef.current);
+    };
+  }, []);
+
+  const handleDotClick = useCallback((i: number) => {
+    setHeroIdx(i);
+    setHeroPaused(true);
+    if (heroTimerRef.current) clearInterval(heroTimerRef.current);
+    if (heroResumeRef.current) clearTimeout(heroResumeRef.current);
+    heroResumeRef.current = setTimeout(() => setHeroPaused(false), 8000);
+  }, []);
 
   return (
     <div className="min-h-screen bg-background overflow-x-hidden">
@@ -449,61 +848,97 @@ export default function LandingPage() {
 
       <main>
         {/* SECTION 1 — HERO */}
-        <section ref={heroRef} className="relative pt-28 pb-8 px-6 min-h-[90vh] flex flex-col justify-center overflow-hidden">
+        <section ref={heroRef} className="relative pt-24 md:pt-32 pb-12 px-6 min-h-[92vh] flex flex-col justify-center overflow-hidden">
           <div className="absolute inset-0 overflow-hidden pointer-events-none">
             <div className="absolute top-20 -left-32 w-[500px] h-[500px] rounded-full bg-[#7C3AED]/5 blur-[120px]" />
             <div className="absolute bottom-20 -right-32 w-[400px] h-[400px] rounded-full bg-[#A78BFA]/8 blur-[100px]" />
             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full bg-[#5B21B6]/3 blur-[150px]" />
           </div>
 
-          <motion.div className="max-w-4xl mx-auto text-center relative z-10" style={{ opacity: heroOpacity, scale: heroScale }}>
-            <motion.div
-              initial="hidden"
-              animate={introComplete ? "visible" : "hidden"}
-              variants={heroRevealContainer}
-            >
-              <motion.p variants={subtleMaterialize} className="text-xs font-semibold tracking-[0.2em] uppercase text-[#7C3AED] mb-6">
-                Your Human-First AI Adoption Platform
-              </motion.p>
+          <motion.div
+            className="max-w-6xl mx-auto relative z-10 w-full"
+            style={{ opacity: heroOpacity, scale: heroScale }}
+            initial="hidden"
+            animate={introComplete ? "visible" : "hidden"}
+            variants={staggerContainer}
+          >
+            <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+              <motion.div variants={fadeUp}>
+                <p className="text-xs font-semibold tracking-[0.2em] uppercase text-[#7C3AED] mb-6">
+                  Your Human-First AI Adoption Platform
+                </p>
 
-              <motion.h1
-                variants={heroRevealContainer}
-                className="text-4xl md:text-5xl lg:text-6xl font-bold text-foreground leading-tight mb-6 tracking-tight"
-                style={{ perspective: "none" }}
-              >
-                <WordByWord text="One platform to measure, develop," />
-                <br />
-                <WordByWord text="and embed AI adoption" />
-                <br />
-                <WordByWord text="across your entire organization." gradient />
-              </motion.h1>
-
-              <motion.p variants={subtleMaterialize} className="text-lg text-foreground max-w-2xl mx-auto mb-10 leading-relaxed">
-                Genaia gives every person an AI readiness score, trains what's missing, finds who can lead the change — and proves it's working.
-              </motion.p>
-
-              <motion.div variants={subtleMaterialize} className="flex flex-wrap items-center justify-center gap-6 mb-16">
-                <div className="text-center">
-                  <Link href="/assessment">
-                    <Button size="lg" className="rounded-full bg-[#7C3AED] text-white border-[#7C3AED]" data-testid="button-take-assessment-hero">
-                      Take the SQ Assessment
-                    </Button>
-                  </Link>
-                  <p className="text-[10px] text-muted-foreground mt-1.5">Free, 5 minutes</p>
+                <h1 className="text-4xl md:text-5xl lg:text-[3.4rem] font-bold text-foreground leading-[1.1] mb-2 tracking-tight">
+                  One platform to
+                </h1>
+                <div className="h-[2.6em] md:h-[1.3em] relative overflow-hidden mb-6" style={{ fontSize: "clamp(2.25rem, 5vw, 3.4rem)" }}>
+                  <AnimatePresence mode="wait">
+                    <motion.span
+                      key={heroRotations[heroIdx].key}
+                      className="absolute left-0 top-0 font-bold bg-gradient-to-r from-[#7C3AED] via-[#A78BFA] to-[#5B21B6] bg-clip-text text-transparent leading-[1.1] tracking-tight"
+                      initial={{ opacity: 0, y: 30, filter: "blur(8px)" }}
+                      animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+                      exit={{ opacity: 0, y: -30, filter: "blur(8px)" }}
+                      transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+                    >
+                      {heroRotations[heroIdx].text}
+                    </motion.span>
+                  </AnimatePresence>
                 </div>
-                <div className="text-center">
+
+                <p className="text-base md:text-lg text-muted-foreground max-w-lg mb-8 leading-relaxed">
+                  Genaia manages your entire AI adoption — person by person, with data.
+                </p>
+
+                <div className="flex flex-wrap items-start gap-4 mb-8">
+                  <div>
+                    <Link href="/assessment">
+                      <Button size="lg" className="rounded-full bg-[#7C3AED] text-white border-[#7C3AED]" data-testid="button-take-assessment-hero">
+                        Take the SQ Assessment
+                      </Button>
+                    </Link>
+                    <p className="text-[10px] text-muted-foreground mt-1.5 ml-1">Free · 5 minutes</p>
+                  </div>
                   <Button size="lg" variant="outline" className="rounded-full" data-testid="button-book-demo-hero">
                     Book a demo
                   </Button>
-                  <p className="text-[10px] text-muted-foreground mt-1.5">For teams & organizations</p>
                 </div>
-                <Link href="/manifesto">
-                  <span className="text-[#7C3AED] text-sm font-medium flex items-center gap-1 hover:gap-2 transition-all cursor-pointer" data-testid="link-manifesto-hero">
-                    Read the manifesto <ArrowRight className="w-4 h-4" />
-                  </span>
-                </Link>
+
+                <div className="flex items-center gap-2" role="tablist" aria-label="Hero sections">
+                  {heroRotations.map((_, i) => (
+                    <button
+                      key={i}
+                      role="tab"
+                      onClick={() => handleDotClick(i)}
+                      className={`h-2 rounded-full transition-all duration-300 ${
+                        i === heroIdx
+                          ? "bg-[#7C3AED] w-6"
+                          : "bg-[#7C3AED]/20 hover:bg-[#7C3AED]/40 w-2"
+                      }`}
+                      aria-label={`Show: ${heroRotations[i].text}`}
+                      aria-selected={i === heroIdx}
+                      data-testid={`dot-hero-${i}`}
+                    />
+                  ))}
+                </div>
               </motion.div>
-            </motion.div>
+
+              <motion.div variants={fadeScale} className="relative">
+                <AnimatePresence mode="wait">
+                  <motion.div
+                    key={heroRotations[heroIdx].key}
+                    initial={{ opacity: 0, x: 40, scale: 0.95 }}
+                    animate={{ opacity: 1, x: 0, scale: 1 }}
+                    exit={{ opacity: 0, x: -20, scale: 0.98 }}
+                    transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
+                  >
+                    <MockupFrame>
+                      {(() => { const Comp = heroMockups[heroRotations[heroIdx].key]; return <Comp />; })()}
+                    </MockupFrame>
+                  </motion.div>
+                </AnimatePresence>
+              </motion.div>
+            </div>
           </motion.div>
         </section>
 
