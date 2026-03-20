@@ -451,7 +451,7 @@ export default function LandingPage() {
               </motion.h1>
 
               <motion.p variants={subtleMaterialize} className="text-lg text-foreground max-w-2xl mx-auto mb-3 leading-relaxed">
-                We're building the system that tells you exactly who's ready for AI, who can lead the change, and what to train
+                We're building the platform that manages your entire AI adoption — from measuring who's ready, to training what's missing.
               </motion.p>
               <motion.p variants={subtleMaterialize} className="text-sm text-muted-foreground max-w-xl mx-auto mb-10">
                 before you waste another dollar on tools nobody uses.
