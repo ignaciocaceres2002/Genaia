@@ -773,8 +773,13 @@ export default function LandingPage() {
   const { scrollYProgress } = useScroll({ target: heroRef, offset: ["start start", "end start"] });
   const heroOpacity = useTransform(scrollYProgress, [0, 0.5], [1, 0]);
   const heroScale = useTransform(scrollYProgress, [0, 0.5], [1, 0.95]);
-  const [introComplete, setIntroComplete] = useState(false);
-  const handleIntroComplete = useCallback(() => setIntroComplete(true), []);
+  const [introComplete, setIntroComplete] = useState(() => {
+    try { return sessionStorage.getItem("genaia_intro_seen") === "1"; } catch { return false; }
+  });
+  const handleIntroComplete = useCallback(() => {
+    setIntroComplete(true);
+    try { sessionStorage.setItem("genaia_intro_seen", "1"); } catch {}
+  }, []);
   const [platformTab, setPlatformTab] = useState<"employees" | "leaders">("employees");
   const [heroIdx, setHeroIdx] = useState(0);
   const [heroPaused, setHeroPaused] = useState(false);
