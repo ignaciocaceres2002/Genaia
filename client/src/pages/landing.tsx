@@ -669,6 +669,9 @@ export default function LandingPage() {
                 <br />
                 <span className="text-muted-foreground">One transformation.</span>
               </h2>
+              <p className="text-muted-foreground max-w-2xl mx-auto mt-6 leading-relaxed">
+                Genaia measures who's ready, activates the people who can lead change, and redesigns how your organization works around them.
+              </p>
             </motion.div>
 
             <div className="grid md:grid-cols-3 gap-6">
