@@ -1,5 +1,5 @@
 import { Link, useLocation } from "wouter";
-import { BarChart3, Users, GraduationCap, Target, Wrench, FileText, Trophy, Building2, AlertTriangle, Settings } from "lucide-react";
+import { BarChart3, Users, GraduationCap, Target, Wrench, FileText, Trophy, Building2, AlertTriangle, Settings, Bot } from "lucide-react";
 import {
   Sidebar,
   SidebarContent,
@@ -23,6 +23,7 @@ const navItems = [
   { title: "Tools", path: "/admin/tools", icon: Wrench },
   { title: "Policies", path: "/admin/policies", icon: FileText },
   { title: "Champions", path: "/admin/champions", icon: Trophy },
+  { title: "AI-First Recruiting", path: "/admin/recruiting", icon: Bot },
   { title: "Agentic Score", path: "/admin/agentic", icon: Building2 },
   { title: "Alerts", path: "/admin/alerts", icon: AlertTriangle },
   { title: "Settings", path: "/admin/settings", icon: Settings },

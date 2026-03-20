@@ -33,6 +33,7 @@ client/src/
       admin-assessments.tsx - Assessment analytics
       admin-policies.tsx - Policy management
       admin-champions.tsx - Champion program
+      ai-recruiting.tsx  - AI-First Recruiting agent page
       agentic-score.tsx  - Agentic Enterprise Score
       alerts.tsx         - Alert management
       settings.tsx       - Organization settings
