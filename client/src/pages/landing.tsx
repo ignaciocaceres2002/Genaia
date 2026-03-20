@@ -635,7 +635,7 @@ export default function LandingPage() {
                   }`}
                   data-testid="button-tab-employees"
                 >
-                  For Employees
+                  For <span className="line-through opacity-60">Employees</span> <span className="font-semibold ml-1">Superagents</span>
                 </button>
                 <button
                   onClick={() => setPlatformTab("leaders")}
