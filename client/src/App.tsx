@@ -43,7 +43,7 @@ function UserDashboardLayout({ children }: { children: React.ReactNode }) {
           <header className="flex items-center gap-2 p-3 border-b h-14 flex-shrink-0 sticky top-0 z-30 bg-background/80 backdrop-blur-sm">
             <SidebarTrigger data-testid="button-sidebar-toggle" />
             <div className="flex-1" />
-            <span className="text-xs text-muted-foreground hidden md:block">Génesis Platform</span>
+            <span className="text-xs text-muted-foreground hidden md:block">Genaia Platform</span>
           </header>
           <main className="flex-1 overflow-y-auto p-6">
             {children}

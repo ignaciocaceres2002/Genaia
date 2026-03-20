@@ -909,7 +909,7 @@ function RevealScreen({ results, animatedScore, showResults, concern, hope, role
                 <SQRing score={results.overallScore} size={80} strokeWidth={4} />
               </div>
               <p className="text-xl font-light mb-1">SQ {results.overallScore} — {results.level}</p>
-              <p className="text-xs text-white/40 mb-6">genesis.ai/sq — What's yours?</p>
+              <p className="text-xs text-white/40 mb-6">genaia.ai/sq — What's yours?</p>
               <div className="flex justify-center gap-3">
                 <Button variant="outline" className="border-white/20 text-white/80" data-testid="button-share-linkedin">
                   <Share2 className="w-4 h-4 mr-2" /> Share on LinkedIn
@@ -938,7 +938,7 @@ function RevealScreen({ results, animatedScore, showResults, concern, hope, role
               <div className="p-5 rounded-md border border-violet-500/20 bg-violet-600/10 hover-elevate cursor-pointer" data-testid="cta-book-demo">
                 <Sparkles className="w-6 h-6 text-violet-400 mb-3" />
                 <h4 className="text-sm font-medium text-white/90 mb-1">Book a demo</h4>
-                <p className="text-xs text-white/50 font-light">See Génesis for your entire organization</p>
+                <p className="text-xs text-white/50 font-light">See Genaia for your entire organization</p>
               </div>
             </div>
           </section>

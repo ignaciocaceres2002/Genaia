@@ -1,7 +1,7 @@
-# Génesis - AI Adoption Platform
+# Genaia - AI Adoption Platform
 
 ## Overview
-Génesis is an AI Adoption Platform centered on "Inverse Training" — where AI trains humans to become superhuman. It measures AI readiness through the SQ (Superagency Quotient, scored 0–100), delivers gamified personalized learning experiences, and drives organizational adoption through champions, governance tools, and analytics. The core concept: "From Employee to Human Superagent."
+Genaia is an AI Adoption Platform centered on "Inverse Training" — where AI trains humans to become superhuman. It measures AI readiness through the SQ (Superagency Quotient, scored 0–100), delivers gamified personalized learning experiences, and drives organizational adoption through champions, governance tools, and analytics. The core concept: "From Employee to Human Superagent."
 
 ## Architecture
 - **Frontend**: React + TypeScript + Vite + TailwindCSS + Shadcn/UI + Framer Motion + Recharts

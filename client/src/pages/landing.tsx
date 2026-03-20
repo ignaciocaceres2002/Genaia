@@ -386,7 +386,7 @@ export default function LandingPage() {
 
   return (
     <div className="min-h-screen bg-background overflow-x-hidden">
-      <SEO title="Génesis - AI Adoption Platform | Inverse Training" description="Transform your organization with Génesis. Measure AI readiness with our SQ Calculator, deliver gamified learning, and drive enterprise-wide AI adoption." ogTitle="Génesis - The AI Adoption Platform" />
+      <SEO title="Genaia - AI Adoption Platform | Inverse Training" description="Transform your organization with Genaia. Measure AI readiness with our SQ Calculator, deliver gamified learning, and drive enterprise-wide AI adoption." ogTitle="Genaia - The AI Adoption Platform" />
 
       <AnimatePresence>
         {!introComplete && <BigBangIntro onComplete={handleIntroComplete} />}
@@ -399,7 +399,7 @@ export default function LandingPage() {
         transition={{ duration: 0.6, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}>
         <div className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between gap-4">
           <Link href="/">
-            <img src={logoImg} alt="Génesis" className="h-14 w-auto" data-testid="link-logo" />
+            <img src={logoImg} alt="Genaia" className="h-14 w-auto" data-testid="link-logo" />
           </Link>
           <div className="hidden md:flex items-center gap-8">
             <a href="#product" className="text-sm text-muted-foreground hover:text-foreground transition-colors" data-testid="link-product">Product</a>
@@ -782,7 +782,7 @@ export default function LandingPage() {
                 <Button variant="outline" className="rounded-full" data-testid="button-book-demo-footer">Book a demo</Button>
               </motion.div>
               <motion.div variants={fadeUp}>
-                <img src={logoImg} alt="Génesis" className="h-10 w-auto opacity-60 mx-auto" />
+                <img src={logoImg} alt="Genaia" className="h-10 w-auto opacity-60 mx-auto" />
               </motion.div>
             </motion.div>
           </div>

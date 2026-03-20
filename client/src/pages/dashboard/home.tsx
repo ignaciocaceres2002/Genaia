@@ -32,7 +32,7 @@ export default function DashboardHome() {
 
   return (
     <motion.div className="max-w-4xl mx-auto space-y-8" initial="hidden" animate="visible" variants={{ visible: { transition: { staggerChildren: 0.08 } } }}>
-      <SEO title="Dashboard - Génesis" description="Your personal AI adoption dashboard. Track your SQ score, streaks, learning progress, and more." />
+      <SEO title="Dashboard - Genaia" description="Your personal AI adoption dashboard. Track your SQ score, streaks, learning progress, and more." />
       <motion.div variants={fadeUp} className="flex flex-col md:flex-row items-start gap-6">
         <div className="flex-shrink-0">
           <SQRing score={currentUser.nqScore} size={160} label={levelNames[(currentUser.level || 1) - 1]} />

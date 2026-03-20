@@ -61,7 +61,7 @@ export default function AdminOverview() {
 
   return (
     <motion.div className="max-w-5xl mx-auto space-y-6" initial="hidden" animate="visible" variants={{ visible: { transition: { staggerChildren: 0.06 } } }}>
-      <SEO title="Admin Dashboard - Génesis" description="Organization-wide AI adoption analytics, team management, and governance tools for your enterprise." />
+      <SEO title="Admin Dashboard - Genaia" description="Organization-wide AI adoption analytics, team management, and governance tools for your enterprise." />
       <motion.div variants={fadeUp}>
         <h1 className="text-2xl font-bold">Dashboard Overview</h1>
         <p className="text-muted-foreground text-sm mt-1">Organization-wide AI adoption metrics</p>
