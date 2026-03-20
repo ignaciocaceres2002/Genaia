@@ -1,0 +1,184 @@
+SECCIÓN 1 — HERO
+Eyebrow: Your Human-First AI Adoption Platform
+Headline:
+One platform to measure, develop,
+and embed AI adoption across your entire organization.
+Subheadline:
+Genaia gives every person an AI readiness score, trains what's missing, finds who can lead the change — and proves it's working.
+Botones:
+[Take the SQ Assessment] — Free, 5 minutes
+[Book a demo] — For teams & organizations
+[Read the manifesto →] — link a /manifesto
+[Mockup: screenshot del dashboard de usuario con el SQ ring visible, a la derecha del texto del hero]
+
+SECCIÓN 2 — EL PROBLEMA
+Headline:
+Companies invested in AI tools.
+Nobody prepared the people.
+3 métricas (números grandes con una línea debajo cada uno):
+90% — of AI initiatives fail because of people, not technology
+6x — productivity gap between AI power users and the rest
+~10% — of employees are real AI Champions. The other 90% are waiting.
+Cierre:
+Genaia closes the gap — with data, not guesswork.
+
+SECCIÓN 3 — QUÉ ES GENAIA
+Headline:
+The complete system for AI adoption.
+Sub:
+From first diagnosis to sustained transformation. Four engines, one platform.
+4 bloques en fila horizontal (cada uno con un título, un ícono simple, y 2 líneas):
+① MEASURE
+Every person gets an SQ Score (0–100) across 6 cognitive skills. You see exactly where your org stands — by team, by role, by person.
+② IDENTIFY
+The platform finds your AI Champions by algorithm: skill capability + engagement + influence. Not by politics, not by volunteering.
+③ DEVELOP
+Personalized learning paths close the gaps. Micro-courses, AI practice agents, role-specific playbooks. 5 min/day.
+④ EMBED
+Real-time dashboard tracks everything: SQ improvement, hours recovered, training completion, adoption rate. The numbers your board needs.
+[Mockup: debajo de los 4 bloques, un screenshot panorámico del admin dashboard mostrando el overview con las 4 KPI cards y el heat map]
+
+SECCIÓN 4 — LA PLATAFORMA POR DENTRO
+Headline:
+Built for every person in the organization.
+Dos tabs o dos columnas: "For Employees" y "For Leaders". Cada tab muestra su grid de módulos.
+
+Tab 1: FOR EMPLOYEES — Your AI readiness, gamified.
+Sub:
+A personal AI profile, daily challenges, and a clear path to improve.
+Grid de módulos (cada uno: ícono + nombre en bold + una línea):
+SQ Score & Skill Map
+Your AI readiness across 6 skills. Track progress over time.
+Daily Challenges
+5-minute scenarios targeting your weakest skill. Streaks and rewards.
+Learning Paths
+8 courses mapped to SQ skills. Micro-modules, not lectures.
+AI Practice Agents
+Conversational agents that simulate real work scenarios.
+Use Cases Library
+Real AI applications by role. Submit, upvote, learn from peers.
+AI Tools Directory
+Every AI tool your company uses, in one place, with policies.
+[Mockup: screenshot del user dashboard home con el SQ ring, streak, daily challenge y quick links visibles]
+
+Tab 2: FOR LEADERS — The control panel you never had.
+Sub:
+See who's ready, who's not, where to invest, and what's working.
+Grid de módulos:
+Org Overview
+Avg SQ, active users, training completion, hours recovered. One screen.
+Team Heat Map
+SQ scores by department. Spot where adoption works and where it doesn't.
+Champion Finder
+Algorithm-ranked candidates: SQ 40% + Engagement 30% + Influence 30%.
+AI-First Recruiting
+Evaluate candidates' AI readiness before you hire. SQ as a hiring signal.
+AI Case Builder
+Employees submit AI project ideas. The platform structures the business case.
+Agentic Score
+Your org's AI maturity: 0–100. SQ + training + tools + governance + champions.
+Governance & Policies
+AI policy library. Version control. Acknowledgment tracking. RAG-powered Q&A.
+Alerts
+Inactivity, SQ decline, shadow AI, policy violations. Configurable.
+[Mockup: screenshot del admin dashboard con el heat map y el SQ distribution chart visibles]
+
+SECCIÓN 5 — SQ
+Headline:
+SQ — Superagency Quotient
+The score that measures AI readiness.
+Sub:
+Not what tools you know. How you think, decide, and create when AI is everywhere. Scored 0 to 100.
+6 cards (cada una: número de ejemplo + nombre del skill en bold + una línea):
+78 — Data Fluency
+Read what machines tell you. Spot when they're wrong.
+65 — Adaptive Mindset
+When tools change, do you freeze or adapt?
+82 — Verification Instinct
+AI is confident about everything. Even when it's wrong.
+58 — Orchestration
+When to delegate to AI. When to override. When to co-create.
+72 — Proactive Experimentation
+The people who transform first aren't waiting for permission.
+60 — Systems Redesign
+The biggest gains come from reimagining, not patching.
+Barra horizontal de niveles:
+0–25 Novice → 26–50 Practitioner → 51–75 Catalyst → 76–100 Superagent
+CTA:
+[What's your SQ? → Free, 5 minutes]
+[Mockup: un radar/hexágono con los 6 skills y un SQ ring animado mostrando un score de ejemplo]
+
+SECCIÓN 6 — CÓMO FUNCIONA (reemplaza social proof)
+Headline:
+From zero to measurable change in 90 days.
+Timeline visual horizontal con 3 pasos:
+Week 1
+Every person takes the SQ Assessment. 10 minutes, zero friction. You get a full map of AI readiness across your org — by person, by team, by skill.
+Weeks 2–8
+Champions are activated. Training paths are assigned by gaps. People improve daily with micro-courses and AI practice agents. You watch it happen in real time on the dashboard.
+Week 12
+SQ scores improved. Hours recovered measured. Adoption rate tracked. You have the data to present to leadership — and to decide what's next.
+[Mockup: tres mini-screenshots en fila: 1) SQ assessment results screen, 2) user dashboard mid-journey con streak y learning progress, 3) admin dashboard con métricas de mejora]
+
+SECCIÓN 7 — NUESTRA TESIS (una sola pantalla)
+Headline:
+Others automate humans out.
+We elevate humans up.
+Copy:
+Everyone is building AI to replace people. We're building AI that makes people irreplaceable. The companies that win won't be the ones with the fewest humans — they'll be the ones with the most capable ones.
+[Read the full manifesto →]
+
+SECCIÓN 8 — PARA LÍDERES
+Headline:
+Built for CHROs and transformation leaders.
+Sub:
+If you're responsible for AI adoption, you already know: buying tools isn't a strategy.
+Lista:
+✓ SQ benchmarks by team, department, and role
+✓ Champions identified by algorithm, not politics
+✓ Training that people actually complete
+✓ AI governance built in from day one
+✓ ROI dashboard with hours and dollars recovered
+✓ Agentic Score: your org's AI maturity in one number
+Oferta:
+Start with a 3-month pilot. 50–100 people. We measure the before and after together.
+Botones:
+[Book a demo] [See pricing]
+
+SECCIÓN 9 — FOOTER CTA
+Headline:
+Humanity is just getting started.
+Botones:
+[Calculate your SQ] [Book a demo]
+
+
+PÁGINA SEPARADA: /manifesto
+Título:
+Humanity is just getting started.
+Bloque 1 — El miedo:
+Every week, a new headline: AI will take your job. Entire departments replaced overnight. Companies building a future that doesn't need people.
+The fear is real. But the conclusion is wrong.
+AI isn't the end of human relevance — it's the beginning of human potential.
+Bloque 2 — Lo que pasó:
+For seventy years, humanity poured everything it knew into machines. Every book, every scientific paper, every conversation, every image. We gave AI the sum of human knowledge.
+That process is over. The machines learned.
+Now the question is: what do the machines teach us back?
+Bloque 3 — Inverse Training:
+We call it Inverse Training.
+1950–2024: Humans trained AI.
+Now: AI trains humans to become superhuman.
+Not artificial intelligence replacing native intelligence. Artificial intelligence activating native intelligence.
+Bloque 4 — Superagency:
+A superagent isn't someone who lets AI do their job. It's someone who does their job at a level that was previously impossible.
+The marketing manager who reclaims 13 hours a week for strategy no competitor imagines. The financial analyst who spots patterns that change the company's direction. The HR leader who invests time in conversations that determine cultural fit instead of drowning in resumes.
+The human doesn't disappear. The human becomes more.
+Bloque 5 — La apuesta:
+Everyone is building AI to replace people.
+We're building AI that makes people irreplaceable.
+The companies that win won't be the ones with the fewest humans. They'll be the ones with the most capable humans.
+Automation makes companies efficient.
+Superagency makes companies extraordinary.
+Cierre:
+We're Genaia. And we're just getting started.
+Botones:
+[Take the SQ Assessment] [Join us]

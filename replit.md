@@ -13,7 +13,8 @@ Genaia is an AI Adoption Platform centered on "Inverse Training" — where AI tr
 ```
 client/src/
   pages/
-    landing.tsx          - Public landing page (aspirational, visual)
+    landing.tsx          - Public landing page (9-section content: hero, problem, engines, platform tabs, SQ, timeline, thesis, leaders, footer CTA)
+    manifesto.tsx        - Manifesto page (/manifesto) — Inverse Training thesis
     calculator.tsx       - SQ Calculator
     assessment.tsx       - Full SQ Assessment (3-part interactive flow with reveal)
     dashboard/
@@ -53,12 +54,17 @@ shared/
 ```
 
 ## Key Routes
-- `/` - Landing page
+- `/` - Landing page (9 sections)
+- `/manifesto` - Manifesto page (Inverse Training thesis)
 - `/calculator` - SQ Calculator
 - `/assessment` - Full SQ Assessment (multi-phase interactive, ~10 min)
 - `/dashboard` - User dashboard (all sub-routes)
 - `/dashboard/sq` - My SQ score page
 - `/admin` - Admin dashboard (all sub-routes)
+- `/admin/case-builder` - AI Case Builder
+
+## Logo
+- Beetle logo: `attached_assets/image_1773976580990.png` (imported as `@assets/image_1773976580990.png`)
 
 ## Design System
 - Primary: #7C3AED (violet)

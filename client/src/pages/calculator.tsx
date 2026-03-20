@@ -9,7 +9,7 @@ import { ROLE_TASKS, calculateSQ } from "@/lib/constants";
 import { SQRing } from "@/components/nq-ring";
 import { apiRequest } from "@/lib/queryClient";
 import { SEO } from "@/components/seo";
-import logoImg from "@assets/1_1771445946739.png";
+import logoImg from "@assets/image_1773976580990.png";
 
 const roles = Object.keys(ROLE_TASKS);
 const roleIcons: Record<string, string> = {

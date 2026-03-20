@@ -13,7 +13,7 @@ import {
 } from "@/components/ui/sidebar";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
-import logoImg from "@assets/1_1771445946739.png";
+import logoImg from "@assets/image_1773976580990.png";
 
 const navItems = [
   { title: "Overview", path: "/admin", icon: BarChart3 },

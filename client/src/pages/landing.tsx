@@ -2,10 +2,15 @@ import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion"
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Link } from "wouter";
-import { ArrowRight, Zap, Target, BookOpen, ChevronRight, Sparkles, Brain, TrendingUp, Shield, Users, Rocket, BarChart3 } from "lucide-react";
+import {
+  ArrowRight, Target, BookOpen, ChevronRight, Sparkles, Brain,
+  TrendingUp, Shield, Users, Rocket, BarChart3, Zap, Eye,
+  CheckCircle2, Bot, MessageSquare, FileText, AlertTriangle,
+  Award, Gauge, Calendar
+} from "lucide-react";
 import { SQRing } from "@/components/nq-ring";
 import { SEO } from "@/components/seo";
-import logoImg from "@assets/1_1771445946739.png";
+import logoImg from "@assets/image_1773976580990.png";
 import { useRef, useState, useEffect, useCallback } from "react";
 
 const fadeUp = {
@@ -80,50 +85,67 @@ function WordByWord({ text, className, gradient }: { text: string; className?: s
   );
 }
 
-const metrics = [
-  { value: "73%", label: "Avg SQ improvement", sublabel: "in 90 days" },
-  { value: "12h", label: "Hours recovered", sublabel: "per person / week" },
-  { value: "4.8x", label: "ROI delivered", sublabel: "vs traditional L&D" },
-  { value: "92%", label: "Engagement rate", sublabel: "vs 23% industry avg" },
+const problemMetrics = [
+  { value: "90%", label: "of AI initiatives fail because of people, not technology" },
+  { value: "6x", label: "productivity gap between AI power users and the rest" },
+  { value: "~10%", label: "of employees are real AI Champions. The other 90% are waiting." },
 ];
 
-const transformations = [
-  {
-    icon: Brain,
-    before: "Employee",
-    after: "Superagent",
-    description: "AI handles the repetitive. You focus on what only you can do.",
-    color: "#7C3AED",
-  },
-  {
-    icon: TrendingUp,
-    before: "15h/week writing",
-    after: "2h + strategic vision",
-    description: "A marketing manager reclaims 13 hours for strategy no competitor imagines.",
-    color: "#A78BFA",
-  },
-  {
-    icon: Sparkles,
-    before: "Days building models",
-    after: "Minutes + deep insights",
-    description: "A financial analyst spots patterns that change the company's direction.",
-    color: "#5B21B6",
-  },
+const engines = [
+  { num: "1", verb: "MEASURE", title: "Measure", description: "Every person gets an SQ Score (0\u2013100) across 6 cognitive skills. You see exactly where your org stands \u2014 by team, by role, by person.", icon: Target, gradient: "from-violet-500 to-purple-600" },
+  { num: "2", verb: "IDENTIFY", title: "Identify", description: "The platform finds your AI Champions by algorithm: skill capability + engagement + influence. Not by politics, not by volunteering.", icon: Eye, gradient: "from-purple-500 to-violet-600" },
+  { num: "3", verb: "DEVELOP", title: "Develop", description: "Personalized learning paths close the gaps. Micro-courses, AI practice agents, role-specific playbooks. 5 min/day.", icon: BookOpen, gradient: "from-violet-600 to-purple-700" },
+  { num: "4", verb: "EMBED", title: "Embed", description: "Real-time dashboard tracks everything: SQ improvement, hours recovered, training completion, adoption rate. The numbers your board needs.", icon: BarChart3, gradient: "from-purple-600 to-violet-700" },
 ];
 
-const pillars = [
-  { verb: "DIAGNOSE", title: "Skills Map", description: "Gamified assessments reveal your AI readiness. Every person gets an SQ Score (0-100) across 6 skill domains.", icon: Target, gradient: "from-violet-500 to-purple-600" },
-  { verb: "DEVELOP", title: "Training Engine", description: "Close gaps through Inverse Training: personalized courses, AI practice agents, role-specific playbooks. 5 min/day.", icon: BookOpen, gradient: "from-purple-500 to-violet-600" },
-  { verb: "EMBED", title: "Catalyst Network", description: "Find champions by algorithm, build governance, track adoption. The infrastructure that makes AI adoption permanent.", icon: Zap, gradient: "from-violet-600 to-purple-700" },
+const employeeModules = [
+  { icon: Gauge, title: "SQ Score & Skill Map", desc: "Your AI readiness across 6 skills. Track progress over time." },
+  { icon: Zap, title: "Daily Challenges", desc: "5-minute scenarios targeting your weakest skill. Streaks and rewards." },
+  { icon: BookOpen, title: "Learning Paths", desc: "8 courses mapped to SQ skills. Micro-modules, not lectures." },
+  { icon: Bot, title: "AI Practice Agents", desc: "Conversational agents that simulate real work scenarios." },
+  { icon: Sparkles, title: "Use Cases Library", desc: "Real AI applications by role. Submit, upvote, learn from peers." },
+  { icon: FileText, title: "AI Tools Directory", desc: "Every AI tool your company uses, in one place, with policies." },
+];
+
+const leaderModules = [
+  { icon: BarChart3, title: "Org Overview", desc: "Avg SQ, active users, training completion, hours recovered. One screen." },
+  { icon: Target, title: "Team Heat Map", desc: "SQ scores by department. Spot where adoption works and where it doesn't." },
+  { icon: Award, title: "Champion Finder", desc: "Algorithm-ranked candidates: SQ 40% + Engagement 30% + Influence 30%." },
+  { icon: Users, title: "AI-First Recruiting", desc: "Evaluate candidates' AI readiness before you hire. SQ as a hiring signal." },
+  { icon: Rocket, title: "AI Case Builder", desc: "Employees submit AI project ideas. The platform structures the business case." },
+  { icon: Gauge, title: "Agentic Score", desc: "Your org's AI maturity: 0\u2013100. SQ + training + tools + governance + champions." },
+  { icon: Shield, title: "Governance & Policies", desc: "AI policy library. Version control. Acknowledgment tracking. RAG-powered Q&A." },
+  { icon: AlertTriangle, title: "Alerts", desc: "Inactivity, SQ decline, shadow AI, policy violations. Configurable." },
 ];
 
 const skillDomains = [
-  { name: "Data Fluency", icon: BarChart3, score: 78, description: "Read what machines tell you" },
-  { name: "Adaptive Mindset", icon: Sparkles, score: 65, description: "Embrace change, explore first" },
-  { name: "Verification", icon: Shield, score: 82, description: "Know when to question AI" },
-  { name: "Co-Intelligence", icon: Users, score: 58, description: "Design human-AI partnerships" },
-  { name: "Autonomous Drive", icon: Rocket, score: 72, description: "Experiment without permission" },
-  { name: "Reimagination", icon: Brain, score: 60, description: "See workflows that should exist" },
+  { name: "Data Fluency", icon: BarChart3, score: 78, description: "Read what machines tell you. Spot when they're wrong." },
+  { name: "Adaptive Mindset", icon: Sparkles, score: 65, description: "When tools change, do you freeze or adapt?" },
+  { name: "Verification Instinct", icon: Shield, score: 82, description: "AI is confident about everything. Even when it's wrong." },
+  { name: "Orchestration", icon: Users, score: 58, description: "When to delegate to AI. When to override. When to co-create." },
+  { name: "Proactive Experimentation", icon: Rocket, score: 72, description: "The people who transform first aren't waiting for permission." },
+  { name: "Systems Redesign", icon: Brain, score: 60, description: "The biggest gains come from reimagining, not patching." },
+];
+
+const timelineSteps = [
+  {
+    week: "Week 1",
+    title: "Diagnose",
+    desc: "Every person takes the SQ Assessment. 10 minutes, zero friction. You get a full map of AI readiness across your org \u2014 by person, by team, by skill.",
+    icon: Target,
+  },
+  {
+    week: "Weeks 2\u20138",
+    title: "Activate",
+    desc: "Champions are activated. Training paths are assigned by gaps. People improve daily with micro-courses and AI practice agents. You watch it happen in real time on the dashboard.",
+    icon: Zap,
+  },
+  {
+    week: "Week 12",
+    title: "Measure",
+    desc: "SQ scores improved. Hours recovered measured. Adoption rate tracked. You have the data to present to leadership \u2014 and to decide what's next.",
+    icon: TrendingUp,
+  },
 ];
 
 type IntroPhase = "line1" | "pause" | "line2" | "countdown" | "bang" | "white" | "done";
@@ -305,10 +327,7 @@ function BigBangIntro({ onComplete }: { onComplete: () => void }) {
       {showText && (
         <motion.div
           className="z-10 flex flex-col items-center justify-center px-6 select-none"
-          animate={{
-            scale: phase === "countdown" ? 1 : 1,
-            opacity: 1,
-          }}
+          animate={{ scale: 1, opacity: 1 }}
         >
           <motion.p
             className="text-2xl md:text-4xl lg:text-5xl font-light text-white/80 text-center tracking-tight leading-snug"
@@ -383,15 +402,17 @@ export default function LandingPage() {
   const heroScale = useTransform(scrollYProgress, [0, 0.5], [1, 0.95]);
   const [introComplete, setIntroComplete] = useState(false);
   const handleIntroComplete = useCallback(() => setIntroComplete(true), []);
+  const [platformTab, setPlatformTab] = useState<"employees" | "leaders">("employees");
 
   return (
     <div className="min-h-screen bg-background overflow-x-hidden">
-      <SEO title="Genaia - AI Adoption Platform | Inverse Training" description="Transform your organization with Genaia. Measure AI readiness with our SQ Calculator, deliver gamified learning, and drive enterprise-wide AI adoption." ogTitle="Genaia - The AI Adoption Platform" />
+      <SEO title="Genaia - AI Adoption Platform | Inverse Training" description="One platform to measure, develop, and embed AI adoption across your entire organization. Genaia gives every person an AI readiness score." ogTitle="Genaia - The AI Adoption Platform" />
 
       <AnimatePresence>
         {!introComplete && <BigBangIntro onComplete={handleIntroComplete} />}
       </AnimatePresence>
 
+      {/* NAV */}
       <motion.nav
         className="fixed top-0 left-0 right-0 z-50 backdrop-blur-xl bg-background/70 border-b border-border/50"
         initial={{ opacity: 0, y: -20 }}
@@ -399,23 +420,26 @@ export default function LandingPage() {
         transition={{ duration: 0.6, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}>
         <div className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between gap-4">
           <Link href="/">
-            <img src={logoImg} alt="Genaia" className="h-14 w-auto" data-testid="link-logo" />
+            <img src={logoImg} alt="Genaia" className="h-12 w-auto" data-testid="link-logo" />
           </Link>
           <div className="hidden md:flex items-center gap-8">
-            <a href="#product" className="text-sm text-muted-foreground hover:text-foreground transition-colors" data-testid="link-product">Product</a>
-            <a href="#manifesto" className="text-sm text-muted-foreground hover:text-foreground transition-colors" data-testid="link-manifesto">Manifesto</a>
-            <a href="#pricing" className="text-sm text-muted-foreground hover:text-foreground transition-colors" data-testid="link-pricing">Pricing</a>
+            <a href="#platform" className="text-sm text-muted-foreground hover:text-foreground transition-colors" data-testid="link-product">Platform</a>
+            <a href="#sq" className="text-sm text-muted-foreground hover:text-foreground transition-colors" data-testid="link-sq">SQ</a>
+            <Link href="/manifesto">
+              <span className="text-sm text-muted-foreground hover:text-foreground transition-colors cursor-pointer" data-testid="link-manifesto">Manifesto</span>
+            </Link>
+            <a href="#leaders" className="text-sm text-muted-foreground hover:text-foreground transition-colors" data-testid="link-leaders">For Leaders</a>
           </div>
           <div className="flex items-center gap-2">
             <Link href="/dashboard">
-              <Button variant="ghost" size="sm" data-testid="button-demo-user">Demo Usuario</Button>
+              <Button variant="ghost" size="sm" data-testid="button-demo-user">Demo User</Button>
             </Link>
             <Link href="/admin">
               <Button variant="outline" size="sm" data-testid="button-demo-admin">Demo Admin</Button>
             </Link>
-            <Link href="/calculator">
-              <Button size="sm" className="rounded-full bg-[#7C3AED] text-white border-[#7C3AED]" data-testid="button-calculate-sq-nav">
-                Calculate your SQ
+            <Link href="/assessment">
+              <Button size="sm" className="rounded-full bg-[#7C3AED] text-white border-[#7C3AED]" data-testid="button-take-sq-nav">
+                Take the SQ Assessment
               </Button>
             </Link>
           </div>
@@ -423,14 +447,15 @@ export default function LandingPage() {
       </motion.nav>
 
       <main>
-        <section ref={heroRef} className="relative pt-28 pb-8 px-6 min-h-[90vh] flex flex-col justify-center overflow-hidden" style={{ position: "relative" }}>
+        {/* SECTION 1 — HERO */}
+        <section ref={heroRef} className="relative pt-28 pb-8 px-6 min-h-[90vh] flex flex-col justify-center overflow-hidden">
           <div className="absolute inset-0 overflow-hidden pointer-events-none">
             <div className="absolute top-20 -left-32 w-[500px] h-[500px] rounded-full bg-[#7C3AED]/5 blur-[120px]" />
             <div className="absolute bottom-20 -right-32 w-[400px] h-[400px] rounded-full bg-[#A78BFA]/8 blur-[100px]" />
             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full bg-[#5B21B6]/3 blur-[150px]" />
           </div>
 
-          <motion.div className="max-w-3xl mx-auto text-center relative z-10" style={{ opacity: heroOpacity, scale: heroScale }}>
+          <motion.div className="max-w-4xl mx-auto text-center relative z-10" style={{ opacity: heroOpacity, scale: heroScale }}>
             <motion.div
               initial="hidden"
               animate={introComplete ? "visible" : "hidden"}
@@ -442,91 +467,97 @@ export default function LandingPage() {
 
               <motion.h1
                 variants={heroRevealContainer}
-                className="text-5xl md:text-6xl lg:text-7xl font-bold text-foreground leading-tight mb-6 tracking-tight"
+                className="text-4xl md:text-5xl lg:text-6xl font-bold text-foreground leading-tight mb-6 tracking-tight"
                 style={{ perspective: "none" }}
               >
-                <WordByWord text="Humanity is just" />
+                <WordByWord text="One platform to measure, develop," />
                 <br />
-                <WordByWord text="getting started." gradient />
+                <WordByWord text="and embed AI adoption" />
+                <br />
+                <WordByWord text="across your entire organization." gradient />
               </motion.h1>
 
-              <motion.p variants={subtleMaterialize} className="text-lg text-foreground max-w-2xl mx-auto mb-3 leading-relaxed">
-                We're building the platform that manages your entire AI adoption — from measuring who's ready, to training what's missing.
-              </motion.p>
-              <motion.p variants={subtleMaterialize} className="text-sm text-muted-foreground max-w-xl mx-auto mb-10">
-                before you waste another dollar on tools nobody uses.
+              <motion.p variants={subtleMaterialize} className="text-lg text-foreground max-w-2xl mx-auto mb-10 leading-relaxed">
+                Genaia gives every person an AI readiness score, trains what's missing, finds who can lead the change — and proves it's working.
               </motion.p>
 
-              <motion.div variants={subtleMaterialize} className="flex flex-wrap items-center justify-center gap-4 mb-16">
-                <Link href="/assessment">
-                  <Button size="lg" className="rounded-full bg-[#7C3AED] text-white border-[#7C3AED]" data-testid="button-take-assessment-hero">
-                    Take the SQ Assessment
+              <motion.div variants={subtleMaterialize} className="flex flex-wrap items-center justify-center gap-6 mb-16">
+                <div className="text-center">
+                  <Link href="/assessment">
+                    <Button size="lg" className="rounded-full bg-[#7C3AED] text-white border-[#7C3AED]" data-testid="button-take-assessment-hero">
+                      Take the SQ Assessment
+                    </Button>
+                  </Link>
+                  <p className="text-[10px] text-muted-foreground mt-1.5">Free, 5 minutes</p>
+                </div>
+                <div className="text-center">
+                  <Button size="lg" variant="outline" className="rounded-full" data-testid="button-book-demo-hero">
+                    Book a demo
                   </Button>
+                  <p className="text-[10px] text-muted-foreground mt-1.5">For teams & organizations</p>
+                </div>
+                <Link href="/manifesto">
+                  <span className="text-[#7C3AED] text-sm font-medium flex items-center gap-1 hover:gap-2 transition-all cursor-pointer" data-testid="link-manifesto-hero">
+                    Read the manifesto <ArrowRight className="w-4 h-4" />
+                  </span>
                 </Link>
-                <Link href="/calculator">
-                  <Button size="lg" variant="outline" className="rounded-full" data-testid="button-calculate-sq-hero">
-                    Quick Calculator
-                  </Button>
-                </Link>
-                <a href="#manifesto" className="text-[#7C3AED] text-sm font-medium flex items-center gap-1 hover:gap-2 transition-all" data-testid="link-manifesto-hero">
-                  Read the manifesto <ArrowRight className="w-4 h-4" />
-                </a>
               </motion.div>
-            </motion.div>
-
-            <motion.div
-              initial="hidden"
-              animate={introComplete ? "visible" : "hidden"}
-              variants={{ hidden: {}, visible: { transition: { staggerChildren: 0.08, delayChildren: 1.0 } } }}
-              className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-3xl mx-auto"
-            >
-              {metrics.map((m) => (
-                <motion.div key={m.label} variants={metricReveal} className="text-center p-4">
-                  <p className="text-3xl md:text-4xl font-bold bg-gradient-to-r from-[#7C3AED] to-[#A78BFA] bg-clip-text text-transparent">{m.value}</p>
-                  <p className="text-xs text-muted-foreground mt-1 font-medium">{m.label}</p>
-                  <p className="text-[10px] text-muted-foreground/60">{m.sublabel}</p>
-                </motion.div>
-              ))}
             </motion.div>
           </motion.div>
         </section>
 
-        <section id="manifesto" className="py-24 px-6">
-          <motion.div className="max-w-2xl mx-auto text-center" initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-100px" }} variants={staggerContainer}>
-            <motion.h2 variants={fadeUp} className="text-3xl md:text-4xl font-bold text-foreground mb-6 tracking-tight">
-              The world is afraid.
+        {/* SECTION 2 — THE PROBLEM */}
+        <section className="py-24 px-6">
+          <motion.div className="max-w-4xl mx-auto text-center" initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-100px" }} variants={staggerContainer}>
+            <motion.h2 variants={fadeUp} className="text-3xl md:text-4xl lg:text-5xl font-bold text-foreground mb-4 tracking-tight">
+              Companies invested in AI tools.
+              <br />
+              <span className="text-muted-foreground">Nobody prepared the people.</span>
             </motion.h2>
-            <motion.p variants={fadeUp} className="text-muted-foreground leading-relaxed mb-8">
-              Every week, a new headline: AI will take your job. Entire departments replaced overnight. Companies building a future that doesn't need people. The fear is real. But the conclusion is wrong. AI isn't the end of human relevance — it's the beginning of human potential. The problem? 70% of AI initiatives fail. Not because the tools don't work — because the humans using them were never trained to think, decide, and create alongside AI.
+
+            <motion.div variants={fadeUp} className="grid md:grid-cols-3 gap-8 mt-16 mb-12">
+              {problemMetrics.map((m) => (
+                <div key={m.value} className="text-center">
+                  <p className="text-5xl md:text-6xl font-bold bg-gradient-to-r from-[#7C3AED] to-[#A78BFA] bg-clip-text text-transparent mb-3">{m.value}</p>
+                  <div className="w-12 h-px bg-[#7C3AED]/30 mx-auto mb-3" />
+                  <p className="text-sm text-muted-foreground leading-relaxed max-w-[240px] mx-auto">{m.label}</p>
+                </div>
+              ))}
+            </motion.div>
+
+            <motion.p variants={fadeUp} className="text-lg font-medium text-foreground">
+              Genaia closes the gap — with data, not guesswork.
             </motion.p>
           </motion.div>
         </section>
 
+        {/* SECTION 3 — WHAT IS GENAIA */}
         <section className="py-24 px-6 bg-muted/30 relative">
           <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[#7C3AED]/[0.02] to-transparent pointer-events-none" />
           <motion.div className="max-w-5xl mx-auto" initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-100px" }} variants={staggerContainer}>
             <motion.div variants={fadeUp} className="text-center mb-16">
-              <p className="text-xs font-semibold tracking-[0.2em] uppercase text-[#7C3AED] mb-4">FROM EMPLOYEE TO SUPERAGENT</p>
-              <h2 className="text-4xl md:text-5xl font-bold tracking-tight">
-                AI doesn't replace humans.
-                <br />
-                <span className="text-muted-foreground">It reveals what they're capable of.</span>
+              <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight mb-4">
+                The complete system for AI adoption.
               </h2>
+              <p className="text-muted-foreground max-w-2xl mx-auto leading-relaxed">
+                From first diagnosis to sustained transformation. Four engines, one platform.
+              </p>
             </motion.div>
 
-            <div className="grid md:grid-cols-3 gap-6">
-              {transformations.map((t, i) => (
-                <motion.div key={t.before} variants={fadeUp}>
-                  <Card className="p-6 h-full relative overflow-visible group">
-                    <div className="w-12 h-12 rounded-xl flex items-center justify-center mb-5" style={{ backgroundColor: `${t.color}15` }}>
-                      <t.icon className="w-6 h-6" style={{ color: t.color }} />
+            <div className="grid md:grid-cols-4 gap-6">
+              {engines.map((e) => (
+                <motion.div key={e.verb} variants={fadeUp}>
+                  <Card className="p-6 h-full relative overflow-visible">
+                    <div className="absolute -top-4 left-6">
+                      <div className={`w-12 h-12 rounded-2xl bg-gradient-to-br ${e.gradient} flex items-center justify-center shadow-lg shadow-violet-500/20`}>
+                        <e.icon className="w-6 h-6 text-white" />
+                      </div>
                     </div>
-                    <div className="flex items-center gap-3 mb-4">
-                      <span className="text-sm text-muted-foreground line-through">{t.before}</span>
-                      <ArrowRight className="w-4 h-4 text-[#7C3AED] flex-shrink-0" />
-                      <span className="text-sm font-semibold text-[#7C3AED]">{t.after}</span>
+                    <div className="pt-8">
+                      <p className="text-[10px] font-bold tracking-[0.2em] text-[#7C3AED] uppercase mb-2">{e.verb}</p>
+                      <h3 className="text-lg font-bold mb-2">{e.title}</h3>
+                      <p className="text-xs text-muted-foreground leading-relaxed">{e.description}</p>
                     </div>
-                    <p className="text-sm text-muted-foreground leading-relaxed">{t.description}</p>
                   </Card>
                 </motion.div>
               ))}
@@ -534,95 +565,100 @@ export default function LandingPage() {
           </motion.div>
         </section>
 
-        <section className="py-24 px-6 bg-gradient-to-br from-[#5B21B6] via-[#7C3AED] to-[#5B21B6] relative overflow-hidden">
-          <div className="absolute inset-0 overflow-hidden pointer-events-none">
-            <div className="absolute top-0 right-0 w-[400px] h-[400px] rounded-full bg-white/5 blur-[80px]" />
-            <div className="absolute bottom-0 left-0 w-[300px] h-[300px] rounded-full bg-white/5 blur-[60px]" />
-          </div>
-          <motion.div className="max-w-5xl mx-auto relative z-10" initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-100px" }} variants={staggerContainer}>
-            <motion.div variants={fadeUp} className="text-center mb-16">
-              <h2 className="text-4xl md:text-5xl font-bold text-white tracking-tight mb-4">
-                Inverse Training
+        {/* SECTION 4 — PLATFORM INSIDE (Tabs) */}
+        <section id="platform" className="py-24 px-6">
+          <motion.div className="max-w-5xl mx-auto" initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-100px" }} variants={staggerContainer}>
+            <motion.div variants={fadeUp} className="text-center mb-12">
+              <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight mb-4">
+                Built for every person in the organization.
               </h2>
-              <p className="text-lg text-white/70 max-w-xl mx-auto">
-                For decades, humans trained AI. Now AI trains humans to become superhuman.
-              </p>
             </motion.div>
 
-            <motion.div variants={fadeUp} className="grid md:grid-cols-2 gap-6 max-w-3xl mx-auto mb-12">
-              <Card className="p-8 bg-white/10 border-white/10 backdrop-blur-sm">
-                <p className="text-[10px] font-semibold tracking-[0.2em] text-white/50 uppercase mb-3">1950 - 2024</p>
-                <h3 className="text-2xl font-bold text-white mb-2">Humans trained AI</h3>
-                <p className="text-white/60 text-sm leading-relaxed">We poured our collective genius into machines.</p>
-                <div className="mt-6 flex items-center gap-3 text-white/40">
-                  <span className="text-xl font-semibold">Humans</span>
-                  <ArrowRight className="w-5 h-5" />
-                  <span className="text-xl font-semibold">AI</span>
-                </div>
-              </Card>
-              <Card className="p-8 bg-white border-white/20 relative overflow-visible">
-                <div className="absolute -top-3 -right-3 px-3 py-1 rounded-full bg-[#7C3AED] text-white text-[10px] font-semibold tracking-wider uppercase">Now</div>
-                <p className="text-[10px] font-semibold tracking-[0.2em] text-[#7C3AED] uppercase mb-3">The Return</p>
-                <h3 className="text-2xl font-bold text-[#5B21B6] mb-2">AI trains Humans</h3>
-                <p className="text-muted-foreground text-sm leading-relaxed">Their intelligence unlocks our superhumanity.</p>
-                <div className="mt-6 flex items-center gap-3 text-[#7C3AED]">
-                  <span className="text-xl font-semibold">AI</span>
-                  <ArrowRight className="w-5 h-5" />
-                  <span className="text-xl font-semibold">Humans</span>
-                </div>
-              </Card>
-            </motion.div>
-
-            <motion.div variants={fadeUp} className="text-center mt-16 mb-4">
-              <p className="text-xs font-semibold tracking-[0.25em] uppercase text-white/40 mb-6">THIS IS INVERSE TRAINING</p>
-              <p className="text-xl md:text-2xl font-light text-white/80 max-w-2xl mx-auto leading-relaxed">
-                The mechanism through which your people become <span className="text-white font-medium">superhuman</span>.
-              </p>
-            </motion.div>
-
-            <motion.div variants={fadeUp} className="max-w-3xl mx-auto mt-12 pt-10 border-t border-white/10">
-              <p className="text-center text-sm font-semibold tracking-[0.2em] uppercase text-[#A78BFA] mb-10">WE BELIEVE THE OPPOSITE</p>
-
-              <div className="grid md:grid-cols-2 gap-x-12 gap-y-8 mb-12">
-                <div className="text-center md:text-left">
-                  <p className="text-white/40 text-sm line-through mb-2">Fewer humans</p>
-                  <p className="text-white text-lg font-semibold">Better ones.</p>
-                </div>
-                <div className="text-center md:text-left">
-                  <p className="text-white/40 text-sm line-through mb-2">Automated companies</p>
-                  <p className="text-white text-lg font-semibold">Extraordinary ones.</p>
-                </div>
-              </div>
-
-              <div className="text-center space-y-4 max-w-xl mx-auto">
-                <p className="text-white/60 text-sm leading-relaxed">
-                  The organizations that win won't be the ones with the fewest people.
-                </p>
-                <p className="text-white text-base font-medium leading-relaxed">
-                  They'll be the ones with the most capable ones.
-                </p>
-                <div className="w-8 h-px bg-white/20 mx-auto my-6" />
-                <p className="text-white/50 text-sm leading-relaxed italic">
-                  We're building toward a world where every person inside an organization knows exactly how to work with AI — and every organization is designed to let them.
-                </p>
+            <motion.div variants={fadeUp} className="flex justify-center mb-12">
+              <div className="inline-flex rounded-full border border-border p-1 bg-background">
+                <button
+                  onClick={() => setPlatformTab("employees")}
+                  className={`px-6 py-2.5 rounded-full text-sm font-medium transition-all ${
+                    platformTab === "employees"
+                      ? "bg-[#7C3AED] text-white shadow-lg shadow-violet-500/20"
+                      : "text-muted-foreground"
+                  }`}
+                  data-testid="button-tab-employees"
+                >
+                  For Employees
+                </button>
+                <button
+                  onClick={() => setPlatformTab("leaders")}
+                  className={`px-6 py-2.5 rounded-full text-sm font-medium transition-all ${
+                    platformTab === "leaders"
+                      ? "bg-[#7C3AED] text-white shadow-lg shadow-violet-500/20"
+                      : "text-muted-foreground"
+                  }`}
+                  data-testid="button-tab-leaders"
+                >
+                  For Leaders
+                </button>
               </div>
             </motion.div>
+
+            <AnimatePresence mode="wait">
+              {platformTab === "employees" && (
+                <motion.div key="emp" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }} transition={{ duration: 0.3 }}>
+                  <h3 className="text-xl font-semibold text-center mb-2">Your AI readiness, gamified.</h3>
+                  <p className="text-center text-muted-foreground mb-8 max-w-lg mx-auto">
+                    A personal AI profile, daily challenges, and a clear path to improve.
+                  </p>
+                  <div className="grid md:grid-cols-3 gap-4">
+                    {employeeModules.map((m) => (
+                      <Card key={m.title} className="p-5 h-full">
+                        <div className="w-10 h-10 rounded-xl bg-[#7C3AED]/10 flex items-center justify-center mb-3">
+                          <m.icon className="w-5 h-5 text-[#7C3AED]" />
+                        </div>
+                        <h3 className="font-semibold text-sm mb-1">{m.title}</h3>
+                        <p className="text-xs text-muted-foreground leading-relaxed">{m.desc}</p>
+                      </Card>
+                    ))}
+                  </div>
+                </motion.div>
+              )}
+
+              {platformTab === "leaders" && (
+                <motion.div key="lead" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }} transition={{ duration: 0.3 }}>
+                  <h3 className="text-xl font-semibold text-center mb-2">The control panel you never had.</h3>
+                  <p className="text-center text-muted-foreground mb-8 max-w-lg mx-auto">
+                    See who's ready, who's not, where to invest, and what's working.
+                  </p>
+                  <div className="grid md:grid-cols-4 gap-4">
+                    {leaderModules.map((m) => (
+                      <Card key={m.title} className="p-5 h-full">
+                        <div className="w-10 h-10 rounded-xl bg-[#7C3AED]/10 flex items-center justify-center mb-3">
+                          <m.icon className="w-5 h-5 text-[#7C3AED]" />
+                        </div>
+                        <h3 className="font-semibold text-sm mb-1">{m.title}</h3>
+                        <p className="text-xs text-muted-foreground leading-relaxed">{m.desc}</p>
+                      </Card>
+                    ))}
+                  </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
           </motion.div>
         </section>
 
-        <section id="superagency" className="py-24 px-6">
+        {/* SECTION 5 — SQ */}
+        <section id="sq" className="py-24 px-6 bg-muted/30">
           <motion.div className="max-w-5xl mx-auto" initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-100px" }} variants={staggerContainer}>
             <motion.div variants={fadeUp} className="text-center mb-6">
-              <p className="text-xs font-semibold tracking-[0.2em] uppercase text-[#7C3AED] mb-4">SQ - SUPERAGENCY QUOTIENT</p>
-              <h2 className="text-4xl md:text-5xl font-bold tracking-tight mb-4">
-                Measure. Develop. Transform.
+              <p className="text-xs font-semibold tracking-[0.2em] uppercase text-[#7C3AED] mb-4">SQ — SUPERAGENCY QUOTIENT</p>
+              <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight mb-4">
+                The score that measures AI readiness.
               </h2>
-              <p className="text-muted-foreground max-w-xl mx-auto">Six skill domains that define your AI readiness — scored 0 to 100.</p>
+              <p className="text-muted-foreground max-w-xl mx-auto">Not what tools you know. How you think, decide, and create when AI is everywhere. Scored 0 to 100.</p>
             </motion.div>
 
             <motion.div variants={fadeUp} className="flex justify-center my-12">
               <div className="relative">
-                <SQRing score={72} size={200} label="Expert" />
+                <SQRing score={72} size={200} label="Catalyst" />
                 <motion.div
                   className="absolute -top-2 -right-8 px-3 py-1 rounded-full bg-green-500/10 border border-green-500/20"
                   initial={{ opacity: 0, x: -10 }}
@@ -635,10 +671,10 @@ export default function LandingPage() {
               </div>
             </motion.div>
 
-            <motion.div variants={staggerFast} className="grid grid-cols-2 md:grid-cols-3 gap-4">
+            <motion.div variants={staggerFast} className="grid grid-cols-2 md:grid-cols-3 gap-4 mb-12">
               {skillDomains.map((skill, i) => (
                 <motion.div key={skill.name} variants={fadeUp}>
-                  <Card className="p-5 h-full hover-elevate">
+                  <Card className="p-5 h-full">
                     <div className="flex items-start justify-between gap-2 mb-3">
                       <div className="w-10 h-10 rounded-xl bg-[#7C3AED]/10 flex items-center justify-center flex-shrink-0">
                         <skill.icon className="w-5 h-5 text-[#7C3AED]" />
@@ -660,107 +696,113 @@ export default function LandingPage() {
                 </motion.div>
               ))}
             </motion.div>
+
+            <motion.div variants={fadeUp} className="mb-10">
+              <div className="max-w-2xl mx-auto rounded-xl bg-background border border-border p-4">
+                <div className="flex items-center gap-0 w-full">
+                  {[
+                    { range: "0\u201325", label: "Novice" },
+                    { range: "26\u201350", label: "Practitioner" },
+                    { range: "51\u201375", label: "Catalyst" },
+                    { range: "76\u2013100", label: "Superagent" },
+                  ].map((level, i) => (
+                    <div
+                      key={level.label}
+                      className={`flex-1 text-center py-2 text-xs font-medium ${
+                        i === 2 ? "bg-[#7C3AED]/10 text-[#7C3AED] rounded-lg" : "text-muted-foreground"
+                      }`}
+                    >
+                      <p className="font-semibold">{level.label}</p>
+                      <p className="text-[10px] opacity-60">{level.range}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </motion.div>
+
+            <motion.div variants={fadeUp} className="text-center">
+              <Link href="/assessment">
+                <Button size="lg" className="rounded-full bg-[#7C3AED] text-white border-[#7C3AED]" data-testid="button-sq-cta">
+                  What's your SQ? <ArrowRight className="w-4 h-4 ml-2" />
+                </Button>
+              </Link>
+              <p className="text-xs text-muted-foreground mt-2">Free, 5 minutes</p>
+            </motion.div>
           </motion.div>
         </section>
 
-        <section id="product" className="py-24 px-6 bg-muted/30">
-          <motion.div className="max-w-5xl mx-auto" initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-100px" }} variants={staggerContainer}>
+        {/* SECTION 6 — HOW IT WORKS (90-day timeline) */}
+        <section className="py-24 px-6">
+          <motion.div className="max-w-4xl mx-auto" initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-100px" }} variants={staggerContainer}>
             <motion.div variants={fadeUp} className="text-center mb-16">
-              <p className="text-xs font-semibold tracking-[0.2em] uppercase text-[#7C3AED] mb-4">THE PLATFORM</p>
-              <h2 className="text-4xl md:text-5xl font-bold tracking-tight">
-                Three engines.
-                <br />
-                <span className="text-muted-foreground">One transformation.</span>
+              <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight mb-4">
+                From zero to measurable change in 90 days.
               </h2>
-              <p className="text-muted-foreground max-w-2xl mx-auto mt-6 leading-relaxed">
-                Genaia measures who's ready, activates the people who can lead change, and redesigns how your organization works around them.
-              </p>
             </motion.div>
 
             <div className="grid md:grid-cols-3 gap-6">
-              {pillars.map((p, i) => {
-                const Icon = p.icon;
-                return (
-                  <motion.div key={p.title} variants={fadeUp}>
-                    <Card className="p-8 h-full relative overflow-visible hover-elevate">
-                      <div className="absolute -top-4 left-6">
-                        <div className={`w-14 h-14 rounded-2xl bg-gradient-to-br ${p.gradient} flex items-center justify-center shadow-lg shadow-violet-500/20`}>
-                          <Icon className="w-7 h-7 text-white" />
-                        </div>
+              {timelineSteps.map((step, i) => (
+                <motion.div key={step.week} variants={fadeUp}>
+                  <Card className="p-6 h-full relative overflow-visible">
+                    <div className="absolute -top-3 left-6">
+                      <div className="px-3 py-1 rounded-full bg-[#7C3AED] text-white text-[10px] font-semibold tracking-wider uppercase shadow-lg shadow-violet-500/20">
+                        {step.week}
                       </div>
-                      <div className="pt-8">
-                        <p className="text-[10px] font-bold tracking-[0.2em] text-[#7C3AED] uppercase mb-2">{p.verb}</p>
-                        <h3 className="text-xl font-bold mb-3">{p.title}</h3>
-                        <p className="text-sm text-muted-foreground leading-relaxed">{p.description}</p>
+                    </div>
+                    <div className="pt-6">
+                      <div className="w-10 h-10 rounded-xl bg-[#7C3AED]/10 flex items-center justify-center mb-4">
+                        <step.icon className="w-5 h-5 text-[#7C3AED]" />
                       </div>
-                    </Card>
-                  </motion.div>
-                );
-              })}
+                      <h3 className="text-lg font-bold mb-2">{step.title}</h3>
+                      <p className="text-sm text-muted-foreground leading-relaxed">{step.desc}</p>
+                    </div>
+                  </Card>
+                </motion.div>
+              ))}
             </div>
           </motion.div>
         </section>
 
+        {/* SECTION 7 — OUR THESIS */}
         <section className="py-24 px-6 relative overflow-hidden">
           <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[#7C3AED]/[0.02] to-transparent pointer-events-none" />
           <motion.div className="max-w-4xl mx-auto text-center" initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-100px" }} variants={staggerContainer}>
             <motion.div variants={fadeUp}>
-              <p className="text-xs font-semibold tracking-[0.2em] uppercase text-[#7C3AED] mb-4">OUR BELIEF</p>
-              <h2 className="text-4xl md:text-5xl font-bold tracking-tight mb-8">
+              <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight mb-8">
                 Others automate humans out.
                 <br />
                 <span className="bg-gradient-to-r from-[#7C3AED] to-[#A78BFA] bg-clip-text text-transparent">We elevate humans up.</span>
               </h2>
             </motion.div>
-            <motion.div variants={fadeUp} className="grid md:grid-cols-2 gap-6 max-w-2xl mx-auto">
-              <Card className="p-6 text-center">
-                <p className="text-3xl font-bold text-muted-foreground/40 mb-2">Automation</p>
-                <p className="text-sm text-muted-foreground">Makes companies efficient</p>
-              </Card>
-              <Card className="p-6 text-center border-[#7C3AED]/30 bg-[#7C3AED]/5">
-                <p className="text-3xl font-bold text-[#7C3AED] mb-2">Superagency</p>
-                <p className="text-sm text-foreground font-medium">Makes companies extraordinary</p>
-              </Card>
-            </motion.div>
-          </motion.div>
-        </section>
-
-        <section className="py-24 px-6 bg-gradient-to-br from-[#5B21B6] via-[#7C3AED] to-[#5B21B6] relative overflow-hidden">
-          <div className="absolute inset-0 overflow-hidden pointer-events-none">
-            <div className="absolute -top-20 -right-20 w-[300px] h-[300px] rounded-full bg-white/5 blur-[60px]" />
-            <div className="absolute -bottom-20 -left-20 w-[200px] h-[200px] rounded-full bg-white/5 blur-[40px]" />
-          </div>
-          <motion.div className="max-w-4xl mx-auto text-center relative z-10" initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-100px" }} variants={staggerContainer}>
-            <motion.div variants={fadeUp}>
-              <h2 className="text-4xl md:text-5xl font-bold text-white tracking-tight mb-4">
-                What's your SQ?
-              </h2>
-              <p className="text-lg text-white/60 mb-10 max-w-lg mx-auto">
-                Discover your Superagency Quotient. Free. 5 minutes. The first step to becoming superhuman.
+            <motion.div variants={fadeUp} className="max-w-2xl mx-auto mb-8">
+              <p className="text-muted-foreground leading-relaxed">
+                Everyone is building AI to replace people. We're building AI that makes people irreplaceable.
+                The companies that win won't be the ones with the fewest humans — they'll be the ones with the most capable ones.
               </p>
             </motion.div>
-            <motion.div variants={fadeScale} className="flex justify-center mb-10">
-              <SQRing score={47} size={160} label="Practitioner" />
-            </motion.div>
-            <motion.div variants={fadeUp} className="flex flex-wrap justify-center gap-4">
-              <Link href="/calculator">
-                <Button size="lg" className="rounded-full bg-white text-[#5B21B6] border-white font-semibold" data-testid="button-calculate-sq-cta">
-                  Calculate your SQ <ArrowRight className="w-4 h-4 ml-2" />
-                </Button>
+            <motion.div variants={fadeUp}>
+              <Link href="/manifesto">
+                <span className="text-[#7C3AED] text-sm font-medium flex items-center gap-1 justify-center hover:gap-2 transition-all cursor-pointer" data-testid="link-read-manifesto">
+                  Read the full manifesto <ArrowRight className="w-4 h-4" />
+                </span>
               </Link>
             </motion.div>
           </motion.div>
         </section>
 
-        <section id="pricing" className="py-24 px-6">
+        {/* SECTION 8 — FOR LEADERS */}
+        <section id="leaders" className="py-24 px-6 bg-muted/30">
           <motion.div className="max-w-4xl mx-auto" initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-100px" }} variants={staggerContainer}>
             <motion.div variants={fadeUp} className="text-center mb-12">
               <p className="text-xs font-semibold tracking-[0.2em] uppercase text-[#7C3AED] mb-4">FOR LEADERS</p>
-              <h2 className="text-4xl md:text-5xl font-bold tracking-tight mb-4">
+              <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight mb-4">
                 Built for CHROs and
                 <br />
                 transformation leaders.
               </h2>
+              <p className="text-muted-foreground max-w-xl mx-auto">
+                If you're responsible for AI adoption, you already know: buying tools isn't a strategy.
+              </p>
             </motion.div>
 
             <motion.div variants={fadeUp}>
@@ -768,22 +810,22 @@ export default function LandingPage() {
                 <div className="space-y-4 mb-8">
                   {[
                     "SQ benchmarks by team, department, and role",
-                    "Engagement metrics that beat traditional LMS",
-                    "Champions identified by data, not politics",
+                    "Champions identified by algorithm, not politics",
+                    "Training that people actually complete",
                     "AI governance built in from day one",
                     "ROI dashboard with hours and dollars recovered",
+                    "Agentic Score: your org's AI maturity in one number",
                   ].map((item) => (
                     <div key={item} className="flex items-start gap-3">
                       <div className="w-5 h-5 rounded-full bg-[#7C3AED]/10 flex items-center justify-center flex-shrink-0 mt-0.5">
-                        <ChevronRight className="w-3 h-3 text-[#7C3AED]" />
+                        <CheckCircle2 className="w-3 h-3 text-[#7C3AED]" />
                       </div>
                       <span className="text-sm text-muted-foreground">{item}</span>
                     </div>
                   ))}
                 </div>
                 <p className="text-xs text-muted-foreground mb-8 text-center leading-relaxed">
-                  Start with a 3-month pilot. 50-100 people. If SQ scores don't improve
-                  and engagement doesn't beat every program you've tried, we'll know.
+                  Start with a 3-month pilot. 50–100 people. We measure the before and after together.
                 </p>
                 <div className="flex flex-wrap justify-center gap-4">
                   <Button className="rounded-full bg-[#7C3AED] text-white border-[#7C3AED]" data-testid="button-book-demo">
@@ -798,27 +840,36 @@ export default function LandingPage() {
           </motion.div>
         </section>
 
-        <footer className="py-20 px-6 border-t">
-          <div className="max-w-4xl mx-auto text-center">
-            <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={staggerContainer}>
-              <motion.p variants={fadeUp} className="text-3xl md:text-4xl font-bold text-foreground mb-3 tracking-tight">
+        {/* SECTION 9 — FOOTER CTA */}
+        <section className="py-24 px-6 bg-gradient-to-br from-[#5B21B6] via-[#7C3AED] to-[#5B21B6] relative overflow-hidden">
+          <div className="absolute inset-0 overflow-hidden pointer-events-none">
+            <div className="absolute -top-20 -right-20 w-[300px] h-[300px] rounded-full bg-white/5 blur-[60px]" />
+            <div className="absolute -bottom-20 -left-20 w-[200px] h-[200px] rounded-full bg-white/5 blur-[40px]" />
+          </div>
+          <motion.div className="max-w-4xl mx-auto text-center relative z-10" initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-100px" }} variants={staggerContainer}>
+            <motion.div variants={fadeUp}>
+              <h2 className="text-4xl md:text-5xl font-bold text-white tracking-tight mb-8">
                 Humanity is just getting started.
-              </motion.p>
-              <motion.p variants={fadeUp} className="text-muted-foreground mb-8">
-                The age of the human superagent begins now.
-              </motion.p>
-              <motion.div variants={fadeUp} className="flex flex-wrap justify-center gap-4 mb-10">
-                <Link href="/calculator">
-                  <Button className="rounded-full bg-[#7C3AED] text-white border-[#7C3AED]" data-testid="button-calculate-sq-footer">
-                    Calculate your SQ
-                  </Button>
-                </Link>
-                <Button variant="outline" className="rounded-full" data-testid="button-book-demo-footer">Book a demo</Button>
-              </motion.div>
-              <motion.div variants={fadeUp}>
-                <img src={logoImg} alt="Genaia" className="h-10 w-auto opacity-60 mx-auto" />
-              </motion.div>
+              </h2>
             </motion.div>
+            <motion.div variants={fadeUp} className="flex flex-wrap justify-center gap-4">
+              <Link href="/calculator">
+                <Button size="lg" className="rounded-full bg-white text-[#5B21B6] border-white font-semibold" data-testid="button-calculate-sq-footer">
+                  Calculate your SQ
+                </Button>
+              </Link>
+              <Button size="lg" variant="outline" className="rounded-full border-white/30 text-white" data-testid="button-book-demo-footer">
+                Book a demo
+              </Button>
+            </motion.div>
+          </motion.div>
+        </section>
+
+        {/* FOOTER */}
+        <footer className="py-12 px-6 border-t">
+          <div className="max-w-4xl mx-auto text-center">
+            <img src={logoImg} alt="Genaia" className="h-10 w-auto opacity-60 mx-auto mb-4" />
+            <p className="text-xs text-muted-foreground">We're Genaia. And we're just getting started.</p>
           </div>
         </footer>
       </main>

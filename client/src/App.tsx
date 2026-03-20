@@ -30,6 +30,7 @@ import SettingsPage from "@/pages/admin/settings";
 import AIRecruitingPage from "@/pages/admin/ai-recruiting";
 import AICaseBuilderPage from "@/pages/admin/ai-case-builder";
 import AssessmentPage from "@/pages/assessment";
+import ManifestoPage from "@/pages/manifesto";
 
 function UserDashboardLayout({ children }: { children: React.ReactNode }) {
   const style = {
@@ -127,6 +128,7 @@ function Router() {
       <Route path="/" component={LandingPage} />
       <Route path="/calculator" component={CalculatorPage} />
       <Route path="/assessment" component={AssessmentPage} />
+      <Route path="/manifesto" component={ManifestoPage} />
       <Route path="/dashboard/:rest*" component={UserDashboardRouter} />
       <Route path="/dashboard" component={UserDashboardRouter} />
       <Route path="/admin/:rest*" component={AdminDashboardRouter} />
