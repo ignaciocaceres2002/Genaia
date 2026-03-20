@@ -1,7 +1,7 @@
 import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
-import { insertSqCalculationSchema, insertSqAssessmentSchema } from "@shared/schema";
+import { insertSqCalculationSchema, insertSqAssessmentSchema, insertToolRequestSchema } from "@shared/schema";
 import { z } from "zod";
 
 const toolRequestStatusSchema = z.object({
@@ -111,6 +111,19 @@ export async function registerRoutes(
       const updated = await storage.updateToolRequestStatus(req.params.id, parsed.data.status);
       if (!updated) return res.status(404).json({ message: "Not found" });
       res.json(updated);
+    } catch (error) {
+      res.status(500).json({ message: "Internal server error" });
+    }
+  });
+
+  app.post("/api/tool-requests", async (req, res) => {
+    try {
+      const parsed = insertToolRequestSchema.safeParse(req.body);
+      if (!parsed.success) {
+        return res.status(400).json({ message: "Invalid request data", errors: parsed.error.flatten() });
+      }
+      const request = await storage.createToolRequest(parsed.data);
+      res.json(request);
     } catch (error) {
       res.status(500).json({ message: "Internal server error" });
     }
