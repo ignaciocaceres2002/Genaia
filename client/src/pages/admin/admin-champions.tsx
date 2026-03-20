@@ -5,7 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { useQuery } from "@tanstack/react-query";
 import type { User } from "@shared/schema";
-import { Trophy, Users, TrendingUp, Send } from "lucide-react";
+import { Trophy, Users, TrendingUp, Send, ExternalLink } from "lucide-react";
 
 const fadeUp = { hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0 } };
 
@@ -86,6 +86,23 @@ export default function AdminChampionsPage() {
                 ))}
               </tbody>
             </table>
+          </div>
+        </Card>
+      </motion.div>
+
+      <motion.div variants={fadeUp}>
+        <Card className="p-6 bg-gradient-to-br from-[#7C3AED]/10 to-[#5B21B6]/10 border-[#7C3AED]/20">
+          <div className="flex items-center justify-between gap-4 flex-wrap">
+            <div>
+              <h3 className="font-semibold mb-1">Champions Test</h3>
+              <p className="text-sm text-muted-foreground">Identify potential champions with our AI-powered assessment</p>
+              <p className="text-xs text-muted-foreground mt-1">Use code <span className="font-semibold text-[#7C3AED]">PRUEBA</span> to access the test</p>
+            </div>
+            <a href="https://aichampsfinder.replit.app/" target="_blank" rel="noopener noreferrer">
+              <Button className="rounded-full bg-[#7C3AED] text-white border-[#7C3AED]" data-testid="button-champions-test">
+                <ExternalLink className="w-4 h-4 mr-2" /> Champions Test
+              </Button>
+            </a>
           </div>
         </Card>
       </motion.div>
