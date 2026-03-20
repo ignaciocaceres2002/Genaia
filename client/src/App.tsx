@@ -91,6 +91,7 @@ function UserDashboardRouter() {
         <Route path="/dashboard/learning" component={LearningPage} />
         <Route path="/dashboard/assessments" component={AssessmentsPage} />
         <Route path="/dashboard/tools" component={ToolsPage} />
+        <Route path="/dashboard/case-builder" component={AICaseBuilderPage} />
         <Route path="/dashboard/policies" component={PoliciesPage} />
         <Route path="/dashboard/champions" component={ChampionsPage} />
         <Route path="/dashboard/company" component={CompanyPage} />
