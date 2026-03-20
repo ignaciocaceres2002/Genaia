@@ -496,9 +496,6 @@ export default function LandingPage() {
             <motion.p variants={fadeUp} className="text-muted-foreground leading-relaxed mb-8">
               Every week, a new headline: AI will take your job. Entire departments replaced overnight. Companies building a future that doesn't need people. The fear is real. But the conclusion is wrong. AI isn't the end of human relevance — it's the beginning of human potential. The problem? 70% of AI initiatives fail. Not because the tools don't work — because the humans using them were never trained to think, decide, and create alongside AI.
             </motion.p>
-            <motion.h3 variants={fadeUp} className="text-2xl font-bold text-foreground">
-              We believe the opposite.
-            </motion.h3>
           </motion.div>
         </section>
 
@@ -573,9 +570,40 @@ export default function LandingPage() {
               </Card>
             </motion.div>
 
-            <motion.p variants={fadeUp} className="text-center text-white/60 max-w-xl mx-auto italic text-sm">
-              The process through which AI trains humans to reach capabilities never possible before.
-            </motion.p>
+            <motion.div variants={fadeUp} className="text-center mt-16 mb-4">
+              <p className="text-xs font-semibold tracking-[0.25em] uppercase text-white/40 mb-6">THIS IS INVERSE TRAINING</p>
+              <p className="text-xl md:text-2xl font-light text-white/80 max-w-2xl mx-auto leading-relaxed">
+                The mechanism through which your people become <span className="text-white font-medium">superhuman</span>.
+              </p>
+            </motion.div>
+
+            <motion.div variants={fadeUp} className="max-w-3xl mx-auto mt-12 pt-10 border-t border-white/10">
+              <p className="text-center text-sm font-semibold tracking-[0.2em] uppercase text-[#A78BFA] mb-10">WE BELIEVE THE OPPOSITE</p>
+
+              <div className="grid md:grid-cols-2 gap-x-12 gap-y-8 mb-12">
+                <div className="text-center md:text-left">
+                  <p className="text-white/40 text-sm line-through mb-2">Fewer humans</p>
+                  <p className="text-white text-lg font-semibold">Better ones.</p>
+                </div>
+                <div className="text-center md:text-left">
+                  <p className="text-white/40 text-sm line-through mb-2">Automated companies</p>
+                  <p className="text-white text-lg font-semibold">Extraordinary ones.</p>
+                </div>
+              </div>
+
+              <div className="text-center space-y-4 max-w-xl mx-auto">
+                <p className="text-white/60 text-sm leading-relaxed">
+                  The organizations that win won't be the ones with the fewest people.
+                </p>
+                <p className="text-white text-base font-medium leading-relaxed">
+                  They'll be the ones with the most capable ones.
+                </p>
+                <div className="w-8 h-px bg-white/20 mx-auto my-6" />
+                <p className="text-white/50 text-sm leading-relaxed italic">
+                  We're building toward a world where every person inside an organization knows exactly how to work with AI — and every organization is designed to let them.
+                </p>
+              </div>
+            </motion.div>
           </motion.div>
         </section>
 
