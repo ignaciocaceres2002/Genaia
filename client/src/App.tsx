@@ -28,6 +28,7 @@ import AdminPoliciesPage from "@/pages/admin/admin-policies";
 import AdminChampionsPage from "@/pages/admin/admin-champions";
 import SettingsPage from "@/pages/admin/settings";
 import AIRecruitingPage from "@/pages/admin/ai-recruiting";
+import AICaseBuilderPage from "@/pages/admin/ai-case-builder";
 import AssessmentPage from "@/pages/assessment";
 
 function UserDashboardLayout({ children }: { children: React.ReactNode }) {
@@ -110,6 +111,7 @@ function AdminDashboardRouter() {
         <Route path="/admin/policies" component={AdminPoliciesPage} />
         <Route path="/admin/champions" component={AdminChampionsPage} />
         <Route path="/admin/recruiting" component={AIRecruitingPage} />
+        <Route path="/admin/case-builder" component={AICaseBuilderPage} />
         <Route path="/admin/agentic" component={AgenticScorePage} />
         <Route path="/admin/alerts" component={AlertsPage} />
         <Route path="/admin/settings" component={SettingsPage} />
