@@ -450,8 +450,11 @@ export default function LandingPage() {
                 <WordByWord text="getting started." gradient />
               </motion.h1>
 
-              <motion.p variants={subtleMaterialize} className="text-lg text-muted-foreground max-w-xl mx-auto mb-10 leading-relaxed">
-                For decades, humans trained AI with their collective knowledge. Now AI trains us back — to unlock a version of ourselves we've never seen before.
+              <motion.p variants={subtleMaterialize} className="text-lg text-foreground max-w-2xl mx-auto mb-3 leading-relaxed">
+                We're building the system that tells you exactly who's ready for AI, who can lead the change, and what to train
+              </motion.p>
+              <motion.p variants={subtleMaterialize} className="text-sm text-muted-foreground max-w-xl mx-auto mb-10">
+                before you waste another dollar on tools nobody uses.
               </motion.p>
 
               <motion.div variants={subtleMaterialize} className="flex flex-wrap items-center justify-center gap-4 mb-16">
