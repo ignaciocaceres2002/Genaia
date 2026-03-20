@@ -437,7 +437,7 @@ export default function LandingPage() {
               variants={heroRevealContainer}
             >
               <motion.p variants={subtleMaterialize} className="text-xs font-semibold tracking-[0.2em] uppercase text-[#7C3AED] mb-6">
-                INVERSE TRAINING
+                Your Human-First AI Adoption Platform
               </motion.p>
 
               <motion.h1
