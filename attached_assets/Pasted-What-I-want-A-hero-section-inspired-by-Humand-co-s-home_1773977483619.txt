@@ -1,0 +1,55 @@
+What I want
+A hero section inspired by Humand.co's homepage hero. The headline has a fixed part and a rotating part that cycles through different value propositions. Each rotation comes with a different product mockup on the right side that transitions in with smooth animations.
+The structure
+Left side: text (headline + sub + buttons)
+Right side: product mockup that changes with each rotation
+Eyebrow (small text above the headline, subtle, always visible):
+"Your Human-First AI Adoption Platform"
+Fixed headline:
+"One platform to"
+Rotating items (cycle every 4 seconds, smooth crossfade between them):
+
+"measure who's ready."
+Mockup context: A beautiful SQ results screen. Show a radar/hexagon chart with 6 skills (Data Fluency, Adaptive Mindset, Verification Instinct, Orchestration, Proactive Experimentation, Systems Redesign) with varying scores. A large "67" SQ score in the center with a circular progress ring around it. Label "Catalyst" below the number. Clean, dashboard-style card.
+"find who can lead the change."
+Mockup context: An admin Champion Finder view. Show a ranked list of 4-5 people with their names, SQ scores, engagement %, and influence scores. Each person has a small avatar circle, a colored badge indicating their rank. Header says "Champion Candidates" with a subtitle "Ranked by algorithm: SQ 40% + Engagement 30% + Influence 30%". One person has a purple "Invite" button next to their name.
+"train what's missing."
+Mockup context: A user learning dashboard. Show a vertical path of course modules (like Duolingo) with some completed (checkmark), one current (glowing/active), and some locked. Course title at top: "Trust But Verify" with subtitle "Verification Instinct · 6 modules". Show a streak counter "12-day streak" and XP earned "+150 XP". A daily challenge card at the bottom: "Complete 'Verify or Trust?' scenario — 5 min".
+"prove it's working."
+Mockup context: An admin overview dashboard. Show 4 KPI cards at top (Org Avg SQ: 54 with +3 arrow, Active Users: 91%, Training Completion: 68% with +12% badge, Hours Recovered: 1,420 this quarter). Below, an engagement timeline line chart trending upward over 30 days. Clean, executive-ready feel.
+"build AI into every role."
+Mockup context: An AI Case Builder screen. Show a submitted business case card: title "Automate weekly client reporting", submitted by "Maria González · Sales", status badge "Under Review", estimated impact "6h/week recovered", AI tools suggested "Claude + Sheets integration". Below it, a second card partially visible with different project.
+"hire AI-ready talent."
+Mockup context: An AI-First Recruiting view. Show a candidate comparison table with 3 candidates, each with their name, role applied for, and an SQ mini-radar showing their 6 skill scores as a small hexagon. One candidate has a green "AI-Ready" badge (SQ 71), another has amber "Developing" (SQ 43). A header says "Product Manager — 3 candidates assessed".
+
+Fixed subheadline (below the rotating headline):
+"Genaia manages your entire AI adoption — person by person, with data."
+Buttons:
+
+Primary: "Take the SQ Assessment" with a small label below or next to it: "Free · 5 minutes"
+Secondary: "Book a demo"
+
+Animation behavior:
+
+The rotating text should fade out and fade in smoothly (crossfade, not a hard switch).
+The mockup on the right should have a more interesting entrance: each new mockup slides in slightly from the right or bottom with a subtle scale-up (from 0.95 to 1.0) and opacity fade. The exiting mockup fades out simultaneously.
+The transition between items should feel premium — smooth, not rushed. Easing should be ease-out or spring-like.
+There should be small dot indicators below the text showing which item is active (6 dots), and users can click a dot to jump to that item.
+Auto-advances every 4 seconds. Pauses auto-advance if user clicks a dot, resumes after 8 seconds of inactivity.
+
+Mockup visual style:
+
+The mockups should look like actual product screenshots — not wireframes, not flat illustrations. They should feel like a real SaaS dashboard.
+Use cards with subtle shadows, clean typography, and the existing color system of the platform (the violet accent colors and light backgrounds already in the app).
+The mockups should be rendered as styled components or divs, not static images — so they feel alive and part of the page.
+Each mockup should be inside a laptop frame or a browser-window frame with a subtle shadow, slightly rotated/angled for depth (like Humand does with their laptop mockup). Keep the angle subtle — this is not a 3D showcase, just enough to feel premium.
+
+Responsive:
+
+On mobile, the mockup goes below the text. The rotation still works but mockups are full-width.
+The headline text should be large and impactful on desktop (think 48-56px for the main headline).
+
+Important:
+
+This is the HERO section of genaia.ai. It's the first thing anyone sees. It needs to feel polished, premium, and communicate immediately that this is a serious platform — not a course, not a quiz, not a consulting deck.
+The rotating mechanic does the heavy lifting of showing breadth. Each rotation = one product capability demonstrated visually. A visitor who stays 24 seconds sees the entire platform value without reading a paragraph.
