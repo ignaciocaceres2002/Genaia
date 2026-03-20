@@ -531,37 +531,87 @@ export default function LandingPage() {
           </motion.div>
         </section>
 
-        {/* SECTION 3 — WHAT IS GENAIA */}
+        {/* SECTION 3 — WHAT IS GENAIA (Puzzle) */}
         <section className="py-24 px-6 bg-muted/30 relative">
           <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[#7C3AED]/[0.02] to-transparent pointer-events-none" />
           <motion.div className="max-w-5xl mx-auto" initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-100px" }} variants={staggerContainer}>
             <motion.div variants={fadeUp} className="text-center mb-16">
               <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight mb-4">
-                The complete system for AI adoption.
+                The AI Adoption Puzzle, with every piece.
               </h2>
               <p className="text-muted-foreground max-w-2xl mx-auto leading-relaxed">
                 From first diagnosis to sustained transformation. Four engines, one platform.
               </p>
             </motion.div>
 
-            <div className="grid md:grid-cols-4 gap-6">
-              {engines.map((e) => (
-                <motion.div key={e.verb} variants={fadeUp}>
-                  <Card className="p-6 h-full relative overflow-visible">
-                    <div className="absolute -top-4 left-6">
-                      <div className={`w-12 h-12 rounded-2xl bg-gradient-to-br ${e.gradient} flex items-center justify-center shadow-lg shadow-violet-500/20`}>
-                        <e.icon className="w-6 h-6 text-white" />
-                      </div>
+            <div className="grid grid-cols-2 gap-0 max-w-3xl mx-auto">
+              {engines.map((e, i) => {
+                const corners = [
+                  "rounded-tl-3xl rounded-tr-md rounded-bl-md rounded-br-md",
+                  "rounded-tr-3xl rounded-tl-md rounded-bl-md rounded-br-md",
+                  "rounded-bl-3xl rounded-tl-md rounded-tr-md rounded-br-md",
+                  "rounded-br-3xl rounded-tl-md rounded-tr-md rounded-bl-md",
+                ];
+                const borders = [
+                  "border-r border-b",
+                  "border-l border-b",
+                  "border-r border-t",
+                  "border-l border-t",
+                ];
+                const bgGradients = [
+                  "from-[#7C3AED]/[0.04] to-transparent",
+                  "from-transparent to-[#7C3AED]/[0.04]",
+                  "from-transparent to-[#7C3AED]/[0.04]",
+                  "from-[#7C3AED]/[0.04] to-transparent",
+                ];
+                return (
+                  <motion.div
+                    key={e.verb}
+                    variants={fadeUp}
+                    className={`relative p-8 ${borders[i]} border-[#7C3AED]/10 bg-gradient-to-br ${bgGradients[i]} group`}
+                  >
+                    <div className="absolute top-4 right-4 text-[#7C3AED]/10 text-6xl font-black select-none leading-none">
+                      {e.num}
                     </div>
-                    <div className="pt-8">
-                      <p className="text-[10px] font-bold tracking-[0.2em] text-[#7C3AED] uppercase mb-2">{e.verb}</p>
-                      <h3 className="text-lg font-bold mb-2">{e.title}</h3>
-                      <p className="text-xs text-muted-foreground leading-relaxed">{e.description}</p>
+
+                    <div className={`w-14 h-14 ${corners[i]} bg-gradient-to-br ${e.gradient} flex items-center justify-center shadow-lg shadow-violet-500/20 mb-5`}>
+                      <e.icon className="w-7 h-7 text-white" />
                     </div>
-                  </Card>
-                </motion.div>
-              ))}
+
+                    <p className="text-[10px] font-bold tracking-[0.2em] text-[#7C3AED] uppercase mb-2">{e.verb}</p>
+                    <h3 className="text-lg font-bold mb-2">{e.title}</h3>
+                    <p className="text-xs text-muted-foreground leading-relaxed">{e.description}</p>
+
+                    <svg className="absolute w-5 h-5 text-[#7C3AED]/20" style={{
+                      ...(i === 0 ? { bottom: -10, right: "calc(50% - 10px)" } :
+                          i === 1 ? { bottom: -10, left: "calc(50% - 10px)" } :
+                          i === 2 ? { top: -10, right: "calc(50% - 10px)" } :
+                          { top: -10, left: "calc(50% - 10px)" })
+                    }} viewBox="0 0 20 20" fill="currentColor">
+                      {(i === 0 || i === 1) ? (
+                        <circle cx="10" cy="15" r="5" />
+                      ) : (
+                        <circle cx="10" cy="5" r="5" />
+                      )}
+                    </svg>
+                  </motion.div>
+                );
+              })}
             </div>
+
+            <motion.div variants={fadeUp} className="flex justify-center mt-8">
+              <div className="flex items-center gap-1.5">
+                {engines.map((e, i) => (
+                  <div key={e.verb} className="flex items-center gap-1.5">
+                    <div className={`w-3 h-3 rounded-sm bg-gradient-to-br ${e.gradient}`} />
+                    <span className="text-[10px] text-muted-foreground font-medium">{e.verb}</span>
+                    {i < engines.length - 1 && <span className="text-muted-foreground/30 mx-1">+</span>}
+                  </div>
+                ))}
+                <span className="text-muted-foreground/30 mx-1">=</span>
+                <span className="text-[10px] font-bold text-[#7C3AED]">GENAIA</span>
+              </div>
+            </motion.div>
           </motion.div>
         </section>
 
