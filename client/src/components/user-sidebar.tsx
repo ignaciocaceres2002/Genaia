@@ -1,5 +1,5 @@
 import { Link, useLocation } from "wouter";
-import { Home, BarChart3, GraduationCap, Target, Wrench, FileText, Trophy, Building2, Flame, Rocket } from "lucide-react";
+import { Home, BarChart3, GraduationCap, Target, Wrench, FileText, Trophy, Building2, Flame, Rocket, Lightbulb } from "lucide-react";
 import {
   Sidebar,
   SidebarContent,
@@ -21,6 +21,7 @@ const navItems = [
   { title: "Learning", path: "/dashboard/learning", icon: GraduationCap },
   { title: "Assessments", path: "/dashboard/assessments", icon: Target },
   { title: "AI Tools", path: "/dashboard/tools", icon: Wrench },
+  { title: "AI Use Cases", path: "/dashboard/use-cases", icon: Lightbulb },
   { title: "AI Case Builder", path: "/dashboard/case-builder", icon: Rocket },
   { title: "Policies", path: "/dashboard/policies", icon: FileText },
   { title: "Champions", path: "/dashboard/champions", icon: Trophy },

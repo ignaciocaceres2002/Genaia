@@ -6,7 +6,7 @@ import { SQRing } from "@/components/nq-ring";
 import { GraduationCap, Target, Wrench, Lightbulb, Flame, Zap, Trophy } from "lucide-react";
 import { Link } from "wouter";
 import { useQuery } from "@tanstack/react-query";
-import type { User, Activity } from "@shared/schema";
+import type { User, Activity, AiUseCase } from "@shared/schema";
 import { SEO } from "@/components/seo";
 
 const fadeUp = { hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0 } };
@@ -17,6 +17,7 @@ export default function DashboardHome() {
   const { data: user } = useQuery<User>({ queryKey: ["/api/user/me"] });
   const { data: activities } = useQuery<Activity[]>({ queryKey: ["/api/user/activities"] });
   const { data: leaderboard } = useQuery<User[]>({ queryKey: ["/api/user/leaderboard"] });
+  const { data: useCases = [] } = useQuery<AiUseCase[]>({ queryKey: ["/api/ai-use-cases/user", "demo-user"] });
 
   const currentUser = user || {
     name: "Sarah Chen",
@@ -96,13 +97,53 @@ export default function DashboardHome() {
         </Card>
       </motion.div>
 
+      {useCases.length > 0 && (
+        <motion.div variants={fadeUp}>
+          <Card className="p-4">
+            <div className="flex items-center gap-2 mb-3">
+              <Lightbulb className="w-4 h-4 text-[#7C3AED]" />
+              <span className="font-medium text-sm">AI Contributions</span>
+              <span className="text-xs text-muted-foreground">Last 30 days</span>
+              <Link href="/dashboard/use-cases" className="ml-auto text-xs text-[#7C3AED] hover:underline">View all</Link>
+            </div>
+            <div className="flex gap-1">
+              {(() => {
+                const today = new Date();
+                const days = 30;
+                const grid: { date: string; count: number }[] = [];
+                for (let i = days - 1; i >= 0; i--) {
+                  const d = new Date(today);
+                  d.setDate(d.getDate() - i);
+                  const dateStr = d.toISOString().split("T")[0];
+                  const count = useCases.filter(uc => {
+                    const ucDate = new Date(uc.createdAt!).toISOString().split("T")[0];
+                    return ucDate === dateStr;
+                  }).length;
+                  grid.push({ date: dateStr, count });
+                }
+                const weeks: { date: string; count: number }[][] = [];
+                for (let i = 0; i < grid.length; i += 7) weeks.push(grid.slice(i, i + 7));
+                const getColor = (c: number) => c === 0 ? "bg-muted" : c === 1 ? "bg-violet-200" : c === 2 ? "bg-violet-400" : "bg-violet-600";
+                return weeks.map((week, wi) => (
+                  <div key={wi} className="flex flex-col gap-1">
+                    {week.map(day => (
+                      <div key={day.date} className={`w-4 h-4 rounded-sm ${getColor(day.count)}`} title={`${day.date}: ${day.count}`} />
+                    ))}
+                  </div>
+                ));
+              })()}
+            </div>
+          </Card>
+        </motion.div>
+      )}
+
       <motion.div variants={fadeUp}>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           {[
             { title: "Learning", path: "/dashboard/learning", icon: GraduationCap, color: "text-blue-500" },
             { title: "Assessments", path: "/dashboard/assessments", icon: Target, color: "text-green-500" },
             { title: "AI Tools", path: "/dashboard/tools", icon: Wrench, color: "text-amber-500" },
-            { title: "Use Cases", path: "/dashboard/company", icon: Lightbulb, color: "text-purple-500" },
+            { title: "Use Cases", path: "/dashboard/use-cases", icon: Lightbulb, color: "text-purple-500" },
           ].map((item) => (
             <Link key={item.title} href={item.path}>
               <Card className="p-4 hover-elevate cursor-pointer" data-testid={`card-quick-${item.title.toLowerCase().replace(/\s/g, "-")}`}>

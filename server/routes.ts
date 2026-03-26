@@ -1,7 +1,7 @@
 import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
-import { insertSqCalculationSchema, insertSqAssessmentSchema, insertToolRequestSchema } from "@shared/schema";
+import { insertSqCalculationSchema, insertSqAssessmentSchema, insertToolRequestSchema, insertAiUseCaseSchema, insertBenefitSchema } from "@shared/schema";
 import { z } from "zod";
 
 const toolRequestStatusSchema = z.object({
@@ -186,6 +186,73 @@ export async function registerRoutes(
       }
       const assessment = await storage.createSqAssessment(parsed.data);
       res.json(assessment);
+    } catch (error) {
+      res.status(500).json({ message: "Internal server error" });
+    }
+  });
+
+  app.get("/api/ai-use-cases", async (_req, res) => {
+    try {
+      const cases = await storage.getAiUseCases();
+      res.json(cases);
+    } catch {
+      res.json([]);
+    }
+  });
+
+  app.get("/api/ai-use-cases/user/:userId", async (req, res) => {
+    try {
+      const cases = await storage.getAiUseCasesByUser(req.params.userId);
+      res.json(cases);
+    } catch {
+      res.json([]);
+    }
+  });
+
+  app.post("/api/ai-use-cases", async (req, res) => {
+    try {
+      const parsed = insertAiUseCaseSchema.safeParse(req.body);
+      if (!parsed.success) {
+        return res.status(400).json({ message: "Invalid data", errors: parsed.error.flatten() });
+      }
+      const data = parsed.data;
+      const qualityScore = Math.min(100, Math.round(
+        ((data.timeSavedMinutes || 0) > 0 ? 25 : 0) +
+        (data.taskCategory ? 20 : 0) +
+        (data.toolsUsed ? 20 : 0) +
+        (data.taskName ? 25 : 0) +
+        ((data.timeInvestedMinutes || 0) > 0 ? 10 : 0)
+      ));
+      const pointsAwarded = Math.round(qualityScore * 0.5 + ((data.timeSavedMinutes || 0) * 0.2));
+      const created = await storage.createAiUseCase({
+        ...data,
+        qualityScore,
+        pointsAwarded,
+        status: "submitted",
+      });
+      res.json(created);
+    } catch (error) {
+      res.status(500).json({ message: "Internal server error" });
+    }
+  });
+
+  app.get("/api/benefits", async (_req, res) => {
+    try {
+      const b = await storage.getBenefits();
+      res.json(b);
+    } catch {
+      res.json([]);
+    }
+  });
+
+  app.post("/api/benefits", async (req, res) => {
+    try {
+      const parsed = insertBenefitSchema.safeParse(req.body);
+      if (!parsed.success) {
+        return res.status(400).json({ message: "Invalid data", errors: parsed.error.flatten() });
+      }
+      const created = await storage.createBenefit(parsed.data);
+      res.json(created);
     } catch (error) {
       res.status(500).json({ message: "Internal server error" });
     }

@@ -10,7 +10,9 @@ import {
   type Alert, type InsertAlert,
   type SqCalculation, type InsertSqCalculation,
   type SqAssessment, type InsertSqAssessment,
-  users, teams, activities, courses, userProgress, aiTools, toolRequests, policies, alerts, sqCalculations, sqAssessments,
+  type AiUseCase, type InsertAiUseCase,
+  type Benefit, type InsertBenefit,
+  users, teams, activities, courses, userProgress, aiTools, toolRequests, policies, alerts, sqCalculations, sqAssessments, aiUseCases, benefits,
 } from "@shared/schema";
 import { db } from "./db";
 import { eq, desc } from "drizzle-orm";
@@ -49,6 +51,13 @@ export interface IStorage {
 
   createSqCalculation(calc: InsertSqCalculation): Promise<SqCalculation>;
   createSqAssessment(assessment: InsertSqAssessment): Promise<SqAssessment>;
+
+  getAiUseCases(): Promise<AiUseCase[]>;
+  getAiUseCasesByUser(userId: string): Promise<AiUseCase[]>;
+  createAiUseCase(useCase: InsertAiUseCase): Promise<AiUseCase>;
+
+  getBenefits(): Promise<Benefit[]>;
+  createBenefit(benefit: InsertBenefit): Promise<Benefit>;
 }
 
 export class DatabaseStorage implements IStorage {
@@ -159,6 +168,28 @@ export class DatabaseStorage implements IStorage {
 
   async createSqAssessment(assessment: InsertSqAssessment): Promise<SqAssessment> {
     const [created] = await db.insert(sqAssessments).values(assessment).returning();
+    return created;
+  }
+
+  async getAiUseCases(): Promise<AiUseCase[]> {
+    return db.select().from(aiUseCases).orderBy(desc(aiUseCases.createdAt));
+  }
+
+  async getAiUseCasesByUser(userId: string): Promise<AiUseCase[]> {
+    return db.select().from(aiUseCases).where(eq(aiUseCases.userId, userId)).orderBy(desc(aiUseCases.createdAt));
+  }
+
+  async createAiUseCase(useCase: InsertAiUseCase): Promise<AiUseCase> {
+    const [created] = await db.insert(aiUseCases).values(useCase).returning();
+    return created;
+  }
+
+  async getBenefits(): Promise<Benefit[]> {
+    return db.select().from(benefits).orderBy(desc(benefits.createdAt));
+  }
+
+  async createBenefit(benefit: InsertBenefit): Promise<Benefit> {
+    const [created] = await db.insert(benefits).values(benefit).returning();
     return created;
   }
 }

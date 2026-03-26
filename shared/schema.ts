@@ -139,6 +139,32 @@ export const sqAssessments = pgTable("sq_assessments", {
   createdAt: timestamp("created_at").defaultNow(),
 });
 
+export const aiUseCases = pgTable("ai_use_cases", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  userId: varchar("user_id").notNull(),
+  userName: text("user_name"),
+  rawText: text("raw_text").notNull(),
+  taskName: text("task_name"),
+  taskCategory: text("task_category"),
+  toolsUsed: text("tools_used"),
+  timeSavedMinutes: integer("time_saved_minutes").notNull().default(0),
+  timeInvestedMinutes: integer("time_invested_minutes").notNull().default(0),
+  qualityScore: integer("quality_score").notNull().default(0),
+  pointsAwarded: integer("points_awarded").notNull().default(0),
+  status: text("status").notNull().default("submitted"),
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
+export const benefits = pgTable("benefits", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  name: text("name").notNull(),
+  description: text("description"),
+  pointsCost: integer("points_cost").notNull().default(0),
+  type: text("type").notNull().default("reward"),
+  isActive: boolean("is_active").notNull().default(true),
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
 export const insertUserSchema = createInsertSchema(users).omit({ id: true, createdAt: true, lastActive: true });
 export const insertTeamSchema = createInsertSchema(teams).omit({ id: true });
 export const insertActivitySchema = createInsertSchema(activities).omit({ id: true, createdAt: true });
@@ -150,6 +176,8 @@ export const insertPolicySchema = createInsertSchema(policies).omit({ id: true, 
 export const insertAlertSchema = createInsertSchema(alerts).omit({ id: true, createdAt: true });
 export const insertSqCalculationSchema = createInsertSchema(sqCalculations).omit({ id: true, createdAt: true });
 export const insertSqAssessmentSchema = createInsertSchema(sqAssessments).omit({ id: true, createdAt: true });
+export const insertAiUseCaseSchema = createInsertSchema(aiUseCases).omit({ id: true, createdAt: true });
+export const insertBenefitSchema = createInsertSchema(benefits).omit({ id: true, createdAt: true });
 
 export type User = typeof users.$inferSelect;
 export type InsertUser = z.infer<typeof insertUserSchema>;
@@ -173,6 +201,10 @@ export type SqCalculation = typeof sqCalculations.$inferSelect;
 export type InsertSqCalculation = z.infer<typeof insertSqCalculationSchema>;
 export type SqAssessment = typeof sqAssessments.$inferSelect;
 export type InsertSqAssessment = z.infer<typeof insertSqAssessmentSchema>;
+export type AiUseCase = typeof aiUseCases.$inferSelect;
+export type InsertAiUseCase = z.infer<typeof insertAiUseCaseSchema>;
+export type Benefit = typeof benefits.$inferSelect;
+export type InsertBenefit = z.infer<typeof insertBenefitSchema>;
 
 export const SQ_LEVELS = [
   { name: "Beginner", minXp: 0, minSq: 0 },

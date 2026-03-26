@@ -29,6 +29,8 @@ import AdminChampionsPage from "@/pages/admin/admin-champions";
 import SettingsPage from "@/pages/admin/settings";
 import AIRecruitingPage from "@/pages/admin/ai-recruiting";
 import AICaseBuilderPage from "@/pages/admin/ai-case-builder";
+import UseCasesPage from "@/pages/dashboard/use-cases";
+import BenefitsPage from "@/pages/admin/benefits";
 import AssessmentPage from "@/pages/assessment";
 import ManifestoPage from "@/pages/manifesto";
 
@@ -91,6 +93,7 @@ function UserDashboardRouter() {
         <Route path="/dashboard/learning" component={LearningPage} />
         <Route path="/dashboard/assessments" component={AssessmentsPage} />
         <Route path="/dashboard/tools" component={ToolsPage} />
+        <Route path="/dashboard/use-cases" component={UseCasesPage} />
         <Route path="/dashboard/case-builder" component={AICaseBuilderPage} />
         <Route path="/dashboard/policies" component={PoliciesPage} />
         <Route path="/dashboard/champions" component={ChampionsPage} />
@@ -114,6 +117,7 @@ function AdminDashboardRouter() {
         <Route path="/admin/champions" component={AdminChampionsPage} />
         <Route path="/admin/recruiting" component={AIRecruitingPage} />
         <Route path="/admin/case-builder" component={AICaseBuilderPage} />
+        <Route path="/admin/benefits" component={BenefitsPage} />
         <Route path="/admin/agentic" component={AgenticScorePage} />
         <Route path="/admin/alerts" component={AlertsPage} />
         <Route path="/admin/settings" component={SettingsPage} />

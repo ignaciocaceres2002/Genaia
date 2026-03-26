@@ -23,6 +23,7 @@ client/src/
       learning.tsx       - Duolingo-style learning path
       assessments.tsx    - Skill assessments
       tools.tsx          - AI tools directory
+      use-cases.tsx      - AI Use Case submission + contribution grid
       policies.tsx       - AI governance policies + chat
       champions.tsx      - Champion network
       company.tsx        - Company overview
@@ -37,6 +38,7 @@ client/src/
       ai-recruiting.tsx  - AI-First Recruiting agent page
       ai-case-builder.tsx - AI Case Builder interactive form
       agentic-score.tsx  - Agentic Enterprise Score
+      benefits.tsx       - Benefits & Recognition (top contributors, benefit catalog, use case review)
       alerts.tsx         - Alert management
       settings.tsx       - Organization settings
   components/
@@ -61,7 +63,9 @@ shared/
 - `/dashboard` - User dashboard (all sub-routes)
 - `/dashboard/sq` - My SQ score page
 - `/admin` - Admin dashboard (all sub-routes)
+- `/dashboard/use-cases` - AI Use Case submission + contribution tracking
 - `/admin/case-builder` - AI Case Builder
+- `/admin/benefits` - Benefits & Recognition admin
 
 ## Logo
 - Beetle logo: `attached_assets/image_1773976580990.png` (imported as `@assets/image_1773976580990.png`)
