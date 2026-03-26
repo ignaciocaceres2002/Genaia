@@ -7,24 +7,56 @@ import { Textarea } from "@/components/ui/textarea";
 import { useQuery, useMutation } from "@tanstack/react-query";
 import { queryClient, apiRequest } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
-import { Copy, Upload, Clock, Zap, Tag, Wrench, CheckCircle2, Info, ChevronDown, ChevronUp } from "lucide-react";
+import { Copy, Upload, Clock, Zap, Tag, Wrench, CheckCircle2, Info, ChevronDown, ChevronUp, TrendingUp, ShieldCheck } from "lucide-react";
 import type { AiUseCase } from "@shared/schema";
 import { SEO } from "@/components/seo";
 
 const fadeUp = { hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0 } };
 
-const PROMPT_TEMPLATE = `Acabo de completar una tarea usando IA. Necesito que generes un resumen estructurado con exactamente este formato (respeta los campos y el formato):
+const PROMPT_TEMPLATE = `Acabo de completar una tarea usando IA. Antes de generar el resumen, haceme estas preguntas (una por una, usando el widget de opciones):
+
+1. "¿Hubieras podido hacer esta tarea sin IA?"
+   → Sí, pero más lento | Parcialmente (algunas partes no) | No la hubiera hecho
+
+2. "¿Cuánto te hubiera llevado la parte que sí podrías haber hecho?"
+   → Menos de 1 hora | 1–3 horas | Medio día | Un día entero | Varios días
+
+3. "¿Cuánto tiempo le dedicaste vos en total? (pensando, escribiendo, revisando — todo)"
+   → Menos de 15 min | 15–30 min | 30–60 min | 1–2 horas | Más de 2 horas
+
+Después generá el resumen con este formato:
 
 ---
-TAREA: [nombre corto de la tarea]
-CATEGORÍA: [una de: Automatización, Análisis de datos, Creación de contenido, Investigación, Comunicación, Código, Diseño, Estrategia, Otro]
-HERRAMIENTAS: [herramientas de IA usadas, separadas por coma]
-TIEMPO INVERTIDO: [minutos que te tomó con IA]
-TIEMPO AHORRADO: [minutos que hubieras tardado sin IA]
-RESUMEN: [descripción breve de qué hiciste, cómo lo hiciste y el resultado obtenido, en 2-3 oraciones]
+TAREA: [nombre corto]
+CATEGORÍA: [Automatización | Análisis de datos | Creación de contenido | Investigación | Comunicación | Código | Diseño | Estrategia | Otro]
+HERRAMIENTAS: [herramientas de IA usadas]
+MI TIEMPO REAL: [lo que respondió el usuario]
+ESTIMACIÓN SIN IA: [lo que respondió + ajustado por lo que no hubiera podido hacer]
+RATIO: [estimación sin IA / tiempo real, redondeado]
+PUDO HACERSE SIN IA: [respuesta del usuario]
+RESUMEN: [2-3 oraciones]
 ---
 
-Basándote en lo que acabo de hacer, genera este resumen. La tarea fue:`;
+Para la tarea y categoría, inferirlo de la conversación.
+Para el resumen, describir qué se hizo, el proceso y el resultado concreto.
+
+La tarea fue:`;
+
+function parseTimeRange(value: string): number {
+  const v = value.toLowerCase().trim();
+  if (v.includes("menos de 15") || v.includes("< 15")) return 10;
+  if (v.includes("15") && v.includes("30")) return 22;
+  if (v.includes("30") && v.includes("60")) return 45;
+  if (v.includes("1") && v.includes("2") && v.includes("hora")) return 90;
+  if (v.includes("más de 2") || v.includes("> 2")) return 150;
+  if (v.includes("menos de 1 hora") || v.includes("< 1")) return 45;
+  if (v.includes("1") && v.includes("3") && v.includes("hora")) return 120;
+  if (v.includes("medio día") || v.includes("medio dia")) return 240;
+  if (v.includes("día entero") || v.includes("dia entero") || v.includes("un día")) return 480;
+  if (v.includes("varios días") || v.includes("varios dias")) return 960;
+  const match = v.match(/(\d+)/);
+  return match ? parseInt(match[1]) : 0;
+}
 
 function parseUseCaseText(text: string): {
   taskName: string;
@@ -32,14 +64,18 @@ function parseUseCaseText(text: string): {
   toolsUsed: string;
   timeInvestedMinutes: number;
   timeSavedMinutes: number;
+  ratio: string;
+  couldDoWithoutAi: string;
   summary: string;
 } {
   const lines = text.split("\n").map(l => l.trim()).filter(Boolean);
   let taskName = "";
   let taskCategory = "";
   let toolsUsed = "";
-  let timeInvestedMinutes = 0;
-  let timeSavedMinutes = 0;
+  let myRealTime = "";
+  let estimationWithoutAi = "";
+  let ratio = "";
+  let couldDoWithoutAi = "";
   let summary = "";
 
   for (const line of lines) {
@@ -50,18 +86,28 @@ function parseUseCaseText(text: string): {
       taskCategory = clean.replace(/^CATEGOR[ÍI]A:\s*/i, "").trim();
     } else if (clean.toUpperCase().startsWith("HERRAMIENTAS:") || clean.toUpperCase().startsWith("HERRAMIENTA:")) {
       toolsUsed = clean.replace(/^HERRAMIENTAS?:\s*/i, "").trim();
-    } else if (clean.toUpperCase().startsWith("TIEMPO INVERTIDO:")) {
-      const match = clean.match(/(\d+)/);
-      timeInvestedMinutes = match ? parseInt(match[1]) : 0;
-    } else if (clean.toUpperCase().startsWith("TIEMPO AHORRADO:")) {
-      const match = clean.match(/(\d+)/);
-      timeSavedMinutes = match ? parseInt(match[1]) : 0;
+    } else if (clean.toUpperCase().startsWith("MI TIEMPO REAL:")) {
+      myRealTime = clean.replace(/^MI TIEMPO REAL:\s*/i, "").trim();
+    } else if (clean.toUpperCase().startsWith("ESTIMACIÓN SIN IA:") || clean.toUpperCase().startsWith("ESTIMACION SIN IA:")) {
+      estimationWithoutAi = clean.replace(/^ESTIMACI[ÓO]N SIN IA:\s*/i, "").trim();
+    } else if (clean.toUpperCase().startsWith("RATIO:")) {
+      ratio = clean.replace(/^RATIO:\s*/i, "").trim();
+    } else if (clean.toUpperCase().startsWith("PUDO HACERSE SIN IA:")) {
+      couldDoWithoutAi = clean.replace(/^PUDO HACERSE SIN IA:\s*/i, "").trim();
     } else if (clean.toUpperCase().startsWith("RESUMEN:")) {
       summary = clean.replace(/^RESUMEN:\s*/i, "").trim();
+    } else if (clean.toUpperCase().startsWith("TIEMPO INVERTIDO:")) {
+      myRealTime = clean.replace(/^TIEMPO INVERTIDO:\s*/i, "").trim();
+    } else if (clean.toUpperCase().startsWith("TIEMPO AHORRADO:")) {
+      estimationWithoutAi = clean.replace(/^TIEMPO AHORRADO:\s*/i, "").trim();
     }
   }
 
-  return { taskName, taskCategory, toolsUsed, timeInvestedMinutes, timeSavedMinutes, summary };
+  const timeInvestedMinutes = parseTimeRange(myRealTime);
+  const estimatedWithoutAiMinutes = parseTimeRange(estimationWithoutAi);
+  const timeSavedMinutes = Math.max(0, estimatedWithoutAiMinutes - timeInvestedMinutes);
+
+  return { taskName, taskCategory, toolsUsed, timeInvestedMinutes, timeSavedMinutes, ratio, couldDoWithoutAi, summary };
 }
 
 function ContributionGrid({ useCases }: { useCases: AiUseCase[] }) {
@@ -256,7 +302,7 @@ export default function UseCasesPage() {
                   <div className="w-6 h-6 rounded-full bg-[#7C3AED] text-white flex items-center justify-center flex-shrink-0 text-xs font-bold">2</div>
                   <div>
                     <p className="text-sm font-medium">Copy this prompt and paste it in your AI tool</p>
-                    <p className="text-xs text-muted-foreground">The AI will generate a structured summary for you.</p>
+                    <p className="text-xs text-muted-foreground">The AI will ask you 3 quick questions and then generate a structured summary.</p>
                   </div>
                 </div>
                 <div className="flex items-start gap-3">
@@ -311,7 +357,7 @@ export default function UseCasesPage() {
                   <CheckCircle2 className="w-4 h-4 text-green-600" />
                   <span className="text-sm font-medium text-green-700 dark:text-green-400">Detected fields</span>
                 </div>
-                <div className="grid grid-cols-2 gap-3">
+                <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
                   <div className="flex items-center gap-2">
                     <Tag className="w-3.5 h-3.5 text-muted-foreground" />
                     <div>
@@ -334,19 +380,37 @@ export default function UseCasesPage() {
                     </div>
                   </div>
                   <div className="flex items-center gap-2">
+                    <Zap className="w-3.5 h-3.5 text-muted-foreground" />
+                    <div>
+                      <p className="text-[10px] text-muted-foreground">My Real Time</p>
+                      <p className="text-sm font-medium" data-testid="text-parsed-time-invested">{parsed.timeInvestedMinutes} min</p>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-2">
                     <Clock className="w-3.5 h-3.5 text-muted-foreground" />
                     <div>
                       <p className="text-[10px] text-muted-foreground">Time Saved</p>
                       <p className="text-sm font-medium text-green-600" data-testid="text-parsed-time-saved">{parsed.timeSavedMinutes} min</p>
                     </div>
                   </div>
-                  <div className="flex items-center gap-2">
-                    <Zap className="w-3.5 h-3.5 text-muted-foreground" />
-                    <div>
-                      <p className="text-[10px] text-muted-foreground">Time Invested</p>
-                      <p className="text-sm font-medium" data-testid="text-parsed-time-invested">{parsed.timeInvestedMinutes} min</p>
+                  {parsed.ratio && (
+                    <div className="flex items-center gap-2">
+                      <TrendingUp className="w-3.5 h-3.5 text-muted-foreground" />
+                      <div>
+                        <p className="text-[10px] text-muted-foreground">Ratio</p>
+                        <p className="text-sm font-medium text-[#7C3AED]" data-testid="text-parsed-ratio">{parsed.ratio}x</p>
+                      </div>
                     </div>
-                  </div>
+                  )}
+                  {parsed.couldDoWithoutAi && (
+                    <div className="flex items-center gap-2 col-span-2 md:col-span-3">
+                      <ShieldCheck className="w-3.5 h-3.5 text-muted-foreground" />
+                      <div>
+                        <p className="text-[10px] text-muted-foreground">Could do without AI?</p>
+                        <p className="text-sm font-medium" data-testid="text-parsed-without-ai">{parsed.couldDoWithoutAi}</p>
+                      </div>
+                    </div>
+                  )}
                 </div>
               </div>
 
