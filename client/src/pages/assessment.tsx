@@ -27,9 +27,11 @@ import {
   Radar, RadarChart, PolarGrid, PolarAngleAxis, ResponsiveContainer,
 } from "recharts";
 import { apiRequest } from "@/lib/queryClient";
+import { useToast } from "@/hooks/use-toast";
 import {
   ArrowRight, HelpCircle, Eye, RefreshCw, Zap, Brain,
   Check, X, Minus, Share2, Copy, Users, Sparkles, BookOpen,
+  type LucideIcon,
 } from "lucide-react";
 
 type Phase =
@@ -52,6 +54,7 @@ const fadeVariant = {
 
 export default function AssessmentPage() {
   const [, setLocation] = useLocation();
+  const { toast } = useToast();
   const [phase, setPhase] = useState<Phase>("opening");
 
   const [binaryIndex, setBinaryIndex] = useState(0);
@@ -153,12 +156,15 @@ export default function AssessmentPage() {
       personalitySummary: r.personalitySummary,
       concern: concern || null,
       hope: hope || null,
-    }).then(() => setSaved(true)).catch(() => {});
+    }).then(() => setSaved(true)).catch((err: unknown) => {
+      console.error("Failed to save assessment:", err);
+      toast({ title: "Save failed", description: "Your results were calculated but couldn't be saved. Please try again.", variant: "destructive" });
+    });
   }, [selectedRole, binaryAnswers, scenarioAnswers, taskHours, drains, aiUsage, concern, hope]);
 
   const totalWeekHours = taskHours.reduce((sum, h, i) => dismissedTasks.has(i) ? sum : sum + h, 0);
 
-  const AI_ICONS: Record<string, any> = {
+  const AI_ICONS: Record<string, LucideIcon> = {
     help: HelpCircle, eye: Eye, refresh: RefreshCw, zap: Zap, brain: Brain,
   };
 

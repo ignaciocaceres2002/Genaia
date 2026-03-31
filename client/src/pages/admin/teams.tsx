@@ -4,20 +4,20 @@ import { Badge } from "@/components/ui/badge";
 import { Input } from "@/components/ui/input";
 import { useQuery } from "@tanstack/react-query";
 import type { Team } from "@shared/schema";
-import { Search, TrendingUp, TrendingDown, Minus, Trophy, Users } from "lucide-react";
+import { Search, Minus, Trophy, Users } from "lucide-react";
 import { useState } from "react";
 import { ResponsiveContainer, RadarChart, PolarGrid, PolarAngleAxis, Radar } from "recharts";
 
 const fadeUp = { hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0 } };
 
-const defaultTeams = [
-  { id: "1", name: "Engineering", department: "Engineering", headcount: 45, avgNq: 62, completionPct: 78, engagementScore: 85, champion: "Marcus Johnson", trend: "up" },
-  { id: "2", name: "Marketing", department: "Marketing", headcount: 22, avgNq: 58, completionPct: 65, engagementScore: 72, champion: "Elena Rodriguez", trend: "up" },
-  { id: "3", name: "Finance", department: "Finance", headcount: 18, avgNq: 51, completionPct: 55, engagementScore: 63, champion: "James Wright", trend: "flat" },
-  { id: "4", name: "Product", department: "Product", headcount: 15, avgNq: 66, completionPct: 82, engagementScore: 88, champion: "Aisha Patel", trend: "up" },
-  { id: "5", name: "Sales", department: "Sales", headcount: 30, avgNq: 44, completionPct: 42, engagementScore: 48, champion: null, trend: "down" },
-  { id: "6", name: "Legal", department: "Legal", headcount: 10, avgNq: 55, completionPct: 60, engagementScore: 65, champion: "David Kim", trend: "flat" },
-  { id: "7", name: "People Ops", department: "People Ops", headcount: 12, avgNq: 60, completionPct: 70, engagementScore: 75, champion: null, trend: "up" },
+const defaultTeams: Team[] = [
+  { id: "1", name: "Engineering", department: "Engineering", headcount: 45, avgNq: 62, completionPct: 78, engagementScore: 85, champion: "Marcus Johnson" },
+  { id: "2", name: "Marketing", department: "Marketing", headcount: 22, avgNq: 58, completionPct: 65, engagementScore: 72, champion: "Elena Rodriguez" },
+  { id: "3", name: "Finance", department: "Finance", headcount: 18, avgNq: 51, completionPct: 55, engagementScore: 63, champion: "James Wright" },
+  { id: "4", name: "Product", department: "Product", headcount: 15, avgNq: 66, completionPct: 82, engagementScore: 88, champion: "Aisha Patel" },
+  { id: "5", name: "Sales", department: "Sales", headcount: 30, avgNq: 44, completionPct: 42, engagementScore: 48, champion: null },
+  { id: "6", name: "Legal", department: "Legal", headcount: 10, avgNq: 55, completionPct: 60, engagementScore: 65, champion: "David Kim" },
+  { id: "7", name: "People Ops", department: "People Ops", headcount: 12, avgNq: 60, completionPct: 70, engagementScore: 75, champion: null },
 ];
 
 const selectedTeamSkills = [
@@ -35,8 +35,8 @@ export default function AdminTeamsPage() {
   const [search, setSearch] = useState("");
   const [selectedTeam, setSelectedTeam] = useState<string | null>(null);
 
-  const filteredTeams = displayTeams.filter((t: any) => t.name.toLowerCase().includes(search.toLowerCase()));
-  const selected = displayTeams.find((t: any) => t.id === selectedTeam);
+  const filteredTeams = displayTeams.filter((t: Team) => t.name.toLowerCase().includes(search.toLowerCase()));
+  const selected = displayTeams.find((t: Team) => t.id === selectedTeam);
 
   return (
     <motion.div className="max-w-5xl mx-auto space-y-6" initial="hidden" animate="visible" variants={{ visible: { transition: { staggerChildren: 0.06 } } }}>
@@ -75,9 +75,9 @@ export default function AdminTeamsPage() {
                     </tr>
                   </thead>
                   <tbody>
-                    {filteredTeams.map((team: any) => {
-                      const TrendIcon = team.trend === "up" ? TrendingUp : team.trend === "down" ? TrendingDown : Minus;
-                      const trendColor = team.trend === "up" ? "text-green-500" : team.trend === "down" ? "text-red-500" : "text-muted-foreground";
+                    {filteredTeams.map((team: Team) => {
+                      const TrendIcon = Minus;
+                      const trendColor = "text-muted-foreground";
                       return (
                         <tr
                           key={team.id}
@@ -114,9 +114,9 @@ export default function AdminTeamsPage() {
         <motion.div variants={fadeUp}>
           {selected ? (
             <Card className="p-5 sticky top-20">
-              <h3 className="font-semibold mb-1">{(selected as any).name}</h3>
+              <h3 className="font-semibold mb-1">{selected.name}</h3>
               <p className="text-xs text-muted-foreground mb-4">
-                <Users className="w-3 h-3 inline mr-1" />{(selected as any).headcount} members
+                <Users className="w-3 h-3 inline mr-1" />{selected.headcount} members
               </p>
               <div className="h-[200px]">
                 <ResponsiveContainer width="100%" height="100%">

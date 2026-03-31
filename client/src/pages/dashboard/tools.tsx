@@ -9,13 +9,13 @@ import type { AiTool } from "@shared/schema";
 import {
   ExternalLink, Plus, Bot, FileText, Code, Image, MessageSquare, BarChart3,
   ArrowLeft, ArrowRight, Trash2, CheckCircle2, Clock, DollarSign, Zap,
-  AlertCircle, X
+  AlertCircle, X, type LucideIcon
 } from "lucide-react";
 import { useState } from "react";
 
 const fadeUp = { hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0 } };
 
-const categoryIcons: Record<string, any> = {
+const categoryIcons: Record<string, LucideIcon> = {
   "Writing": FileText, "Code": Code, "Image": Image, "Chat": MessageSquare, "Analytics": BarChart3, "Assistant": Bot,
 };
 
@@ -104,7 +104,7 @@ export default function ToolsPage() {
   const { toast } = useToast();
 
   const mutation = useMutation({
-    mutationFn: async (data: any) => {
+    mutationFn: async (data: Record<string, unknown>) => {
       const res = await apiRequest("POST", "/api/tool-requests", data);
       return res.json();
     },

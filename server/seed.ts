@@ -14,7 +14,7 @@ export async function seedDatabase() {
       { username: "david.kim", password: "demo", name: "David Kim", email: "david@company.com", role: "user", department: "Legal", level: 4, xp: 5100, nqScore: 52, streak: 3, isChampion: false, isAdmin: false, skillScores: { dataFluency: 55, adaptiveMindset: 48, verificationMindset: 58, coIntelligence: 45, autonomousDrive: 52, processReimagination: 48 } },
       { username: "james.wright", password: "demo", name: "James Wright", email: "james@company.com", role: "user", department: "Finance", level: 6, xp: 14500, nqScore: 79, streak: 22, isChampion: true, isAdmin: false, skillScores: { dataFluency: 85, adaptiveMindset: 75, verificationMindset: 82, coIntelligence: 70, autonomousDrive: 78, processReimagination: 74 } },
       { username: "aisha.patel", password: "demo", name: "Aisha Patel", email: "aisha@company.com", role: "user", department: "Product", level: 6, xp: 16200, nqScore: 85, streak: 35, isChampion: true, isAdmin: false, skillScores: { dataFluency: 82, adaptiveMindset: 88, verificationMindset: 80, coIntelligence: 86, autonomousDrive: 90, processReimagination: 84 } },
-      { username: "admin", password: "admin", name: "Admin User", email: "admin@company.com", role: "admin", department: "HR", level: 1, xp: 0, nqScore: 0, streak: 0, isChampion: false, isAdmin: true, skillScores: {} },
+      { username: "admin", password: "admin", name: "Admin User", email: "admin@company.com", role: "admin", department: "HR", level: 1, xp: 0, nqScore: 0, streak: 0, isChampion: false, isAdmin: true, skillScores: {} as Record<string, number> },
     ];
 
     for (const u of users) {

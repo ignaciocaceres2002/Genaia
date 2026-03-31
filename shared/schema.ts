@@ -180,6 +180,7 @@ export const insertAiUseCaseSchema = createInsertSchema(aiUseCases).omit({ id: t
 export const insertBenefitSchema = createInsertSchema(benefits).omit({ id: true, createdAt: true });
 
 export type User = typeof users.$inferSelect;
+export type PublicUser = Omit<User, "password">;
 export type InsertUser = z.infer<typeof insertUserSchema>;
 export type Team = typeof teams.$inferSelect;
 export type InsertTeam = z.infer<typeof insertTeamSchema>;
@@ -226,16 +227,18 @@ export const SKILLS = [
   { key: "processReimagination", name: "Process Reimagination", icon: "Lightbulb" },
 ] as const;
 
-export function getSqLevel(sq: number) {
-  let level = SQ_LEVELS[0];
+export type SqLevel = (typeof SQ_LEVELS)[number];
+
+export function getSqLevel(sq: number): SqLevel {
+  let level: SqLevel = SQ_LEVELS[0];
   for (const l of SQ_LEVELS) {
     if (sq >= l.minSq) level = l;
   }
   return level;
 }
 
-export function getXpLevel(xp: number) {
-  let level = SQ_LEVELS[0];
+export function getXpLevel(xp: number): SqLevel & { index: number } {
+  let level: SqLevel = SQ_LEVELS[0];
   let idx = 0;
   for (let i = 0; i < SQ_LEVELS.length; i++) {
     if (xp >= SQ_LEVELS[i].minXp) {

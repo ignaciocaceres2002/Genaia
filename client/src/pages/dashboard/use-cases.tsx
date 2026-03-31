@@ -181,7 +181,7 @@ export default function UseCasesPage() {
   });
 
   const submitMutation = useMutation({
-    mutationFn: async (data: any) => {
+    mutationFn: async (data: Record<string, unknown>) => {
       const res = await apiRequest("POST", "/api/ai-use-cases", data);
       return res.json();
     },

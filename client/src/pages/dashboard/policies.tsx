@@ -10,12 +10,12 @@ import { useState } from "react";
 
 const fadeUp = { hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0 } };
 
-const defaultPolicies: Array<{ id: string; title: string; category: string; summary: string; version: string; status: string; updatedAt: string }> = [
-  { id: "1", title: "Acceptable AI Use Policy", category: "General", summary: "Guidelines for responsible AI tool usage within the organization, covering approved tools, data handling, and output verification requirements.", version: "2.1", status: "published", updatedAt: "2025-01-15" },
-  { id: "2", title: "AI Data Privacy Standards", category: "Privacy", summary: "Requirements for handling sensitive data when using AI tools, including PII restrictions, data retention policies, and cross-border considerations.", version: "1.3", status: "published", updatedAt: "2025-01-10" },
-  { id: "3", title: "Client-Facing AI Content", category: "Client-Facing", summary: "Standards for using AI-generated content in client communications, presentations, and deliverables. Includes disclosure requirements.", version: "1.0", status: "published", updatedAt: "2024-12-20" },
-  { id: "4", title: "AI Ethics Framework", category: "Ethics", summary: "Core principles guiding AI adoption decisions, bias monitoring, fairness standards, and escalation procedures for ethical concerns.", version: "1.1", status: "published", updatedAt: "2025-01-05" },
-  { id: "5", title: "Marketing AI Guidelines", category: "Dept-Specific", summary: "Department-specific rules for AI use in marketing campaigns, brand voice consistency, and creative asset generation.", version: "1.0", status: "published", updatedAt: "2025-02-01" },
+const defaultPolicies: Policy[] = [
+  { id: "1", title: "Acceptable AI Use Policy", category: "General", content: "", summary: "Guidelines for responsible AI tool usage within the organization, covering approved tools, data handling, and output verification requirements.", version: "2.1", status: "published", updatedAt: new Date("2025-01-15") },
+  { id: "2", title: "AI Data Privacy Standards", category: "Privacy", content: "", summary: "Requirements for handling sensitive data when using AI tools, including PII restrictions, data retention policies, and cross-border considerations.", version: "1.3", status: "published", updatedAt: new Date("2025-01-10") },
+  { id: "3", title: "Client-Facing AI Content", category: "Client-Facing", content: "", summary: "Standards for using AI-generated content in client communications, presentations, and deliverables. Includes disclosure requirements.", version: "1.0", status: "published", updatedAt: new Date("2024-12-20") },
+  { id: "4", title: "AI Ethics Framework", category: "Ethics", content: "", summary: "Core principles guiding AI adoption decisions, bias monitoring, fairness standards, and escalation procedures for ethical concerns.", version: "1.1", status: "published", updatedAt: new Date("2025-01-05") },
+  { id: "5", title: "Marketing AI Guidelines", category: "Dept-Specific", content: "", summary: "Department-specific rules for AI use in marketing campaigns, brand voice consistency, and creative asset generation.", version: "1.0", status: "published", updatedAt: new Date("2025-02-01") },
 ];
 
 export default function PoliciesPage() {
@@ -40,7 +40,7 @@ export default function PoliciesPage() {
     }, 1000);
   };
 
-  const categories = [...new Set(displayPolicies.map((p: any) => p.category))];
+  const categories = Array.from(new Set(displayPolicies.map((p: Policy) => p.category)));
 
   return (
     <motion.div className="max-w-4xl mx-auto space-y-6" initial="hidden" animate="visible" variants={{ visible: { transition: { staggerChildren: 0.08 } } }}>
@@ -55,7 +55,7 @@ export default function PoliciesPage() {
             <motion.div key={cat} variants={fadeUp}>
               <h3 className="text-sm font-semibold text-muted-foreground mb-2">{cat}</h3>
               <div className="space-y-2">
-                {displayPolicies.filter((p: any) => p.category === cat).map((policy: any) => (
+                {displayPolicies.filter((p: Policy) => p.category === cat).map((policy: Policy) => (
                   <Card key={policy.id} className="overflow-visible" data-testid={`card-policy-${policy.id}`}>
                     <div
                       className="p-4 cursor-pointer hover-elevate"
@@ -66,7 +66,7 @@ export default function PoliciesPage() {
                           <FileText className="w-4 h-4 text-[#7C3AED] mt-0.5 flex-shrink-0" />
                           <div>
                             <p className="text-sm font-medium">{policy.title}</p>
-                            <p className="text-xs text-muted-foreground mt-0.5">v{policy.version} · Updated {new Date(policy.updatedAt).toLocaleDateString()}</p>
+                            <p className="text-xs text-muted-foreground mt-0.5">v{policy.version} · Updated {policy.updatedAt ? new Date(policy.updatedAt).toLocaleDateString() : "—"}</p>
                           </div>
                         </div>
                         {expandedId === policy.id ? <ChevronUp className="w-4 h-4 text-muted-foreground" /> : <ChevronDown className="w-4 h-4 text-muted-foreground" />}

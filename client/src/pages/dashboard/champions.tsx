@@ -4,17 +4,17 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { useQuery } from "@tanstack/react-query";
-import type { User } from "@shared/schema";
+import type { PublicUser } from "@shared/schema";
 import { Trophy, MessageSquare, Star, ExternalLink } from "lucide-react";
 
 const fadeUp = { hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0 } };
 
-const defaultChampions = [
-  { id: "1", name: "Marcus Johnson", department: "Engineering", nqScore: 88, specialty: "Co-Intelligence", influenceRadius: 12 },
-  { id: "2", name: "Elena Rodriguez", department: "Marketing", nqScore: 82, specialty: "Process Reimagination", influenceRadius: 8 },
-  { id: "3", name: "James Wright", department: "Finance", nqScore: 79, specialty: "Data Fluency", influenceRadius: 15 },
-  { id: "4", name: "Aisha Patel", department: "Product", nqScore: 85, specialty: "Adaptive Mindset", influenceRadius: 10 },
-  { id: "5", name: "David Kim", department: "Legal", nqScore: 76, specialty: "Verification Mindset", influenceRadius: 6 },
+const defaultChampions: PublicUser[] = [
+  { id: "1", name: "Marcus Johnson", department: "Engineering", nqScore: 88, username: "marcus.johnson", email: "marcus@company.com", role: "user", avatar: null, level: 7, xp: 22500, streak: 45, isChampion: true, isAdmin: false, skillScores: null, lastActive: null, createdAt: null },
+  { id: "2", name: "Elena Rodriguez", department: "Marketing", nqScore: 82, username: "elena.rodriguez", email: "elena@company.com", role: "user", avatar: null, level: 6, xp: 15200, streak: 30, isChampion: true, isAdmin: false, skillScores: null, lastActive: null, createdAt: null },
+  { id: "3", name: "James Wright", department: "Finance", nqScore: 79, username: "james.wright", email: "james@company.com", role: "user", avatar: null, level: 6, xp: 14500, streak: 22, isChampion: true, isAdmin: false, skillScores: null, lastActive: null, createdAt: null },
+  { id: "4", name: "Aisha Patel", department: "Product", nqScore: 85, username: "aisha.patel", email: "aisha@company.com", role: "user", avatar: null, level: 6, xp: 16200, streak: 35, isChampion: true, isAdmin: false, skillScores: null, lastActive: null, createdAt: null },
+  { id: "5", name: "David Kim", department: "Legal", nqScore: 76, username: "david.kim", email: "david@company.com", role: "user", avatar: null, level: 4, xp: 5100, streak: 3, isChampion: true, isAdmin: false, skillScores: null, lastActive: null, createdAt: null },
 ];
 
 const champFeed = [
@@ -24,7 +24,7 @@ const champFeed = [
 ];
 
 export default function ChampionsPage() {
-  const { data: champions } = useQuery<User[]>({ queryKey: ["/api/champions"] });
+  const { data: champions } = useQuery<PublicUser[]>({ queryKey: ["/api/champions"] });
   const displayChampions = champions || defaultChampions;
 
   return (
@@ -37,7 +37,7 @@ export default function ChampionsPage() {
       <motion.div variants={fadeUp}>
         <h3 className="font-semibold text-sm mb-3">Champion Board</h3>
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {displayChampions.map((champ: any) => (
+          {displayChampions.map((champ: PublicUser) => (
             <Card key={champ.id} className="p-4" data-testid={`card-champion-${champ.id}`}>
               <div className="flex items-start gap-3">
                 <Avatar className="w-10 h-10">
@@ -50,7 +50,7 @@ export default function ChampionsPage() {
                   <p className="text-xs text-muted-foreground">{champ.department}</p>
                   <div className="flex items-center gap-2 mt-2 flex-wrap">
                     <Badge variant="secondary" className="text-[10px]">SQ {champ.nqScore}</Badge>
-                    <Badge variant="secondary" className="text-[10px]">{champ.specialty}</Badge>
+                    {champ.department && <Badge variant="secondary" className="text-[10px]">{champ.department}</Badge>}
                   </div>
                 </div>
               </div>

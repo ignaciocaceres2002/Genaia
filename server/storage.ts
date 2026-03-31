@@ -134,7 +134,10 @@ export class DatabaseStorage implements IStorage {
   }
 
   async createToolRequest(request: InsertToolRequest): Promise<ToolRequest> {
-    const [created] = await db.insert(toolRequests).values(request).returning();
+    const [created] = await db.insert(toolRequests).values({
+      ...request,
+      tasks: request.tasks as Array<{ description: string; hoursPerWeek: number; dollarsSaved: number }> | null,
+    }).returning();
     return created;
   }
 
@@ -162,12 +165,18 @@ export class DatabaseStorage implements IStorage {
   }
 
   async createSqCalculation(calc: InsertSqCalculation): Promise<SqCalculation> {
-    const [created] = await db.insert(sqCalculations).values(calc).returning();
+    const [created] = await db.insert(sqCalculations).values({
+      ...calc,
+      tasks: calc.tasks as Array<{ name: string; hours: number }> | null,
+    }).returning();
     return created;
   }
 
   async createSqAssessment(assessment: InsertSqAssessment): Promise<SqAssessment> {
-    const [created] = await db.insert(sqAssessments).values(assessment).returning();
+    const [created] = await db.insert(sqAssessments).values({
+      ...assessment,
+      taskBreakdown: assessment.taskBreakdown as Array<{ name: string; hours: number; automationScore: number; category: string; isDrain: boolean }> | null,
+    }).returning();
     return created;
   }
 

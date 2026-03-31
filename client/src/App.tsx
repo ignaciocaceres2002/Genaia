@@ -50,7 +50,7 @@ function UserDashboardLayout({ children }: { children: React.ReactNode }) {
             <div className="flex-1" />
             <span className="text-xs text-muted-foreground hidden md:block">Genaia Platform</span>
           </header>
-          <main className="flex-1 overflow-y-auto p-6">
+          <main className="flex-1 overflow-y-auto relative p-6">
             {children}
           </main>
         </div>
@@ -75,7 +75,7 @@ function AdminDashboardLayout({ children }: { children: React.ReactNode }) {
             <div className="flex-1" />
             <span className="text-xs text-muted-foreground hidden md:block">Admin Dashboard</span>
           </header>
-          <main className="flex-1 overflow-y-auto p-6">
+          <main className="flex-1 overflow-y-auto relative p-6">
             {children}
           </main>
         </div>
