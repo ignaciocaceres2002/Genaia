@@ -1,0 +1,12 @@
+Lo que sumaría:
+Las funcionalidades clave del MVP:
+
+Superagency Quotient (SQ) — Podés medir la AI-readiness de cada persona con un score de 0 a 100 en 6 dimensiones cognitivas. 10 minutos, sin preguntar sobre IA, sin posibilidad de gaming. Es el primer estándar de este tipo
+Champion Identification — La plataforma identifica quién puede liderar adopción en cada equipo cruzando tres variables: SQ score, engagement y potencial de influencia. Champions por datos, no por política ni por voluntariado
+AI Case Builder — Cualquier empleado puede proponer un caso de uso de IA de forma estructurada (proyecto, situación actual, tecnología, outcome esperado). La plataforma lo scorea y prioriza. Eso convierte ideas sueltas en un pipeline de oportunidades rankeado
+AI Use Cases como Contributions — Tipo GitHub pero de adopción de IA. Cada persona registra lo que hizo con IA, cuánto tiempo ahorró, con qué calidad. Se mide en contribuciones, minutos salvados y puntos. Hace visible lo que hoy es invisible
+AI Tools Directory — Directorio de herramientas aprobadas por la organización, con data de uso real (cuántas veces se usó cada tool este mes). El empleado puede pedir herramientas nuevas. El admin aprueba o rechaza. Gobierno de shadow AI en tiempo real
+Benefits & Recognition — Gamificación corporativa real: el admin carga beneficios (días libres, rewards) canjeables por puntos que se ganan adoptando IA, completando training, haciendo contributions. Cambia comportamiento organizacional, no solo mide
+AI-First Recruiting Agent — Bot que evalúa si una posición nueva necesita un humano o puede resolverse con IA. Hace 5 preguntas, analiza el rol, y devuelve: posiciones analizadas, savings potenciales, tasa de automatización. El CHRO ve esto antes de abrir una búsqueda
+Agentic Enterprise Score — Score de 0 a 100 que mide la madurez de IA de toda la organización: no solo personas (SQ promedio) sino tools adoptadas, policies activas, champions identificados, use cases cargados, engagement. Con benchmarks vs industria. Es el KPI que el C-level revisa cada trimestre
+Admin Dashboard con Org Heat Map — El CHRO ve distribución de SQ por departamento, identifica equipos rezagados, trackea training completion, horas recuperadas, y tiene alertas automáticas. Todo en una vista
