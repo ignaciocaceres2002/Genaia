@@ -1,7 +1,7 @@
 import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
-import { insertSqCalculationSchema, insertSqAssessmentSchema, insertToolRequestSchema, insertAiUseCaseSchema, insertBenefitSchema, type User } from "@shared/schema";
+import { insertSqCalculationSchema, insertSqAssessmentSchema, insertToolRequestSchema, insertAiUseCaseSchema, insertBenefitSchema, insertImportedEmployeeSchema, type User } from "@shared/schema";
 import { z } from "zod";
 
 const toolRequestStatusSchema = z.object({
@@ -266,6 +266,38 @@ export async function registerRoutes(
       res.json(created);
     } catch (error) {
       console.error("POST /api/benefits error:", error);
+      res.status(500).json({ message: "Internal server error" });
+    }
+  });
+
+  app.get("/api/imported-employees", async (_req, res) => {
+    try {
+      const employees = await storage.getImportedEmployees();
+      res.json(employees);
+    } catch (error) {
+      console.error("GET /api/imported-employees error:", error);
+      res.status(500).json({ message: "Internal server error" });
+    }
+  });
+
+  app.post("/api/imported-employees/bulk", async (req, res) => {
+    try {
+      const bodySchema = z.object({
+        employees: z.array(
+          insertImportedEmployeeSchema.refine(
+            (e) => (e.name?.trim() || e.email?.trim()),
+            { message: "Each employee must have a non-empty name or email" }
+          )
+        ).min(1, { message: "At least one employee is required" }),
+      });
+      const parsed = bodySchema.safeParse(req.body);
+      if (!parsed.success) {
+        return res.status(400).json({ message: "Invalid data", errors: parsed.error.flatten() });
+      }
+      const created = await storage.bulkCreateImportedEmployees(parsed.data.employees);
+      res.json(created);
+    } catch (error) {
+      console.error("POST /api/imported-employees/bulk error:", error);
       res.status(500).json({ message: "Internal server error" });
     }
   });

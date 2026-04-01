@@ -12,7 +12,8 @@ import {
   type SqAssessment, type InsertSqAssessment,
   type AiUseCase, type InsertAiUseCase,
   type Benefit, type InsertBenefit,
-  users, teams, activities, courses, userProgress, aiTools, toolRequests, policies, alerts, sqCalculations, sqAssessments, aiUseCases, benefits,
+  type ImportedEmployee, type InsertImportedEmployee,
+  users, teams, activities, courses, userProgress, aiTools, toolRequests, policies, alerts, sqCalculations, sqAssessments, aiUseCases, benefits, importedEmployees,
 } from "@shared/schema";
 import { db } from "./db";
 import { eq, desc } from "drizzle-orm";
@@ -58,6 +59,9 @@ export interface IStorage {
 
   getBenefits(): Promise<Benefit[]>;
   createBenefit(benefit: InsertBenefit): Promise<Benefit>;
+
+  getImportedEmployees(): Promise<ImportedEmployee[]>;
+  bulkCreateImportedEmployees(employees: InsertImportedEmployee[]): Promise<ImportedEmployee[]>;
 }
 
 export class DatabaseStorage implements IStorage {
@@ -200,6 +204,15 @@ export class DatabaseStorage implements IStorage {
   async createBenefit(benefit: InsertBenefit): Promise<Benefit> {
     const [created] = await db.insert(benefits).values(benefit).returning();
     return created;
+  }
+
+  async getImportedEmployees(): Promise<ImportedEmployee[]> {
+    return db.select().from(importedEmployees).orderBy(desc(importedEmployees.createdAt));
+  }
+
+  async bulkCreateImportedEmployees(employees: InsertImportedEmployee[]): Promise<ImportedEmployee[]> {
+    if (employees.length === 0) return [];
+    return db.insert(importedEmployees).values(employees).returning();
   }
 }
 

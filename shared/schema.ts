@@ -165,6 +165,17 @@ export const benefits = pgTable("benefits", {
   createdAt: timestamp("created_at").defaultNow(),
 });
 
+export const importedEmployees = pgTable("imported_employees", {
+  id: varchar("id").primaryKey().default(sql`gen_random_uuid()`),
+  name: text("name").notNull().default(""),
+  email: text("email"),
+  role: text("role"),
+  department: text("department"),
+  title: text("title"),
+  isChampion: boolean("is_champion").notNull().default(false),
+  createdAt: timestamp("created_at").defaultNow(),
+});
+
 export const insertUserSchema = createInsertSchema(users).omit({ id: true, createdAt: true, lastActive: true });
 export const insertTeamSchema = createInsertSchema(teams).omit({ id: true });
 export const insertActivitySchema = createInsertSchema(activities).omit({ id: true, createdAt: true });
@@ -178,6 +189,7 @@ export const insertSqCalculationSchema = createInsertSchema(sqCalculations).omit
 export const insertSqAssessmentSchema = createInsertSchema(sqAssessments).omit({ id: true, createdAt: true });
 export const insertAiUseCaseSchema = createInsertSchema(aiUseCases).omit({ id: true, createdAt: true });
 export const insertBenefitSchema = createInsertSchema(benefits).omit({ id: true, createdAt: true });
+export const insertImportedEmployeeSchema = createInsertSchema(importedEmployees).omit({ id: true, createdAt: true });
 
 export type User = typeof users.$inferSelect;
 export type PublicUser = Omit<User, "password">;
@@ -206,6 +218,8 @@ export type AiUseCase = typeof aiUseCases.$inferSelect;
 export type InsertAiUseCase = z.infer<typeof insertAiUseCaseSchema>;
 export type Benefit = typeof benefits.$inferSelect;
 export type InsertBenefit = z.infer<typeof insertBenefitSchema>;
+export type ImportedEmployee = typeof importedEmployees.$inferSelect;
+export type InsertImportedEmployee = z.infer<typeof insertImportedEmployeeSchema>;
 
 export const SQ_LEVELS = [
   { name: "Beginner", minXp: 0, minSq: 0 },
