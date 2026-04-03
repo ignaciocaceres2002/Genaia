@@ -798,8 +798,8 @@ function RevealScreen({ results, animatedScore, showResults, concern, hope, role
                   <Radar
                     name="SQ"
                     dataKey="value"
-                    stroke="#7C3AED"
-                    fill="#7C3AED"
+                    stroke="hsl(var(--chart-1))"
+                    fill="hsl(var(--chart-1))"
                     fillOpacity={0.3}
                     strokeWidth={2}
                   />

@@ -7,7 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Bot, UserCheck, BrainCircuit, TrendingDown, DollarSign, Send, Sparkles, CheckCircle2, XCircle, AlertTriangle, RotateCcw } from "lucide-react";
 import { SEO } from "@/components/seo";
 
-const fadeUp = { hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0 } };
+import { fadeUp, pageContainer } from "@/lib/motion-variants";
 
 const TAXONOMY: Record<string, { automatizability: string; level: number }> = {
   "procesamiento de datos": { automatizability: "Alta", level: 5 },
@@ -331,16 +331,16 @@ export default function AIRecruitingPage() {
   };
 
   return (
-    <motion.div className="max-w-5xl mx-auto space-y-6" initial="hidden" animate="visible" variants={{ visible: { transition: { staggerChildren: 0.06 } } }}>
+    <motion.div className="max-w-5xl mx-auto space-y-6" initial="hidden" animate="visible" variants={pageContainer}>
       <SEO title="AI-First Recruiting - Genaia" description="AI agent that analyzes whether your next hire could be covered by AI instead." />
 
       <motion.div variants={fadeUp} className="text-center mb-2">
         <div className="flex items-center justify-center gap-3 mb-3">
-          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#7C3AED] to-[#5B21B6] flex items-center justify-center">
+          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-chart-1 to-chart-2 flex items-center justify-center">
             <Bot className="w-5 h-5 text-white" />
           </div>
           <h1 className="text-2xl font-bold" data-testid="text-recruiting-title">AI-First Recruiting</h1>
-          <Badge className="bg-[#7C3AED]/10 text-[#7C3AED] border-[#7C3AED]/20 text-[10px]">AGENT</Badge>
+          <Badge className="bg-chart-1/10 text-chart-1 border-chart-1/20 text-[10px]">AGENT</Badge>
         </div>
         <p className="text-sm text-muted-foreground max-w-lg mx-auto">
           Before you open a new position, ask the agent — it might already be covered by AI.
@@ -348,14 +348,14 @@ export default function AIRecruitingPage() {
       </motion.div>
 
       <motion.div variants={fadeUp}>
-        <Card className="overflow-hidden border-[#7C3AED]/20 relative">
-          <div className="absolute inset-0 bg-gradient-to-b from-[#7C3AED]/[0.02] via-transparent to-[#7C3AED]/[0.02] pointer-events-none" />
+        <Card className="overflow-hidden border-chart-1/20 relative">
+          <div className="absolute inset-0 bg-gradient-to-b from-chart-1/[0.02] via-transparent to-chart-1/[0.02] pointer-events-none" />
 
-          <div className="p-5 border-b border-[#7C3AED]/10 bg-[#7C3AED]/[0.03] relative z-10">
+          <div className="p-5 border-b border-chart-1/10 bg-chart-1/[0.03] relative z-10">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-3">
                 <div className="relative">
-                  <div className="w-11 h-11 rounded-full bg-gradient-to-br from-[#7C3AED] to-[#5B21B6] flex items-center justify-center shadow-lg shadow-violet-500/20">
+                  <div className="w-11 h-11 rounded-full bg-gradient-to-br from-chart-1 to-chart-2 flex items-center justify-center shadow-lg shadow-violet-500/20">
                     <Bot className="w-5 h-5 text-white" />
                   </div>
                   <span className="absolute -bottom-0.5 -right-0.5 w-3.5 h-3.5 rounded-full bg-green-500 border-2 border-background" />
@@ -380,7 +380,7 @@ export default function AIRecruitingPage() {
                 )}
                 <div className="w-16 h-1.5 rounded-full bg-muted overflow-hidden">
                   <motion.div
-                    className="h-full bg-[#7C3AED] rounded-full"
+                    className="h-full bg-chart-1 rounded-full"
                     initial={{ width: "0%" }}
                     animate={{ width: `${Math.min((convState.step / 5) * 100, 100)}%` }}
                     transition={{ duration: 0.4 }}
@@ -401,15 +401,15 @@ export default function AIRecruitingPage() {
                   className={`flex gap-3 ${msg.role === "user" ? "justify-end" : ""}`}
                 >
                   {msg.role === "agent" && (
-                    <div className="w-8 h-8 rounded-full bg-[#7C3AED]/10 flex items-center justify-center flex-shrink-0">
-                      <Bot className="w-4 h-4 text-[#7C3AED]" />
+                    <div className="w-8 h-8 rounded-full bg-chart-1/10 flex items-center justify-center flex-shrink-0">
+                      <Bot className="w-4 h-4 text-chart-1" />
                     </div>
                   )}
                   <div className={`${
                     msg.role === "user"
-                      ? "bg-gradient-to-br from-[#7C3AED] to-[#5B21B6] text-white rounded-2xl rounded-tr-md px-5 py-3.5 max-w-[75%] shadow-lg shadow-violet-500/10"
+                      ? "bg-gradient-to-br from-chart-1 to-chart-2 text-white rounded-2xl rounded-tr-md px-5 py-3.5 max-w-[75%] shadow-lg shadow-violet-500/10"
                       : msg.isAnalysis
-                        ? "bg-muted/60 rounded-2xl rounded-tl-md px-5 py-4 max-w-[90%] border border-[#7C3AED]/10"
+                        ? "bg-muted/60 rounded-2xl rounded-tl-md px-5 py-4 max-w-[90%] border border-chart-1/10"
                         : "bg-muted/60 rounded-2xl rounded-tl-md px-5 py-3.5 max-w-[80%]"
                   }`}>
                     <div className="text-sm leading-relaxed whitespace-pre-wrap">
@@ -428,15 +428,15 @@ export default function AIRecruitingPage() {
                 animate={{ opacity: 1 }}
                 className="flex gap-3"
               >
-                <div className="w-8 h-8 rounded-full bg-[#7C3AED]/10 flex items-center justify-center flex-shrink-0">
-                  <Bot className="w-4 h-4 text-[#7C3AED]" />
+                <div className="w-8 h-8 rounded-full bg-chart-1/10 flex items-center justify-center flex-shrink-0">
+                  <Bot className="w-4 h-4 text-chart-1" />
                 </div>
                 <div className="bg-muted/60 rounded-2xl rounded-tl-md px-5 py-3.5">
                   <div className="flex items-center gap-1.5">
                     {[0, 1, 2].map((i) => (
                       <motion.div
                         key={i}
-                        className="w-2 h-2 rounded-full bg-[#7C3AED]/40"
+                        className="w-2 h-2 rounded-full bg-chart-1/40"
                         animate={{ opacity: [0.3, 1, 0.3] }}
                         transition={{ duration: 1, repeat: Infinity, delay: i * 0.2 }}
                       />
@@ -469,7 +469,7 @@ export default function AIRecruitingPage() {
                 <Button
                   type="submit"
                   disabled={!input.trim() || isTyping}
-                  className="bg-[#7C3AED] text-white border-[#7C3AED]"
+                  className="bg-chart-1 text-white border-chart-1"
                   data-testid="button-send-recruiting"
                 >
                   <Send className="w-4 h-4" />
@@ -481,7 +481,7 @@ export default function AIRecruitingPage() {
                   {["Bajo / operativo", "Medio", "Alto / estratégico"].map((opt) => (
                     <button
                       key={opt}
-                      className="text-[11px] px-3 py-1.5 rounded-full border border-[#7C3AED]/15 text-[#7C3AED] bg-[#7C3AED]/[0.04] transition-all"
+                      className="text-[11px] px-3 py-1.5 rounded-full border border-chart-1/15 text-chart-1 bg-chart-1/[0.04] transition-all"
                       onClick={() => { setInput(opt); }}
                       data-testid={`button-option-${opt.toLowerCase().replace(/[\s\/]/g, "-")}`}
                     >
@@ -495,7 +495,7 @@ export default function AIRecruitingPage() {
                   {["Poca / mínima", "Regular", "Constante / mucha"].map((opt) => (
                     <button
                       key={opt}
-                      className="text-[11px] px-3 py-1.5 rounded-full border border-[#7C3AED]/15 text-[#7C3AED] bg-[#7C3AED]/[0.04] transition-all"
+                      className="text-[11px] px-3 py-1.5 rounded-full border border-chart-1/15 text-chart-1 bg-chart-1/[0.04] transition-all"
                       onClick={() => { setInput(opt); }}
                       data-testid={`button-option-${opt.toLowerCase().replace(/[\s\/]/g, "-")}`}
                     >
@@ -512,7 +512,7 @@ export default function AIRecruitingPage() {
       <div className="grid md:grid-cols-3 gap-4">
         <motion.div variants={fadeUp}>
           <Card className="p-5 text-center">
-            <p className="text-3xl font-bold text-[#7C3AED]" data-testid="text-positions-analyzed">47</p>
+            <p className="text-3xl font-bold text-chart-1" data-testid="text-positions-analyzed">47</p>
             <p className="text-xs text-muted-foreground mt-1">Positions Analyzed</p>
           </Card>
         </motion.div>

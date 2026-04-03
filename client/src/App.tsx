@@ -33,6 +33,7 @@ import UseCasesPage from "@/pages/dashboard/use-cases";
 import BenefitsPage from "@/pages/admin/benefits";
 import AssessmentPage from "@/pages/assessment";
 import ManifestoPage from "@/pages/manifesto";
+import DesignSystemPage from "@/pages/design-system";
 
 function UserDashboardLayout({ children }: { children: React.ReactNode }) {
   const style = {
@@ -134,6 +135,7 @@ function Router() {
       <Route path="/calculator" component={CalculatorPage} />
       <Route path="/assessment" component={AssessmentPage} />
       <Route path="/manifesto" component={ManifestoPage} />
+      <Route path="/design-system" component={DesignSystemPage} />
       <Route path="/dashboard/:rest*" component={UserDashboardRouter} />
       <Route path="/dashboard" component={UserDashboardRouter} />
       <Route path="/admin/:rest*" component={AdminDashboardRouter} />

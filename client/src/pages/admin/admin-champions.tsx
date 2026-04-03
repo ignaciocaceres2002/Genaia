@@ -7,7 +7,7 @@ import { useQuery } from "@tanstack/react-query";
 import type { User } from "@shared/schema";
 import { Trophy, Users, TrendingUp, Send, ExternalLink } from "lucide-react";
 
-const fadeUp = { hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0 } };
+import { fadeUp, pageContainer } from "@/lib/motion-variants";
 
 const championCandidates = [
   { name: "Sarah Chen", department: "Marketing", sq: 67, engagement: 72, influence: 45, composite: 62 },
@@ -26,9 +26,9 @@ export default function AdminChampionsPage() {
   const { data: champions } = useQuery<User[]>({ queryKey: ["/api/champions"] });
 
   return (
-    <motion.div className="max-w-5xl mx-auto space-y-6" initial="hidden" animate="visible" variants={{ visible: { transition: { staggerChildren: 0.06 } } }}>
+    <motion.div className="max-w-5xl mx-auto space-y-6" initial="hidden" animate="visible" variants={pageContainer}>
       <motion.div variants={fadeUp}>
-        <h1 className="text-2xl font-bold">Champion Program</h1>
+        <h1 className="text-display-xs font-bold">Champion Program</h1>
         <p className="text-muted-foreground text-sm mt-1">Manage, track, and grow your champion network</p>
       </motion.div>
 
@@ -40,7 +40,7 @@ export default function AdminChampionsPage() {
           { label: "Coverage", value: "57%", icon: Users },
         ].map((m) => (
           <Card key={m.label} className="p-4">
-            <m.icon className="w-4 h-4 text-[#7C3AED] mb-2" />
+            <m.icon className="w-4 h-4 text-chart-1 mb-2" />
             <p className="text-xl font-bold">{m.value}</p>
             <p className="text-xs text-muted-foreground">{m.label}</p>
           </Card>
@@ -70,7 +70,7 @@ export default function AdminChampionsPage() {
                     <td className="p-3">
                       <div className="flex items-center gap-2">
                         <Avatar className="w-7 h-7">
-                          <AvatarFallback className="bg-[#7C3AED]/10 text-[#7C3AED] text-[10px]">
+                          <AvatarFallback className="bg-chart-1/10 text-chart-1 text-[10px]">
                             {c.name.split(" ").map((n) => n[0]).join("")}
                           </AvatarFallback>
                         </Avatar>
@@ -91,15 +91,15 @@ export default function AdminChampionsPage() {
       </motion.div>
 
       <motion.div variants={fadeUp}>
-        <Card className="p-6 bg-gradient-to-br from-[#7C3AED]/10 to-[#5B21B6]/10 border-[#7C3AED]/20">
+        <Card className="p-6 bg-gradient-to-br from-chart-1/10 to-chart-2/10 border-chart-1/20">
           <div className="flex items-center justify-between gap-4 flex-wrap">
             <div>
               <h3 className="font-semibold mb-1">Champions Test</h3>
               <p className="text-sm text-muted-foreground">Identify potential champions with our AI-powered assessment</p>
-              <p className="text-xs text-muted-foreground mt-1">Use code <span className="font-semibold text-[#7C3AED]">PRUEBA</span> to access the test</p>
+              <p className="text-xs text-muted-foreground mt-1">Use code <span className="font-semibold text-chart-1">PRUEBA</span> to access the test</p>
             </div>
             <a href="https://aichampsfinder.replit.app/" target="_blank" rel="noopener noreferrer">
-              <Button className="rounded-full bg-[#7C3AED] text-white border-[#7C3AED]" data-testid="button-champions-test">
+              <Button className="rounded-full bg-chart-1 text-white border-chart-1" data-testid="button-champions-test">
                 <ExternalLink className="w-4 h-4 mr-2" /> Champions Test
               </Button>
             </a>
@@ -116,7 +116,7 @@ export default function AdminChampionsPage() {
               <div key={c.name} className="flex items-center justify-between gap-4 p-3 bg-muted/50 rounded-md">
                 <div className="flex items-center gap-3">
                   <Avatar className="w-8 h-8">
-                    <AvatarFallback className="bg-[#7C3AED]/10 text-[#7C3AED] text-xs">
+                    <AvatarFallback className="bg-chart-1/10 text-chart-1 text-xs">
                       {c.name.split(" ").map((n) => n[0]).join("")}
                     </AvatarFallback>
                   </Avatar>
@@ -129,7 +129,7 @@ export default function AdminChampionsPage() {
                   <div className="text-right text-xs text-muted-foreground hidden md:block">
                     <span>SQ {c.sq}</span> · <span>Eng {c.engagement}</span> · <span>Inf {c.influence}</span>
                   </div>
-                  <Button size="sm" className="rounded-full bg-[#7C3AED] text-white border-[#7C3AED] text-xs">
+                  <Button size="sm" className="rounded-full bg-chart-1 text-white border-chart-1 text-xs">
                     <Send className="w-3 h-3 mr-1" /> Invite
                   </Button>
                 </div>

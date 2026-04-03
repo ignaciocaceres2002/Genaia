@@ -7,7 +7,7 @@ import { useQuery } from "@tanstack/react-query";
 import type { PublicUser } from "@shared/schema";
 import { Trophy, MessageSquare, Star, ExternalLink } from "lucide-react";
 
-const fadeUp = { hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0 } };
+import { fadeUp, pageContainer } from "@/lib/motion-variants";
 
 const defaultChampions: PublicUser[] = [
   { id: "1", name: "Marcus Johnson", department: "Engineering", nqScore: 88, username: "marcus.johnson", email: "marcus@company.com", role: "user", avatar: null, level: 7, xp: 22500, streak: 45, isChampion: true, isAdmin: false, skillScores: null, lastActive: null, createdAt: null },
@@ -28,9 +28,9 @@ export default function ChampionsPage() {
   const displayChampions = champions || defaultChampions;
 
   return (
-    <motion.div className="max-w-4xl mx-auto space-y-6" initial="hidden" animate="visible" variants={{ visible: { transition: { staggerChildren: 0.08 } } }}>
+    <motion.div className="max-w-4xl mx-auto space-y-6" initial="hidden" animate="visible" variants={pageContainer}>
       <motion.div variants={fadeUp}>
-        <h1 className="text-2xl font-bold">Champions</h1>
+        <h1 className="text-display-xs font-bold">Champions</h1>
         <p className="text-muted-foreground text-sm mt-1">Connect with AI adoption leaders in your organization</p>
       </motion.div>
 
@@ -41,7 +41,7 @@ export default function ChampionsPage() {
             <Card key={champ.id} className="p-4" data-testid={`card-champion-${champ.id}`}>
               <div className="flex items-start gap-3">
                 <Avatar className="w-10 h-10">
-                  <AvatarFallback className="bg-[#7C3AED]/10 text-[#7C3AED] text-sm font-medium">
+                  <AvatarFallback className="bg-chart-1/10 text-chart-1 text-sm font-medium">
                     {champ.name.split(" ").map((n: string) => n[0]).join("")}
                   </AvatarFallback>
                 </Avatar>
@@ -71,7 +71,7 @@ export default function ChampionsPage() {
             <Card key={item.id} className="p-4">
               <div className="flex items-start gap-3">
                 <Avatar className="w-8 h-8">
-                  <AvatarFallback className="bg-[#7C3AED]/10 text-[#7C3AED] text-xs font-medium">
+                  <AvatarFallback className="bg-chart-1/10 text-chart-1 text-xs font-medium">
                     {item.champion.split(" ").map((n) => n[0]).join("")}
                   </AvatarFallback>
                 </Avatar>
@@ -95,25 +95,25 @@ export default function ChampionsPage() {
       </motion.div>
 
       <motion.div variants={fadeUp}>
-        <Card className="p-6 bg-gradient-to-br from-[#7C3AED]/10 to-[#5B21B6]/10 border-[#7C3AED]/20">
+        <Card className="p-6 bg-gradient-to-br from-chart-1/10 to-chart-2/10 border-chart-1/20">
           <div className="text-center">
-            <Trophy className="w-8 h-8 text-[#7C3AED] mx-auto mb-3" />
+            <Trophy className="w-8 h-8 text-chart-1 mx-auto mb-3" />
             <h3 className="font-semibold mb-1">Champions Test</h3>
             <p className="text-sm text-muted-foreground mb-4">Find out if you have what it takes to be an AI Champion</p>
             <a href="https://aichampsfinder.replit.app/" target="_blank" rel="noopener noreferrer">
-              <Button className="rounded-full bg-[#7C3AED] text-white border-[#7C3AED] mb-3" data-testid="button-champions-test">
+              <Button className="rounded-full bg-chart-1 text-white border-chart-1 mb-3" data-testid="button-champions-test">
                 <ExternalLink className="w-4 h-4 mr-2" /> Take the Champions Test
               </Button>
             </a>
-            <p className="text-xs text-muted-foreground">Use code <span className="font-semibold text-[#7C3AED]">PRUEBA</span> to access the test</p>
+            <p className="text-xs text-muted-foreground">Use code <span className="font-semibold text-chart-1">PRUEBA</span> to access the test</p>
           </div>
         </Card>
       </motion.div>
 
       <motion.div variants={fadeUp}>
-        <Card className="p-6 bg-[#7C3AED]/5 border-[#7C3AED]/20">
+        <Card className="p-6 bg-chart-1/5 border-chart-1/20">
           <div className="text-center">
-            <Trophy className="w-8 h-8 text-[#7C3AED] mx-auto mb-3" />
+            <Trophy className="w-8 h-8 text-chart-1 mx-auto mb-3" />
             <h3 className="font-semibold mb-1">Become a Champion</h3>
             <p className="text-sm text-muted-foreground mb-4">Reach SQ 65+ and high engagement to unlock your invitation</p>
             <div className="flex justify-center gap-6">

@@ -3,8 +3,14 @@ import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { SKILLS } from "@shared/schema";
 import { ResponsiveContainer, RadarChart, PolarGrid, PolarAngleAxis, Radar, BarChart, Bar, XAxis, YAxis, Tooltip, CartesianGrid } from "recharts";
+import { fadeUp, pageContainer } from "@/lib/motion-variants";
 
-const fadeUp = { hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0 } };
+const CHART_1 = "hsl(var(--chart-1))";
+const CHART_2 = "hsl(var(--chart-2))";
+const CHART_3 = "hsl(var(--chart-3))";
+const CHART_4 = "hsl(var(--chart-4))";
+const CHART_5 = "hsl(var(--chart-5))";
+const tooltipStyle = { backgroundColor: "hsl(var(--card))", border: "1px solid hsl(var(--border))", borderRadius: "6px", fontSize: "12px", color: "hsl(var(--foreground))" };
 
 const assessmentResults = [
   { skill: "Data Fluency", avgScore: 62, taken: 95, distribution: [5, 15, 35, 30, 10] },
@@ -25,9 +31,9 @@ const teamComparison = SKILLS.map((s) => ({
 
 export default function AdminAssessmentsPage() {
   return (
-    <motion.div className="max-w-5xl mx-auto space-y-6" initial="hidden" animate="visible" variants={{ visible: { transition: { staggerChildren: 0.06 } } }}>
+    <motion.div className="max-w-5xl mx-auto space-y-6" initial="hidden" animate="visible" variants={pageContainer}>
       <motion.div variants={fadeUp}>
-        <h1 className="text-2xl font-bold">Assessment Analytics</h1>
+        <h1 className="text-display-xs font-bold">Assessment Analytics</h1>
         <p className="text-muted-foreground text-sm mt-1">Results, performance, and team comparisons</p>
       </motion.div>
 
@@ -62,7 +68,7 @@ export default function AdminAssessmentsPage() {
                             className="h-full rounded-sm"
                             style={{
                               width: `${d}%`,
-                              backgroundColor: i === 0 ? "#ef4444" : i === 1 ? "#f59e0b" : i === 2 ? "#A78BFA" : i === 3 ? "#7C3AED" : "#22c55e",
+                              backgroundColor: [CHART_5, CHART_4, CHART_3, CHART_1, CHART_2][i] || CHART_1,
                               minWidth: "4px",
                             }}
                           />
@@ -85,15 +91,15 @@ export default function AdminAssessmentsPage() {
               <RadarChart data={teamComparison}>
                 <PolarGrid stroke="hsl(var(--border))" />
                 <PolarAngleAxis dataKey="skill" tick={{ fontSize: 10, fill: "hsl(var(--muted-foreground))" }} />
-                <Radar name="Engineering" dataKey="Engineering" stroke="#7C3AED" fill="#7C3AED" fillOpacity={0.15} strokeWidth={2} />
-                <Radar name="Marketing" dataKey="Marketing" stroke="#f59e0b" fill="none" strokeWidth={1.5} strokeDasharray="4 4" />
-                <Radar name="Product" dataKey="Product" stroke="#22c55e" fill="none" strokeWidth={1.5} strokeDasharray="2 2" />
-                <Radar name="Sales" dataKey="Sales" stroke="#ef4444" fill="none" strokeWidth={1} strokeDasharray="6 3" />
+                <Radar name="Engineering" dataKey="Engineering" stroke={CHART_1} fill={CHART_1} fillOpacity={0.15} strokeWidth={2} />
+                <Radar name="Marketing" dataKey="Marketing" stroke={CHART_2} fill="none" strokeWidth={1.5} strokeDasharray="4 4" />
+                <Radar name="Product" dataKey="Product" stroke={CHART_3} fill="none" strokeWidth={1.5} strokeDasharray="2 2" />
+                <Radar name="Sales" dataKey="Sales" stroke={CHART_4} fill="none" strokeWidth={1} strokeDasharray="6 3" />
               </RadarChart>
             </ResponsiveContainer>
           </div>
           <div className="flex items-center justify-center gap-4 mt-2 flex-wrap">
-            {[{ name: "Engineering", color: "#7C3AED" }, { name: "Marketing", color: "#f59e0b" }, { name: "Product", color: "#22c55e" }, { name: "Sales", color: "#ef4444" }].map((t) => (
+            {[{ name: "Engineering", color: CHART_1 }, { name: "Marketing", color: CHART_2 }, { name: "Product", color: CHART_3 }, { name: "Sales", color: CHART_4 }].map((t) => (
               <div key={t.name} className="flex items-center gap-1.5 text-xs text-muted-foreground">
                 <div className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: t.color }} />
                 {t.name}

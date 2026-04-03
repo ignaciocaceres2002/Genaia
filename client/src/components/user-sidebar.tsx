@@ -1,5 +1,5 @@
 import { Link, useLocation } from "wouter";
-import { Home, BarChart3, GraduationCap, Target, Wrench, FileText, Trophy, Building2, Flame, Rocket, Lightbulb } from "lucide-react";
+import { Home, BarChart3, GraduationCap, Target, Wrench, FileText, Trophy, Building2, Flame, Rocket, Lightbulb, Palette } from "lucide-react";
 import {
   Sidebar,
   SidebarContent,
@@ -26,6 +26,7 @@ const navItems = [
   { title: "Policies", path: "/dashboard/policies", icon: FileText },
   { title: "Champions", path: "/dashboard/champions", icon: Trophy },
   { title: "My Company", path: "/dashboard/company", icon: Building2 },
+  { title: "Design System", path: "/design-system", icon: Palette },
 ];
 
 interface UserSidebarProps {
@@ -51,7 +52,7 @@ export function UserSidebar({ user }: UserSidebarProps) {
         </Link>
         <div className="flex items-center gap-3">
           <Avatar className="w-10 h-10">
-            <AvatarFallback className="bg-[#7C3AED] text-white text-sm font-medium">
+            <AvatarFallback className="bg-chart-1 text-white text-sm font-medium">
               {currentUser.name.split(" ").map((n) => n[0]).join("")}
             </AvatarFallback>
           </Avatar>

@@ -14,54 +14,11 @@ import { SEO } from "@/components/seo";
 import logoImg from "@assets/image_1773976580990.png";
 import { useRef, useState, useEffect, useCallback } from "react";
 
-const fadeUp = {
-  hidden: { opacity: 0, y: 40 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.7, ease: [0.22, 1, 0.36, 1] } },
-};
-
-const fadeScale = {
-  hidden: { opacity: 0, scale: 0.9 },
-  visible: { opacity: 1, scale: 1, transition: { duration: 0.8, ease: [0.22, 1, 0.36, 1] } },
-};
-
-const staggerContainer = {
-  hidden: {},
-  visible: { transition: { staggerChildren: 0.1 } },
-};
-
-const staggerFast = {
-  hidden: {},
-  visible: { transition: { staggerChildren: 0.06 } },
-};
-
-const heroRevealContainer = {
-  hidden: {},
-  visible: { transition: { staggerChildren: 0.12, delayChildren: 0.15 } },
-};
-
-const wordMaterialize = {
-  hidden: { opacity: 0, scale: 0.6, filter: "blur(12px)" },
-  visible: {
-    opacity: 1, scale: 1, filter: "blur(0px)",
-    transition: { duration: 0.9, ease: [0.22, 1, 0.36, 1] },
-  },
-};
-
-const subtleMaterialize = {
-  hidden: { opacity: 0, filter: "blur(8px)", y: 10 },
-  visible: {
-    opacity: 1, filter: "blur(0px)", y: 0,
-    transition: { duration: 1.0, ease: [0.22, 1, 0.36, 1] },
-  },
-};
-
-const metricReveal = {
-  hidden: { opacity: 0, scale: 0.85, filter: "blur(6px)" },
-  visible: {
-    opacity: 1, scale: 1, filter: "blur(0px)",
-    transition: { duration: 0.7, ease: [0.22, 1, 0.36, 1] },
-  },
-};
+import {
+  fadeUp, scaleIn as fadeScale, staggerContainer, staggerFast,
+  heroRevealContainer, wordMaterialize, subtleMaterialize, metricReveal,
+  DURATION, EASING,
+} from "@/lib/motion-variants";
 
 function WordByWord({ text, className, gradient }: { text: string; className?: string; gradient?: boolean }) {
   const words = text.split(" ");
@@ -74,7 +31,7 @@ function WordByWord({ text, className, gradient }: { text: string; className?: s
           className="inline-block mr-[0.3em]"
         >
           {gradient ? (
-            <span className="bg-gradient-to-r from-[#7C3AED] via-[#A78BFA] to-[#5B21B6] bg-clip-text text-transparent">
+            <span className="bg-gradient-to-r from-chart-1 via-chart-3 to-chart-2 bg-clip-text text-transparent">
               {word}
             </span>
           ) : (
@@ -226,7 +183,7 @@ function BigBangIntro({ onComplete }: { onComplete: () => void }) {
     const cy = canvas.height / 2;
 
     const particles: { x: number; y: number; vx: number; vy: number; r: number; alpha: number; color: string }[] = [];
-    const colors = ["#FFFFFF", "#FFFFFF", "#E8E0FF", "#C4B5FD", "#A78BFA", "#7C3AED", "#FBBF24"];
+    const colors = ["#FFFFFF", "#FFFFFF", "#E8E0FF", "#C4B5FD", "hsl(var(--chart-3))", "hsl(var(--chart-1))", "#FBBF24"];
     for (let i = 0; i < 250; i++) {
       const angle = Math.random() * Math.PI * 2;
       const speed = 1.5 + Math.random() * 16;
@@ -315,7 +272,7 @@ function BigBangIntro({ onComplete }: { onComplete: () => void }) {
           className="absolute inset-0 bg-white"
           initial={{ opacity: 1 }}
           animate={{ opacity: 0 }}
-          transition={{ duration: 0.6, ease: "easeOut" }}
+          transition={{ duration: 0.6, ease: EASING.easeOut }}
         />
       )}
 
@@ -352,7 +309,7 @@ function BigBangIntro({ onComplete }: { onComplete: () => void }) {
               <motion.p
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+                transition={{ duration: 0.6, ease: EASING.smooth }}
                 className="text-xl md:text-3xl lg:text-4xl font-bold text-white text-center mt-4 tracking-tight"
               >
                 {line2Text}
@@ -373,7 +330,7 @@ function BigBangIntro({ onComplete }: { onComplete: () => void }) {
                 initial={{ opacity: 0, scale: 2, filter: "blur(10px)" }}
                 animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
                 exit={{ opacity: 0, scale: 0.5, filter: "blur(6px)" }}
-                transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+                transition={{ duration: 0.5, ease: EASING.smooth }}
                 className="text-6xl md:text-8xl font-bold text-white mt-10 tabular-nums"
                 style={{ textShadow: "0 0 40px rgba(124, 58, 237, 0.6), 0 0 80px rgba(167, 139, 250, 0.3)" }}
               >
@@ -389,7 +346,7 @@ function BigBangIntro({ onComplete }: { onComplete: () => void }) {
           className="z-10 flex flex-col items-center justify-center px-6"
           initial={{ scale: 1, opacity: 1 }}
           animate={{ scale: 0.3, opacity: 0 }}
-          transition={{ duration: 0.6, ease: "easeIn" }}
+          transition={{ duration: 0.6, ease: EASING.easeOut }}
         />
       )}
     </motion.div>
@@ -451,10 +408,10 @@ function MockupSQResults() {
     <div className="space-y-3">
       <div className="flex items-center justify-between">
         <div>
-          <p className="text-[10px] font-semibold tracking-wider text-[#7C3AED] uppercase">SQ Assessment Results</p>
+          <p className="text-[10px] font-semibold tracking-wider text-chart-1 uppercase">SQ Assessment Results</p>
           <p className="text-[9px] text-muted-foreground">Personal AI Readiness Profile</p>
         </div>
-        <div className="px-2 py-0.5 rounded-full bg-[#7C3AED]/10 text-[9px] font-semibold text-[#7C3AED]">Catalyst</div>
+        <div className="px-2 py-0.5 rounded-full bg-chart-1/10 text-[9px] font-semibold text-chart-1">Catalyst</div>
       </div>
       <div className="flex items-center gap-6">
         <div className="relative flex-shrink-0">
@@ -466,9 +423,9 @@ function MockupSQResults() {
             {angles.map((a, i) => (
               <line key={i} x1={cx} y1={cy} x2={cx + Math.cos(a) * r} y2={cy + Math.sin(a) * r} stroke="currentColor" className="text-border/30" strokeWidth="0.3" />
             ))}
-            <polygon points={points} fill="rgba(124, 58, 237, 0.15)" stroke="#7C3AED" strokeWidth="1.5" />
+            <polygon points={points} fill="hsl(var(--chart-1) / 0.15)" stroke="hsl(var(--chart-1))" strokeWidth="1.5" />
             {skills.map((s, i) => (
-              <circle key={i} cx={cx + Math.cos(angles[i]) * r * (s.score / 100)} cy={cy + Math.sin(angles[i]) * r * (s.score / 100)} r="3" fill="#7C3AED" />
+              <circle key={i} cx={cx + Math.cos(angles[i]) * r * (s.score / 100)} cy={cy + Math.sin(angles[i]) * r * (s.score / 100)} r="3" fill="hsl(var(--chart-1))" />
             ))}
           </svg>
           <div className="absolute inset-0 flex flex-col items-center justify-center">
@@ -481,7 +438,7 @@ function MockupSQResults() {
             <div key={s.name} className="flex items-center gap-2">
               <span className="text-[9px] text-muted-foreground w-[80px] truncate">{s.name}</span>
               <div className="flex-1 h-1.5 bg-muted rounded-full overflow-hidden">
-                <div className="h-full bg-gradient-to-r from-[#7C3AED] to-[#A78BFA] rounded-full" style={{ width: `${s.score}%` }} />
+                <div className="h-full bg-gradient-to-r from-chart-1 to-chart-3 rounded-full" style={{ width: `${s.score}%` }} />
               </div>
               <span className="text-[9px] font-semibold text-foreground w-[22px] text-right">{s.score}</span>
             </div>
@@ -499,13 +456,13 @@ function MockupChampions() {
     { name: "Sofia Andersson", role: "Data Analyst", sq: 76, engagement: 88, influence: 74, rank: 3 },
     { name: "Marcus Williams", role: "Operations Dir", sq: 71, engagement: 85, influence: 79, rank: 4 },
   ];
-  const colors = ["bg-[#7C3AED]", "bg-violet-400", "bg-violet-300", "bg-violet-200"];
+  const colors = ["bg-chart-1", "bg-violet-400", "bg-violet-300", "bg-violet-200"];
   const initials = (n: string) => n.split(" ").map((w) => w[0]).join("");
 
   return (
     <div className="space-y-3">
       <div>
-        <p className="text-[10px] font-semibold tracking-wider text-[#7C3AED] uppercase">Champion Candidates</p>
+        <p className="text-[10px] font-semibold tracking-wider text-chart-1 uppercase">Champion Candidates</p>
         <p className="text-[9px] text-muted-foreground">Ranked by algorithm: SQ 40% + Engagement 30% + Influence 30%</p>
       </div>
       <div className="space-y-2">
@@ -517,7 +474,7 @@ function MockupChampions() {
             <div className="flex-1 min-w-0">
               <div className="flex items-center gap-2">
                 <span className="text-[11px] font-semibold text-foreground truncate">{c.name}</span>
-                <span className="text-[8px] px-1.5 py-0.5 rounded-full bg-[#7C3AED]/10 text-[#7C3AED] font-semibold">#{c.rank}</span>
+                <span className="text-[8px] px-1.5 py-0.5 rounded-full bg-chart-1/10 text-chart-1 font-semibold">#{c.rank}</span>
               </div>
               <p className="text-[9px] text-muted-foreground">{c.role}</p>
             </div>
@@ -536,7 +493,7 @@ function MockupChampions() {
               </div>
             </div>
             {c.rank === 1 && (
-              <span className="px-2.5 py-1 rounded-full bg-[#7C3AED] text-white text-[9px] font-semibold flex-shrink-0" aria-hidden="true">Invite</span>
+              <span className="px-2.5 py-1 rounded-full bg-chart-1 text-white text-[9px] font-semibold flex-shrink-0" aria-hidden="true">Invite</span>
             )}
           </div>
         ))}
@@ -567,21 +524,21 @@ function MockupLearning() {
             <Flame className="w-3 h-3 text-orange-500" />
             <span className="text-[9px] font-bold text-orange-600">12-day streak</span>
           </div>
-          <div className="px-2 py-0.5 rounded-full bg-[#7C3AED]/10">
-            <span className="text-[9px] font-bold text-[#7C3AED]">+150 XP</span>
+          <div className="px-2 py-0.5 rounded-full bg-chart-1/10">
+            <span className="text-[9px] font-bold text-chart-1">+150 XP</span>
           </div>
         </div>
       </div>
       <div className="space-y-1">
         {modules.map((m, i) => (
-          <div key={m.title} className={`flex items-center gap-3 p-2.5 rounded-lg border ${m.status === "current" ? "border-[#7C3AED]/40 bg-[#7C3AED]/5 shadow-sm shadow-violet-500/10" : "border-border/30 bg-muted/20"}`}>
+          <div key={m.title} className={`flex items-center gap-3 p-2.5 rounded-lg border ${m.status === "current" ? "border-chart-1/40 bg-chart-1/5 shadow-sm shadow-violet-500/10" : "border-border/30 bg-muted/20"}`}>
             <div className="relative flex-shrink-0">
               {m.status === "done" ? (
                 <div className="w-7 h-7 rounded-full bg-green-500 flex items-center justify-center">
                   <Check className="w-4 h-4 text-white" />
                 </div>
               ) : m.status === "current" ? (
-                <div className="w-7 h-7 rounded-full bg-[#7C3AED] flex items-center justify-center ring-2 ring-[#7C3AED]/30 ring-offset-1">
+                <div className="w-7 h-7 rounded-full bg-chart-1 flex items-center justify-center ring-2 ring-chart-1/30 ring-offset-1">
                   <Zap className="w-3.5 h-3.5 text-white" />
                 </div>
               ) : (
@@ -597,9 +554,9 @@ function MockupLearning() {
           </div>
         ))}
       </div>
-      <div className="p-3 rounded-lg border border-dashed border-[#7C3AED]/30 bg-[#7C3AED]/[0.03]">
+      <div className="p-3 rounded-lg border border-dashed border-chart-1/30 bg-chart-1/[0.03]">
         <div className="flex items-center gap-2">
-          <Star className="w-3.5 h-3.5 text-[#7C3AED]" />
+          <Star className="w-3.5 h-3.5 text-chart-1" />
           <div>
             <p className="text-[10px] font-semibold text-foreground">Daily Challenge</p>
             <p className="text-[9px] text-muted-foreground">Complete "Verify or Trust?" scenario — 5 min</p>
@@ -620,7 +577,7 @@ function MockupDashboard() {
 
   return (
     <div className="space-y-3">
-      <p className="text-[10px] font-semibold tracking-wider text-[#7C3AED] uppercase">Organization Overview</p>
+      <p className="text-[10px] font-semibold tracking-wider text-chart-1 uppercase">Organization Overview</p>
       <div className="grid grid-cols-4 gap-2">
         {kpis.map((k) => (
           <div key={k.label} className="p-2.5 rounded-lg bg-muted/30 border border-border/30">
@@ -642,11 +599,11 @@ function MockupDashboard() {
         <svg viewBox="0 0 280 80" className="w-full h-auto">
           <defs>
             <linearGradient id="chartGrad" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0%" stopColor="#7C3AED" stopOpacity="0.2" />
-              <stop offset="100%" stopColor="#7C3AED" stopOpacity="0" />
+              <stop offset="0%" stopColor="hsl(var(--chart-1))" stopOpacity="0.2" />
+              <stop offset="100%" stopColor="hsl(var(--chart-1))" stopOpacity="0" />
             </linearGradient>
           </defs>
-          <path d="M0,65 Q20,60 40,55 T80,48 T120,42 T160,38 T200,30 T240,25 T280,18" fill="none" stroke="#7C3AED" strokeWidth="2" />
+          <path d="M0,65 Q20,60 40,55 T80,48 T120,42 T160,38 T200,30 T240,25 T280,18" fill="none" stroke="hsl(var(--chart-1))" strokeWidth="2" />
           <path d="M0,65 Q20,60 40,55 T80,48 T120,42 T160,38 T200,30 T240,25 T280,18 V80 H0 Z" fill="url(#chartGrad)" />
           {[0, 56, 112, 168, 224, 280].map((x, i) => (
             <text key={i} x={x} y="78" className="text-[7px] fill-muted-foreground">{["W1", "W2", "W3", "W4", "W5", "W6"][i]}</text>
@@ -660,7 +617,7 @@ function MockupDashboard() {
 function MockupCaseBuilder() {
   return (
     <div className="space-y-3">
-      <p className="text-[10px] font-semibold tracking-wider text-[#7C3AED] uppercase">AI Case Builder</p>
+      <p className="text-[10px] font-semibold tracking-wider text-chart-1 uppercase">AI Case Builder</p>
       <div className="p-3.5 rounded-lg border border-border/40 bg-background space-y-2.5">
         <div className="flex items-start justify-between">
           <div>
@@ -680,7 +637,7 @@ function MockupCaseBuilder() {
           </div>
           <div>
             <p className="text-[8px] text-muted-foreground">Score</p>
-            <p className="text-[10px] font-semibold text-[#7C3AED]">78/100</p>
+            <p className="text-[10px] font-semibold text-chart-1">78/100</p>
           </div>
         </div>
       </div>
@@ -732,7 +689,7 @@ function MockupRecruiting() {
   return (
     <div className="space-y-3">
       <div>
-        <p className="text-[10px] font-semibold tracking-wider text-[#7C3AED] uppercase">AI-First Recruiting</p>
+        <p className="text-[10px] font-semibold tracking-wider text-chart-1 uppercase">AI-First Recruiting</p>
         <p className="text-[9px] text-muted-foreground">Product Manager — 3 candidates assessed</p>
       </div>
       <div className="space-y-2">
@@ -742,7 +699,7 @@ function MockupRecruiting() {
             <div className="flex-1 min-w-0">
               <p className="text-[11px] font-semibold text-foreground">{c.name}</p>
               <div className="flex items-center gap-2 mt-0.5">
-                <span className="text-[9px] font-bold text-[#7C3AED]">SQ {c.sq}</span>
+                <span className="text-[9px] font-bold text-chart-1">SQ {c.sq}</span>
                 <span className={`text-[8px] font-semibold px-1.5 py-0.5 rounded-full ${c.badgeColor}`}>{c.badge}</span>
               </div>
             </div>
@@ -822,7 +779,7 @@ export default function LandingPage() {
         className="fixed top-0 left-0 right-0 z-50 backdrop-blur-xl bg-background/70 border-b border-border/50"
         initial={{ opacity: 0, y: -20 }}
         animate={introComplete ? { opacity: 1, y: 0 } : { opacity: 0, y: -20 }}
-        transition={{ duration: 0.6, delay: 0.1, ease: [0.22, 1, 0.36, 1] }}>
+        transition={{ duration: 0.6, delay: 0.1, ease: EASING.smooth }}>
         <div className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between gap-4">
           <Link href="/">
             <img src={logoImg} alt="Genaia" className="h-12 w-auto" data-testid="link-logo" />
@@ -843,7 +800,7 @@ export default function LandingPage() {
               <Button variant="outline" size="sm" data-testid="button-demo-admin">Demo Admin</Button>
             </Link>
             <Link href="/assessment">
-              <Button size="sm" className="rounded-full bg-[#7C3AED] text-white border-[#7C3AED]" data-testid="button-take-sq-nav">
+              <Button size="sm" className="rounded-full bg-chart-1 text-white border-chart-1" data-testid="button-take-sq-nav">
                 Take the SQ Assessment
               </Button>
             </Link>
@@ -855,9 +812,9 @@ export default function LandingPage() {
         {/* SECTION 1 — HERO */}
         <section ref={heroRef} className="relative pt-24 md:pt-32 pb-12 px-6 min-h-[92vh] flex flex-col justify-center overflow-hidden">
           <div className="absolute inset-0 overflow-hidden pointer-events-none">
-            <div className="absolute top-20 -left-32 w-[500px] h-[500px] rounded-full bg-[#7C3AED]/5 blur-[120px]" />
-            <div className="absolute bottom-20 -right-32 w-[400px] h-[400px] rounded-full bg-[#A78BFA]/8 blur-[100px]" />
-            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full bg-[#5B21B6]/3 blur-[150px]" />
+            <div className="absolute top-20 -left-32 w-[500px] h-[500px] rounded-full bg-chart-1/5 blur-[120px]" />
+            <div className="absolute bottom-20 -right-32 w-[400px] h-[400px] rounded-full bg-chart-3/8 blur-[100px]" />
+            <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full bg-chart-2/3 blur-[150px]" />
           </div>
 
           <motion.div
@@ -869,7 +826,7 @@ export default function LandingPage() {
           >
             <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
               <motion.div variants={fadeUp}>
-                <p className="text-xs font-semibold tracking-[0.2em] uppercase text-[#7C3AED] mb-6">
+                <p className="text-xs font-semibold tracking-[0.2em] uppercase text-chart-1 mb-6">
                   Your Human-First AI Adoption Platform
                 </p>
 
@@ -880,11 +837,11 @@ export default function LandingPage() {
                   <AnimatePresence mode="wait">
                     <motion.span
                       key={heroRotations[heroIdx].key}
-                      className="absolute left-0 top-0 font-bold bg-gradient-to-r from-[#7C3AED] via-[#A78BFA] to-[#5B21B6] bg-clip-text text-transparent leading-[1.1] tracking-tight"
+                      className="absolute left-0 top-0 font-bold bg-gradient-to-r from-chart-1 via-chart-3 to-chart-2 bg-clip-text text-transparent leading-[1.1] tracking-tight"
                       initial={{ opacity: 0, y: 30, filter: "blur(8px)" }}
                       animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
                       exit={{ opacity: 0, y: -30, filter: "blur(8px)" }}
-                      transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+                      transition={{ duration: 0.5, ease: EASING.smooth }}
                     >
                       {heroRotations[heroIdx].text}
                     </motion.span>
@@ -898,7 +855,7 @@ export default function LandingPage() {
                 <div className="flex flex-wrap items-start gap-4 mb-8">
                   <div>
                     <Link href="/assessment">
-                      <Button size="lg" className="rounded-full bg-[#7C3AED] text-white border-[#7C3AED]" data-testid="button-take-assessment-hero">
+                      <Button size="lg" className="rounded-full bg-chart-1 text-white border-chart-1" data-testid="button-take-assessment-hero">
                         Take the SQ Assessment
                       </Button>
                     </Link>
@@ -917,8 +874,8 @@ export default function LandingPage() {
                       onClick={() => handleDotClick(i)}
                       className={`h-2 rounded-full transition-all duration-300 ${
                         i === heroIdx
-                          ? "bg-[#7C3AED] w-6"
-                          : "bg-[#7C3AED]/20 hover:bg-[#7C3AED]/40 w-2"
+                          ? "bg-chart-1 w-6"
+                          : "bg-chart-1/20 hover:bg-chart-1/40 w-2"
                       }`}
                       aria-label={`Show: ${heroRotations[i].text}`}
                       aria-selected={i === heroIdx}
@@ -935,7 +892,7 @@ export default function LandingPage() {
                     initial={{ opacity: 0, x: 40, scale: 0.95 }}
                     animate={{ opacity: 1, x: 0, scale: 1 }}
                     exit={{ opacity: 0, x: -20, scale: 0.98 }}
-                    transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
+                    transition={{ duration: 0.55, ease: EASING.smooth }}
                   >
                     <MockupFrame>
                       {(() => { const Comp = heroMockups[heroRotations[heroIdx].key]; return <Comp />; })()}
@@ -959,8 +916,8 @@ export default function LandingPage() {
             <motion.div variants={fadeUp} className="grid md:grid-cols-3 gap-8 mt-16 mb-12">
               {problemMetrics.map((m) => (
                 <div key={m.value} className="text-center">
-                  <p className="text-5xl md:text-6xl font-bold bg-gradient-to-r from-[#7C3AED] to-[#A78BFA] bg-clip-text text-transparent mb-3">{m.value}</p>
-                  <div className="w-12 h-px bg-[#7C3AED]/30 mx-auto mb-3" />
+                  <p className="text-5xl md:text-6xl font-bold bg-gradient-to-r from-chart-1 to-chart-3 bg-clip-text text-transparent mb-3">{m.value}</p>
+                  <div className="w-12 h-px bg-chart-1/30 mx-auto mb-3" />
                   <p className="text-sm text-muted-foreground leading-relaxed max-w-[240px] mx-auto">{m.label}</p>
                 </div>
               ))}
@@ -974,7 +931,7 @@ export default function LandingPage() {
 
         {/* SECTION 3 — WHAT IS GENAIA */}
         <section className="py-24 px-6 bg-muted/30 relative">
-          <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[#7C3AED]/[0.02] to-transparent pointer-events-none" />
+          <div className="absolute inset-0 bg-gradient-to-b from-transparent via-chart-1/[0.02] to-transparent pointer-events-none" />
           <motion.div className="max-w-5xl mx-auto" initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-100px" }} variants={staggerContainer}>
             <motion.div variants={fadeUp} className="text-center mb-16">
               <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight mb-4">
@@ -995,7 +952,7 @@ export default function LandingPage() {
                       </div>
                     </div>
                     <div className="pt-8">
-                      <p className="text-[10px] font-bold tracking-[0.2em] text-[#7C3AED] uppercase mb-2">{e.verb}</p>
+                      <p className="text-[10px] font-bold tracking-[0.2em] text-chart-1 uppercase mb-2">{e.verb}</p>
                       <h3 className="text-lg font-bold mb-2">{e.title}</h3>
                       <p className="text-xs text-muted-foreground leading-relaxed">{e.description}</p>
                     </div>
@@ -1025,7 +982,7 @@ export default function LandingPage() {
                   onClick={() => setPlatformTab("employees")}
                   className={`px-6 py-2.5 rounded-full text-sm font-medium transition-all ${
                     platformTab === "employees"
-                      ? "bg-[#7C3AED] text-white shadow-lg shadow-violet-500/20"
+                      ? "bg-chart-1 text-white shadow-lg shadow-violet-500/20"
                       : "text-muted-foreground"
                   }`}
                   data-testid="button-tab-employees"
@@ -1036,7 +993,7 @@ export default function LandingPage() {
                   onClick={() => setPlatformTab("leaders")}
                   className={`px-6 py-2.5 rounded-full text-sm font-medium transition-all ${
                     platformTab === "leaders"
-                      ? "bg-[#7C3AED] text-white shadow-lg shadow-violet-500/20"
+                      ? "bg-chart-1 text-white shadow-lg shadow-violet-500/20"
                       : "text-muted-foreground"
                   }`}
                   data-testid="button-tab-leaders"
@@ -1056,8 +1013,8 @@ export default function LandingPage() {
                   <div className="grid md:grid-cols-3 gap-4">
                     {employeeModules.map((m) => (
                       <Card key={m.title} className="p-5 h-full">
-                        <div className="w-10 h-10 rounded-xl bg-[#7C3AED]/10 flex items-center justify-center mb-3">
-                          <m.icon className="w-5 h-5 text-[#7C3AED]" />
+                        <div className="w-10 h-10 rounded-xl bg-chart-1/10 flex items-center justify-center mb-3">
+                          <m.icon className="w-5 h-5 text-chart-1" />
                         </div>
                         <h3 className="font-semibold text-sm mb-1">{m.title}</h3>
                         <p className="text-xs text-muted-foreground leading-relaxed">{m.desc}</p>
@@ -1076,8 +1033,8 @@ export default function LandingPage() {
                   <div className="grid md:grid-cols-4 gap-4">
                     {leaderModules.map((m) => (
                       <Card key={m.title} className="p-5 h-full">
-                        <div className="w-10 h-10 rounded-xl bg-[#7C3AED]/10 flex items-center justify-center mb-3">
-                          <m.icon className="w-5 h-5 text-[#7C3AED]" />
+                        <div className="w-10 h-10 rounded-xl bg-chart-1/10 flex items-center justify-center mb-3">
+                          <m.icon className="w-5 h-5 text-chart-1" />
                         </div>
                         <h3 className="font-semibold text-sm mb-1">{m.title}</h3>
                         <p className="text-xs text-muted-foreground leading-relaxed">{m.desc}</p>
@@ -1094,7 +1051,7 @@ export default function LandingPage() {
         <section id="sq" className="py-24 px-6 bg-muted/30">
           <motion.div className="max-w-5xl mx-auto" initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-100px" }} variants={staggerContainer}>
             <motion.div variants={fadeUp} className="text-center mb-6">
-              <p className="text-xs font-semibold tracking-[0.2em] uppercase text-[#7C3AED] mb-4">SQ — SUPERAGENCY QUOTIENT</p>
+              <p className="text-xs font-semibold tracking-[0.2em] uppercase text-chart-1 mb-4">SQ — SUPERAGENCY QUOTIENT</p>
               <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight mb-4">
                 The score that measures AI readiness.
               </h2>
@@ -1121,20 +1078,20 @@ export default function LandingPage() {
                 <motion.div key={skill.name} variants={fadeUp}>
                   <Card className="p-5 h-full">
                     <div className="flex items-start justify-between gap-2 mb-3">
-                      <div className="w-10 h-10 rounded-xl bg-[#7C3AED]/10 flex items-center justify-center flex-shrink-0">
-                        <skill.icon className="w-5 h-5 text-[#7C3AED]" />
+                      <div className="w-10 h-10 rounded-xl bg-chart-1/10 flex items-center justify-center flex-shrink-0">
+                        <skill.icon className="w-5 h-5 text-chart-1" />
                       </div>
-                      <span className="text-2xl font-bold text-[#7C3AED]">{skill.score}</span>
+                      <span className="text-2xl font-bold text-chart-1">{skill.score}</span>
                     </div>
                     <h3 className="font-semibold text-sm mb-1">{skill.name}</h3>
                     <p className="text-xs text-muted-foreground">{skill.description}</p>
                     <div className="mt-3 w-full bg-muted rounded-full h-1.5">
                       <motion.div
-                        className="bg-gradient-to-r from-[#7C3AED] to-[#A78BFA] h-1.5 rounded-full"
+                        className="bg-gradient-to-r from-chart-1 to-chart-3 h-1.5 rounded-full"
                         initial={{ width: 0 }}
                         whileInView={{ width: `${skill.score}%` }}
                         viewport={{ once: true }}
-                        transition={{ duration: 1, delay: i * 0.1, ease: "easeOut" }}
+                        transition={{ duration: 1, delay: i * 0.1, ease: EASING.easeOut }}
                       />
                     </div>
                   </Card>
@@ -1154,7 +1111,7 @@ export default function LandingPage() {
                     <div
                       key={level.label}
                       className={`flex-1 text-center py-2 text-xs font-medium ${
-                        i === 2 ? "bg-[#7C3AED]/10 text-[#7C3AED] rounded-lg" : "text-muted-foreground"
+                        i === 2 ? "bg-chart-1/10 text-chart-1 rounded-lg" : "text-muted-foreground"
                       }`}
                     >
                       <p className="font-semibold">{level.label}</p>
@@ -1167,7 +1124,7 @@ export default function LandingPage() {
 
             <motion.div variants={fadeUp} className="text-center">
               <Link href="/assessment">
-                <Button size="lg" className="rounded-full bg-[#7C3AED] text-white border-[#7C3AED]" data-testid="button-sq-cta">
+                <Button size="lg" className="rounded-full bg-chart-1 text-white border-chart-1" data-testid="button-sq-cta">
                   What's your SQ? <ArrowRight className="w-4 h-4 ml-2" />
                 </Button>
               </Link>
@@ -1190,13 +1147,13 @@ export default function LandingPage() {
                 <motion.div key={step.week} variants={fadeUp}>
                   <Card className="p-6 h-full relative overflow-visible">
                     <div className="absolute -top-3 left-6">
-                      <div className="px-3 py-1 rounded-full bg-[#7C3AED] text-white text-[10px] font-semibold tracking-wider uppercase shadow-lg shadow-violet-500/20">
+                      <div className="px-3 py-1 rounded-full bg-chart-1 text-white text-[10px] font-semibold tracking-wider uppercase shadow-lg shadow-violet-500/20">
                         {step.week}
                       </div>
                     </div>
                     <div className="pt-6">
-                      <div className="w-10 h-10 rounded-xl bg-[#7C3AED]/10 flex items-center justify-center mb-4">
-                        <step.icon className="w-5 h-5 text-[#7C3AED]" />
+                      <div className="w-10 h-10 rounded-xl bg-chart-1/10 flex items-center justify-center mb-4">
+                        <step.icon className="w-5 h-5 text-chart-1" />
                       </div>
                       <h3 className="text-lg font-bold mb-2">{step.title}</h3>
                       <p className="text-sm text-muted-foreground leading-relaxed">{step.desc}</p>
@@ -1210,13 +1167,13 @@ export default function LandingPage() {
 
         {/* SECTION 7 — OUR THESIS */}
         <section className="py-24 px-6 relative overflow-hidden">
-          <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[#7C3AED]/[0.02] to-transparent pointer-events-none" />
+          <div className="absolute inset-0 bg-gradient-to-b from-transparent via-chart-1/[0.02] to-transparent pointer-events-none" />
           <motion.div className="max-w-4xl mx-auto text-center" initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-100px" }} variants={staggerContainer}>
             <motion.div variants={fadeUp}>
               <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight mb-8">
                 Others automate humans out.
                 <br />
-                <span className="bg-gradient-to-r from-[#7C3AED] to-[#A78BFA] bg-clip-text text-transparent">We elevate humans up.</span>
+                <span className="bg-gradient-to-r from-chart-1 to-chart-3 bg-clip-text text-transparent">We elevate humans up.</span>
               </h2>
             </motion.div>
             <motion.div variants={fadeUp} className="max-w-2xl mx-auto mb-8">
@@ -1227,7 +1184,7 @@ export default function LandingPage() {
             </motion.div>
             <motion.div variants={fadeUp}>
               <Link href="/manifesto">
-                <span className="text-[#7C3AED] text-sm font-medium flex items-center gap-1 justify-center hover:gap-2 transition-all cursor-pointer" data-testid="link-read-manifesto">
+                <span className="text-chart-1 text-sm font-medium flex items-center gap-1 justify-center hover:gap-2 transition-all cursor-pointer" data-testid="link-read-manifesto">
                   Read the full manifesto <ArrowRight className="w-4 h-4" />
                 </span>
               </Link>
@@ -1239,7 +1196,7 @@ export default function LandingPage() {
         <section id="leaders" className="py-24 px-6 bg-muted/30">
           <motion.div className="max-w-4xl mx-auto" initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-100px" }} variants={staggerContainer}>
             <motion.div variants={fadeUp} className="text-center mb-12">
-              <p className="text-xs font-semibold tracking-[0.2em] uppercase text-[#7C3AED] mb-4">FOR LEADERS</p>
+              <p className="text-xs font-semibold tracking-[0.2em] uppercase text-chart-1 mb-4">FOR LEADERS</p>
               <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight mb-4">
                 Built for CHROs and
                 <br />
@@ -1262,8 +1219,8 @@ export default function LandingPage() {
                     "Agentic Score: your org's AI maturity in one number",
                   ].map((item) => (
                     <div key={item} className="flex items-start gap-3">
-                      <div className="w-5 h-5 rounded-full bg-[#7C3AED]/10 flex items-center justify-center flex-shrink-0 mt-0.5">
-                        <CheckCircle2 className="w-3 h-3 text-[#7C3AED]" />
+                      <div className="w-5 h-5 rounded-full bg-chart-1/10 flex items-center justify-center flex-shrink-0 mt-0.5">
+                        <CheckCircle2 className="w-3 h-3 text-chart-1" />
                       </div>
                       <span className="text-sm text-muted-foreground">{item}</span>
                     </div>
@@ -1273,7 +1230,7 @@ export default function LandingPage() {
                   Start with a 3-month pilot. 50–100 people. We measure the before and after together.
                 </p>
                 <div className="flex flex-wrap justify-center gap-4">
-                  <Button className="rounded-full bg-[#7C3AED] text-white border-[#7C3AED]" data-testid="button-book-demo">
+                  <Button className="rounded-full bg-chart-1 text-white border-chart-1" data-testid="button-book-demo">
                     Book a demo
                   </Button>
                   <Button variant="outline" className="rounded-full" data-testid="button-see-pricing">
@@ -1286,7 +1243,7 @@ export default function LandingPage() {
         </section>
 
         {/* SECTION 9 — FOOTER CTA */}
-        <section className="py-24 px-6 bg-gradient-to-br from-[#5B21B6] via-[#7C3AED] to-[#5B21B6] relative overflow-hidden">
+        <section className="py-24 px-6 bg-gradient-to-br from-chart-2 via-chart-1 to-chart-2 relative overflow-hidden">
           <div className="absolute inset-0 overflow-hidden pointer-events-none">
             <div className="absolute -top-20 -right-20 w-[300px] h-[300px] rounded-full bg-white/5 blur-[60px]" />
             <div className="absolute -bottom-20 -left-20 w-[200px] h-[200px] rounded-full bg-white/5 blur-[40px]" />
@@ -1299,7 +1256,7 @@ export default function LandingPage() {
             </motion.div>
             <motion.div variants={fadeUp} className="flex flex-wrap justify-center gap-4">
               <Link href="/calculator">
-                <Button size="lg" className="rounded-full bg-white text-[#5B21B6] border-white font-semibold" data-testid="button-calculate-sq-footer">
+                <Button size="lg" className="rounded-full bg-white text-chart-2 border-white font-semibold" data-testid="button-calculate-sq-footer">
                   Calculate your SQ
                 </Button>
               </Link>

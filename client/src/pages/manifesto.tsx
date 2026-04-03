@@ -5,15 +5,7 @@ import { ArrowRight, ArrowLeft } from "lucide-react";
 import { SEO } from "@/components/seo";
 import logoImg from "@assets/image_1773976580990.png";
 
-const fadeUp = {
-  hidden: { opacity: 0, y: 40 },
-  visible: { opacity: 1, y: 0, transition: { duration: 0.7, ease: [0.22, 1, 0.36, 1] } },
-};
-
-const staggerContainer = {
-  hidden: {},
-  visible: { transition: { staggerChildren: 0.15 } },
-};
+import { fadeUp, staggerSlow as staggerContainer } from "@/lib/motion-variants";
 
 export default function ManifestoPage() {
   return (
@@ -43,7 +35,7 @@ export default function ManifestoPage() {
           <motion.h1 variants={fadeUp} className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight mb-16 text-center">
             Humanity is just
             <br />
-            <span className="bg-gradient-to-r from-[#7C3AED] via-[#A78BFA] to-[#5B21B6] bg-clip-text text-transparent">getting started.</span>
+            <span className="bg-gradient-to-r from-chart-1 via-chart-3 to-chart-2 bg-clip-text text-transparent">getting started.</span>
           </motion.h1>
 
           <motion.div variants={fadeUp} className="mb-16">
@@ -59,7 +51,7 @@ export default function ManifestoPage() {
           </motion.div>
 
           <motion.div variants={fadeUp} className="mb-16">
-            <div className="w-12 h-px bg-[#7C3AED]/30 mb-8" />
+            <div className="w-12 h-px bg-chart-1/30 mb-8" />
             <p className="text-muted-foreground leading-relaxed mb-6">
               For seventy years, humanity poured everything it knew into machines. Every book, every scientific paper, every conversation, every image. We gave AI the sum of human knowledge.
             </p>
@@ -71,15 +63,15 @@ export default function ManifestoPage() {
             </p>
           </motion.div>
 
-          <motion.div variants={fadeUp} className="mb-16 p-8 rounded-2xl bg-gradient-to-br from-[#7C3AED]/5 to-[#5B21B6]/5 border border-[#7C3AED]/10">
-            <p className="text-[#7C3AED] font-semibold text-lg mb-6">We call it Inverse Training.</p>
+          <motion.div variants={fadeUp} className="mb-16 p-8 rounded-2xl bg-gradient-to-br from-chart-1/5 to-chart-2/5 border border-chart-1/10">
+            <p className="text-chart-1 font-semibold text-lg mb-6">We call it Inverse Training.</p>
             <div className="space-y-4 mb-6">
               <div className="flex items-center gap-4">
                 <span className="text-xs text-muted-foreground font-medium whitespace-nowrap">1950–2024</span>
                 <span className="text-sm text-muted-foreground">Humans trained AI.</span>
               </div>
               <div className="flex items-center gap-4">
-                <span className="text-xs text-[#7C3AED] font-bold whitespace-nowrap">Now</span>
+                <span className="text-xs text-chart-1 font-bold whitespace-nowrap">Now</span>
                 <span className="text-sm font-semibold text-foreground">AI trains humans to become superhuman.</span>
               </div>
             </div>
@@ -89,7 +81,7 @@ export default function ManifestoPage() {
           </motion.div>
 
           <motion.div variants={fadeUp} className="mb-16">
-            <div className="w-12 h-px bg-[#7C3AED]/30 mb-8" />
+            <div className="w-12 h-px bg-chart-1/30 mb-8" />
             <p className="text-muted-foreground leading-relaxed mb-6">
               A superagent isn't someone who lets AI do their job. It's someone who does their job at a level that was previously impossible.
             </p>
@@ -102,7 +94,7 @@ export default function ManifestoPage() {
           </motion.div>
 
           <motion.div variants={fadeUp} className="mb-16">
-            <div className="w-12 h-px bg-[#7C3AED]/30 mb-8" />
+            <div className="w-12 h-px bg-chart-1/30 mb-8" />
             <p className="text-foreground leading-relaxed font-semibold text-xl mb-6">
               Everyone is building AI to replace people.
               <br />
@@ -125,7 +117,7 @@ export default function ManifestoPage() {
             </p>
             <div className="flex flex-wrap justify-center gap-4">
               <Link href="/assessment">
-                <Button size="lg" className="rounded-full bg-[#7C3AED] text-white border-[#7C3AED]" data-testid="button-take-assessment-manifesto">
+                <Button size="lg" className="rounded-full bg-chart-1 text-white border-chart-1" data-testid="button-take-assessment-manifesto">
                   Take the SQ Assessment
                 </Button>
               </Link>

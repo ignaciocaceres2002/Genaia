@@ -5,17 +5,25 @@ import { Badge } from "@/components/ui/badge";
 import { useQuery } from "@tanstack/react-query";
 import type { Team, User } from "@shared/schema";
 import { TrendingUp, Users, GraduationCap, Clock, Send, FileText, Wrench, Download } from "lucide-react";
-import { ResponsiveContainer, BarChart, Bar, XAxis, YAxis, Tooltip, CartesianGrid, LineChart, Line, Treemap } from "recharts";
+import { ResponsiveContainer, BarChart, Bar, Cell, XAxis, YAxis, Tooltip, CartesianGrid, LineChart, Line, Treemap } from "recharts";
 import { SEO } from "@/components/seo";
+import { fadeUp, staggerContainer, pageContainer } from "@/lib/motion-variants";
 
-const fadeUp = { hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0 } };
+const CHART_1 = "hsl(var(--chart-1))";
+const CHART_2 = "hsl(var(--chart-2))";
+const CHART_3 = "hsl(var(--chart-3))";
+const CHART_4 = "hsl(var(--chart-4))";
+const CHART_5 = "hsl(var(--chart-5))";
+const tooltipStyle = { backgroundColor: "hsl(var(--card))", border: "1px solid hsl(var(--border))", borderRadius: "6px", fontSize: "12px", color: "hsl(var(--foreground))" };
 
 const sqDistribution = [
-  { range: "0-25", count: 12, level: "Novice", color: "#ef4444" },
-  { range: "26-50", count: 38, level: "Aware", color: "#f59e0b" },
-  { range: "51-75", count: 52, level: "Practitioner", color: "#7C3AED" },
-  { range: "76-100", count: 18, level: "Catalyst", color: "#22c55e" },
+  { range: "0-25", count: 12, level: "Novice" },
+  { range: "26-50", count: 38, level: "Aware" },
+  { range: "51-75", count: 52, level: "Practitioner" },
+  { range: "76-100", count: 18, level: "Catalyst" },
 ];
+
+const sqBarColors = [CHART_5, CHART_4, CHART_1, CHART_2];
 
 const engagementData = [
   { day: "Jan 1", dau: 65 }, { day: "Jan 8", dau: 72 }, { day: "Jan 15", dau: 68 },
@@ -33,18 +41,25 @@ const heatmapData = [
   { name: "People Ops", size: 12, sq: 60 },
 ];
 
-function getHeatColor(sq: number) {
-  if (sq >= 65) return "#7C3AED";
-  if (sq >= 50) return "#A78BFA";
-  return "#f59e0b";
+const TREEMAP_COLORS = [CHART_1, CHART_2, CHART_3, CHART_4, CHART_5];
+
+interface TreemapContentProps {
+  x?: number;
+  y?: number;
+  width?: number;
+  height?: number;
+  name?: string;
+  sq?: number;
+  index?: number;
 }
 
-const CustomTreemapContent = (props: any) => {
-  const { x, y, width, height, name, sq } = props;
+const CustomTreemapContent = (props: TreemapContentProps) => {
+  const { x = 0, y = 0, width = 0, height = 0, name, sq, index = 0 } = props;
   if (width < 40 || height < 30) return null;
+  const color = TREEMAP_COLORS[index % TREEMAP_COLORS.length];
   return (
     <g>
-      <rect x={x} y={y} width={width} height={height} fill={getHeatColor(sq)} rx={4} opacity={0.85} stroke="hsl(var(--background))" strokeWidth={2} />
+      <rect x={x} y={y} width={width} height={height} fill={color} rx={4} opacity={0.85} stroke="hsl(var(--background))" strokeWidth={2} />
       {width > 60 && height > 40 && (
         <>
           <text x={x + width / 2} y={y + height / 2 - 6} textAnchor="middle" fill="white" fontSize={11} fontWeight="600">{name}</text>
@@ -60,19 +75,19 @@ export default function AdminOverview() {
   const { data: users } = useQuery<User[]>({ queryKey: ["/api/admin/users"] });
 
   return (
-    <motion.div className="max-w-5xl mx-auto space-y-6" initial="hidden" animate="visible" variants={{ visible: { transition: { staggerChildren: 0.06 } } }}>
+    <motion.div className="max-w-5xl mx-auto space-y-6" initial="hidden" animate="visible" variants={pageContainer}>
       <SEO title="Admin Dashboard - Genaia" description="Organization-wide AI adoption analytics, team management, and governance tools for your enterprise." />
       <motion.div variants={fadeUp}>
-        <h1 className="text-2xl font-bold">Dashboard Overview</h1>
+        <h1 className="text-display-xs font-bold">Dashboard Overview</h1>
         <p className="text-muted-foreground text-sm mt-1">Organization-wide AI adoption metrics</p>
       </motion.div>
 
       <motion.div variants={fadeUp} className="grid grid-cols-2 lg:grid-cols-4 gap-4">
         {[
-          { label: "Org Avg SQ", value: "54", trend: "+3", icon: TrendingUp, color: "text-[#7C3AED]" },
-          { label: "Active Users", value: "91%", trend: "120 DAU", icon: Users, color: "text-blue-500" },
-          { label: "Training Completion", value: "68%", trend: "+12%", icon: GraduationCap, color: "text-green-500" },
-          { label: "Hours Recovered", value: "1,420", trend: "This quarter", icon: Clock, color: "text-amber-500" },
+          { label: "Org Avg SQ", value: "54", trend: "+3", icon: TrendingUp, color: "text-chart-1" },
+          { label: "Active Users", value: "91%", trend: "120 DAU", icon: Users, color: "text-chart-3" },
+          { label: "Training Completion", value: "68%", trend: "+12%", icon: GraduationCap, color: "text-chart-2" },
+          { label: "Hours Recovered", value: "1,420", trend: "This quarter", icon: Clock, color: "text-chart-4" },
         ].map((kpi) => (
           <Card key={kpi.label} className="p-4" data-testid={`kpi-${kpi.label.toLowerCase().replace(/\s/g, "-")}`}>
             <div className="flex items-start justify-between gap-2 mb-2">
@@ -95,10 +110,10 @@ export default function AdminOverview() {
                   <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
                   <XAxis dataKey="range" tick={{ fontSize: 11, fill: "hsl(var(--muted-foreground))" }} />
                   <YAxis tick={{ fontSize: 11, fill: "hsl(var(--muted-foreground))" }} />
-                  <Tooltip contentStyle={{ backgroundColor: "hsl(var(--card))", border: "1px solid hsl(var(--border))", borderRadius: "6px", fontSize: "12px" }} />
+                  <Tooltip contentStyle={tooltipStyle} />
                   <Bar dataKey="count" radius={[4, 4, 0, 0]}>
-                    {sqDistribution.map((entry, i) => (
-                      <rect key={i} fill={entry.color} />
+                    {sqDistribution.map((_entry, i) => (
+                      <Cell key={i} fill={sqBarColors[i % sqBarColors.length]} />
                     ))}
                   </Bar>
                 </BarChart>
@@ -133,8 +148,8 @@ export default function AdminOverview() {
                 <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
                 <XAxis dataKey="day" tick={{ fontSize: 10, fill: "hsl(var(--muted-foreground))" }} />
                 <YAxis tick={{ fontSize: 11, fill: "hsl(var(--muted-foreground))" }} domain={[0, 100]} />
-                <Tooltip contentStyle={{ backgroundColor: "hsl(var(--card))", border: "1px solid hsl(var(--border))", borderRadius: "6px", fontSize: "12px" }} />
-                <Line type="monotone" dataKey="dau" stroke="#7C3AED" strokeWidth={2} dot={{ fill: "#7C3AED", r: 3 }} />
+                <Tooltip contentStyle={tooltipStyle} />
+                <Line type="monotone" dataKey="dau" stroke={CHART_1} strokeWidth={2.5} dot={{ fill: CHART_1, r: 3 }} />
               </LineChart>
             </ResponsiveContainer>
           </div>
@@ -151,7 +166,7 @@ export default function AdminOverview() {
             { label: "Export report", icon: Download },
           ].map((action) => (
             <Button key={action.label} variant="outline" className="h-auto py-3 px-4 justify-start gap-2 text-xs" data-testid={`action-${action.label.toLowerCase().replace(/\s/g, "-").replace(/[()]/g, "")}`}>
-              <action.icon className="w-4 h-4 text-[#7C3AED]" />
+              <action.icon className="w-4 h-4 text-chart-1" />
               <span className="text-left">{action.label}</span>
             </Button>
           ))}

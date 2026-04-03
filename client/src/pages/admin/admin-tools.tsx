@@ -8,7 +8,7 @@ import type { AiTool, ToolRequest } from "@shared/schema";
 import { CheckCircle2, XCircle, MessageSquare, Bot, FileText, Code, Image, MessageSquareText, BarChart3 } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
-const fadeUp = { hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0 } };
+import { fadeUp, pageContainer } from "@/lib/motion-variants";
 
 const categoryIcons: Record<string, any> = {
   "Writing": FileText, "Code": Code, "Image": Image, "Chat": MessageSquareText, "Analytics": BarChart3, "Assistant": Bot,
@@ -42,9 +42,9 @@ export default function AdminToolsPage() {
   });
 
   return (
-    <motion.div className="max-w-5xl mx-auto space-y-6" initial="hidden" animate="visible" variants={{ visible: { transition: { staggerChildren: 0.06 } } }}>
+    <motion.div className="max-w-5xl mx-auto space-y-6" initial="hidden" animate="visible" variants={pageContainer}>
       <motion.div variants={fadeUp}>
-        <h1 className="text-2xl font-bold">AI Tools Management</h1>
+        <h1 className="text-display-xs font-bold">AI Tools Management</h1>
         <p className="text-muted-foreground text-sm mt-1">Inventory, approvals, and usage analytics</p>
       </motion.div>
 
@@ -82,7 +82,7 @@ export default function AdminToolsPage() {
                         <tr key={tool.id} className="border-b">
                           <td className="p-3">
                             <div className="flex items-center gap-2">
-                              <Icon className="w-4 h-4 text-[#7C3AED]" />
+                              <Icon className="w-4 h-4 text-chart-1" />
                               <span className="font-medium">{tool.name}</span>
                             </div>
                           </td>

@@ -11,7 +11,7 @@ import { Copy, Upload, Clock, Zap, Tag, Wrench, CheckCircle2, Info, ChevronDown,
 import type { AiUseCase } from "@shared/schema";
 import { SEO } from "@/components/seo";
 
-const fadeUp = { hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0 } };
+import { fadeUp, pageContainer } from "@/lib/motion-variants";
 
 const PROMPT_TEMPLATE = `Acabo de completar una tarea usando IA. Antes de generar el resumen, haceme estas preguntas (una por una, usando el widget de opciones):
 
@@ -243,17 +243,17 @@ export default function UseCasesPage() {
   const totalContributions = useCases.length;
 
   return (
-    <motion.div className="max-w-4xl mx-auto space-y-6" initial="hidden" animate="visible" variants={{ visible: { transition: { staggerChildren: 0.08 } } }}>
+    <motion.div className="max-w-4xl mx-auto space-y-6" initial="hidden" animate="visible" variants={pageContainer}>
       <SEO title="AI Use Cases - Genaia" description="Submit and track your AI use cases. Show your contributions and impact." />
 
       <motion.div variants={fadeUp}>
-        <h1 className="text-2xl font-bold" data-testid="text-use-cases-title">AI Use Cases</h1>
+        <h1 className="text-display-xs font-bold" data-testid="text-use-cases-title">AI Use Cases</h1>
         <p className="text-muted-foreground text-sm mt-1">Share your AI wins and track your impact</p>
       </motion.div>
 
       <motion.div variants={fadeUp} className="grid grid-cols-3 gap-4">
         <Card className="p-4 text-center">
-          <p className="text-2xl font-bold text-[#7C3AED]" data-testid="text-total-contributions">{totalContributions}</p>
+          <p className="text-2xl font-bold text-chart-1" data-testid="text-total-contributions">{totalContributions}</p>
           <p className="text-xs text-muted-foreground mt-1">Contributions</p>
         </Card>
         <Card className="p-4 text-center">
@@ -282,7 +282,7 @@ export default function UseCasesPage() {
             data-testid="button-toggle-instructions"
           >
             <div className="flex items-center gap-2">
-              <Info className="w-4 h-4 text-[#7C3AED]" />
+              <Info className="w-4 h-4 text-chart-1" />
               <span className="font-medium text-sm">How to submit a use case</span>
             </div>
             {showInstructions ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
@@ -292,21 +292,21 @@ export default function UseCasesPage() {
             <div className="mt-4 space-y-4">
               <div className="space-y-3">
                 <div className="flex items-start gap-3">
-                  <div className="w-6 h-6 rounded-full bg-[#7C3AED] text-white flex items-center justify-center flex-shrink-0 text-xs font-bold">1</div>
+                  <div className="w-6 h-6 rounded-full bg-chart-1 text-white flex items-center justify-center flex-shrink-0 text-xs font-bold">1</div>
                   <div>
                     <p className="text-sm font-medium">Complete a task using AI</p>
                     <p className="text-xs text-muted-foreground">Use any AI tool for any task — writing, analysis, coding, research, etc.</p>
                   </div>
                 </div>
                 <div className="flex items-start gap-3">
-                  <div className="w-6 h-6 rounded-full bg-[#7C3AED] text-white flex items-center justify-center flex-shrink-0 text-xs font-bold">2</div>
+                  <div className="w-6 h-6 rounded-full bg-chart-1 text-white flex items-center justify-center flex-shrink-0 text-xs font-bold">2</div>
                   <div>
                     <p className="text-sm font-medium">Copy this prompt and paste it in your AI tool</p>
                     <p className="text-xs text-muted-foreground">The AI will ask you 3 quick questions and then generate a structured summary.</p>
                   </div>
                 </div>
                 <div className="flex items-start gap-3">
-                  <div className="w-6 h-6 rounded-full bg-[#7C3AED] text-white flex items-center justify-center flex-shrink-0 text-xs font-bold">3</div>
+                  <div className="w-6 h-6 rounded-full bg-chart-1 text-white flex items-center justify-center flex-shrink-0 text-xs font-bold">3</div>
                   <div>
                     <p className="text-sm font-medium">Paste the summary below</p>
                     <p className="text-xs text-muted-foreground">We'll auto-detect and classify everything.</p>
@@ -335,7 +335,7 @@ export default function UseCasesPage() {
       <motion.div variants={fadeUp}>
         <Card className="p-5">
           <div className="flex items-center gap-2 mb-3">
-            <Upload className="w-4 h-4 text-[#7C3AED]" />
+            <Upload className="w-4 h-4 text-chart-1" />
             <span className="font-medium text-sm">Submit your AI use case</span>
           </div>
           <Textarea
@@ -398,7 +398,7 @@ export default function UseCasesPage() {
                       <TrendingUp className="w-3.5 h-3.5 text-muted-foreground" />
                       <div>
                         <p className="text-[10px] text-muted-foreground">Ratio</p>
-                        <p className="text-sm font-medium text-[#7C3AED]" data-testid="text-parsed-ratio">{parsed.ratio}x</p>
+                        <p className="text-sm font-medium text-chart-1" data-testid="text-parsed-ratio">{parsed.ratio}x</p>
                       </div>
                     </div>
                   )}
@@ -417,7 +417,7 @@ export default function UseCasesPage() {
               <Button
                 onClick={handleSubmit}
                 disabled={submitMutation.isPending}
-                className="w-full bg-[#7C3AED] text-white border-[#7C3AED]"
+                className="w-full bg-chart-1 text-white border-chart-1"
                 data-testid="button-submit-use-case"
               >
                 {submitMutation.isPending ? "Submitting..." : "Submit Use Case"}

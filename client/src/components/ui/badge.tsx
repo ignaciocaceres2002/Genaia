@@ -15,7 +15,8 @@ const badgeVariants = cva(
         secondary: "border-transparent bg-secondary text-secondary-foreground",
         destructive:
           "border-transparent bg-destructive text-destructive-foreground shadow-xs",
-
+        brand:
+          "border-chart-1/30 bg-chart-1/10 text-chart-1",
         outline: " border [border-color:var(--badge-outline)] shadow-xs",
       },
     },

@@ -8,7 +8,7 @@ import type { Policy } from "@shared/schema";
 import { FileText, MessageSquare, Send, ChevronDown, ChevronUp } from "lucide-react";
 import { useState } from "react";
 
-const fadeUp = { hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0 } };
+import { fadeUp, pageContainer } from "@/lib/motion-variants";
 
 const defaultPolicies: Policy[] = [
   { id: "1", title: "Acceptable AI Use Policy", category: "General", content: "", summary: "Guidelines for responsible AI tool usage within the organization, covering approved tools, data handling, and output verification requirements.", version: "2.1", status: "published", updatedAt: new Date("2025-01-15") },
@@ -43,9 +43,9 @@ export default function PoliciesPage() {
   const categories = Array.from(new Set(displayPolicies.map((p: Policy) => p.category)));
 
   return (
-    <motion.div className="max-w-4xl mx-auto space-y-6" initial="hidden" animate="visible" variants={{ visible: { transition: { staggerChildren: 0.08 } } }}>
+    <motion.div className="max-w-4xl mx-auto space-y-6" initial="hidden" animate="visible" variants={pageContainer}>
       <motion.div variants={fadeUp}>
-        <h1 className="text-2xl font-bold">Policies</h1>
+        <h1 className="text-display-xs font-bold">Policies</h1>
         <p className="text-muted-foreground text-sm mt-1">AI governance policies and guidelines</p>
       </motion.div>
 
@@ -63,7 +63,7 @@ export default function PoliciesPage() {
                     >
                       <div className="flex items-start justify-between gap-3">
                         <div className="flex items-start gap-3">
-                          <FileText className="w-4 h-4 text-[#7C3AED] mt-0.5 flex-shrink-0" />
+                          <FileText className="w-4 h-4 text-chart-1 mt-0.5 flex-shrink-0" />
                           <div>
                             <p className="text-sm font-medium">{policy.title}</p>
                             <p className="text-xs text-muted-foreground mt-0.5">v{policy.version} · Updated {policy.updatedAt ? new Date(policy.updatedAt).toLocaleDateString() : "—"}</p>
@@ -87,13 +87,13 @@ export default function PoliciesPage() {
         <motion.div variants={fadeUp}>
           <Card className="p-4 sticky top-20">
             <div className="flex items-center gap-2 mb-3">
-              <MessageSquare className="w-4 h-4 text-[#7C3AED]" />
+              <MessageSquare className="w-4 h-4 text-chart-1" />
               <h3 className="font-semibold text-sm">Policy Chat</h3>
             </div>
             <div className="h-[300px] overflow-y-auto space-y-3 mb-3 pr-1">
               {chatHistory.map((msg, i) => (
                 <div key={i} className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"}`}>
-                  <div className={`max-w-[85%] rounded-md px-3 py-2 text-xs leading-relaxed ${msg.role === "user" ? "bg-[#7C3AED] text-white" : "bg-muted text-foreground"}`}>
+                  <div className={`max-w-[85%] rounded-md px-3 py-2 text-xs leading-relaxed ${msg.role === "user" ? "bg-chart-1 text-white" : "bg-muted text-foreground"}`}>
                     {msg.content}
                   </div>
                 </div>
@@ -108,7 +108,7 @@ export default function PoliciesPage() {
                 onKeyDown={(e) => e.key === "Enter" && handleSendChat()}
                 data-testid="input-policy-chat"
               />
-              <Button size="icon" onClick={handleSendChat} className="bg-[#7C3AED] text-white border-[#7C3AED] flex-shrink-0" data-testid="button-send-policy-chat">
+              <Button size="icon" onClick={handleSendChat} className="bg-chart-1 text-white border-chart-1 flex-shrink-0" data-testid="button-send-policy-chat">
                 <Send className="w-3.5 h-3.5" />
               </Button>
             </div>

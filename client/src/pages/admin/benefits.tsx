@@ -13,7 +13,7 @@ import { Trophy, Gift, Star, Clock, Users, Plus, TrendingUp, Award } from "lucid
 import type { AiUseCase, Benefit } from "@shared/schema";
 import { SEO } from "@/components/seo";
 
-const fadeUp = { hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0 } };
+import { fadeUp, pageContainer } from "@/lib/motion-variants";
 
 function TopContributors({ useCases }: { useCases: AiUseCase[] }) {
   const contributorMap: Record<string, { name: string; count: number; timeSaved: number; points: number }> = {};
@@ -48,8 +48,8 @@ function TopContributors({ useCases }: { useCases: AiUseCase[] }) {
               <span className={`text-sm font-bold w-6 text-center ${medals[i] || "text-muted-foreground"}`}>
                 {i < 3 ? ["🥇", "🥈", "🥉"][i] : `#${i + 1}`}
               </span>
-              <div className="w-8 h-8 rounded-full bg-[#7C3AED]/10 flex items-center justify-center flex-shrink-0">
-                <span className="text-xs font-medium text-[#7C3AED]">
+              <div className="w-8 h-8 rounded-full bg-chart-1/10 flex items-center justify-center flex-shrink-0">
+                <span className="text-xs font-medium text-chart-1">
                   {c.name.split(" ").map(n => n[0]).join("")}
                 </span>
               </div>
@@ -83,7 +83,7 @@ function UseCaseReview({ useCases }: { useCases: AiUseCase[] }) {
   return (
     <Card className="p-5">
       <div className="flex items-center gap-2 mb-4">
-        <Star className="w-5 h-5 text-[#7C3AED]" />
+        <Star className="w-5 h-5 text-chart-1" />
         <h3 className="font-semibold">Recent Use Cases</h3>
         <Badge variant="secondary" className="ml-auto text-xs">{useCases.length} total</Badge>
       </div>
@@ -108,7 +108,7 @@ function UseCaseReview({ useCases }: { useCases: AiUseCase[] }) {
                     <span className="text-xs text-green-600">{uc.timeSavedMinutes} min saved</span>
                     <span className="text-xs text-muted-foreground">{uc.timeInvestedMinutes} min invested</span>
                     <span className="text-xs text-amber-600 font-medium">Quality: {uc.qualityScore}/100</span>
-                    <span className="text-xs font-semibold text-[#7C3AED]">+{uc.pointsAwarded} pts</span>
+                    <span className="text-xs font-semibold text-chart-1">+{uc.pointsAwarded} pts</span>
                   </div>
                 </div>
                 <Badge
@@ -160,18 +160,18 @@ export default function BenefitsPage() {
     : 0;
 
   return (
-    <motion.div className="max-w-5xl mx-auto space-y-6" initial="hidden" animate="visible" variants={{ visible: { transition: { staggerChildren: 0.08 } } }}>
+    <motion.div className="max-w-5xl mx-auto space-y-6" initial="hidden" animate="visible" variants={pageContainer}>
       <SEO title="Benefits - Admin - Genaia" description="Manage benefits, track top contributors, and reward AI adoption." />
 
       <motion.div variants={fadeUp}>
-        <h1 className="text-2xl font-bold" data-testid="text-benefits-title">Benefits & Recognition</h1>
+        <h1 className="text-display-xs font-bold" data-testid="text-benefits-title">Benefits & Recognition</h1>
         <p className="text-muted-foreground text-sm mt-1">Reward AI adoption and track organizational impact</p>
       </motion.div>
 
       <motion.div variants={fadeUp} className="grid grid-cols-2 md:grid-cols-4 gap-4">
         <Card className="p-4">
           <div className="flex items-center gap-2 mb-1">
-            <Users className="w-4 h-4 text-[#7C3AED]" />
+            <Users className="w-4 h-4 text-chart-1" />
             <span className="text-xs text-muted-foreground">Contributors</span>
           </div>
           <p className="text-2xl font-bold" data-testid="text-unique-contributors">{uniqueContributors}</p>
@@ -208,7 +208,7 @@ export default function BenefitsPage() {
           <Card className="p-5">
             <div className="flex items-center justify-between mb-4">
               <div className="flex items-center gap-2">
-                <Gift className="w-5 h-5 text-[#7C3AED]" />
+                <Gift className="w-5 h-5 text-chart-1" />
                 <h3 className="font-semibold">Benefits Catalog</h3>
               </div>
               <Button
@@ -258,7 +258,7 @@ export default function BenefitsPage() {
                   </Select>
                 </div>
                 <Button
-                  className="w-full bg-[#7C3AED] text-white border-[#7C3AED]"
+                  className="w-full bg-chart-1 text-white border-chart-1"
                   onClick={() => addBenefitMutation.mutate({
                     name: benefitName,
                     description: benefitDesc,
@@ -286,7 +286,7 @@ export default function BenefitsPage() {
                     </div>
                     <div className="flex items-center gap-2">
                       <Badge variant="secondary" className="text-xs capitalize">{b.type}</Badge>
-                      <Badge className="text-xs bg-[#7C3AED]">{b.pointsCost} pts</Badge>
+                      <Badge className="text-xs bg-chart-1">{b.pointsCost} pts</Badge>
                     </div>
                   </div>
                 ))}

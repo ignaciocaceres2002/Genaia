@@ -13,9 +13,7 @@ import {
   ChevronRight, BarChart3, Zap
 } from "lucide-react";
 
-const fadeUp = { hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0, transition: { duration: 0.4 } } };
-const slideIn = { hidden: { opacity: 0, x: 30 }, visible: { opacity: 1, x: 0, transition: { duration: 0.4 } } };
-const slideOut = { exit: { opacity: 0, x: -30, transition: { duration: 0.3 } } };
+import { fadeUp, pageContainer, slideInWithExit } from "@/lib/motion-variants";
 
 type AIType = "ml" | "agents" | "assistants" | "vision" | null;
 
@@ -48,10 +46,10 @@ const initialData: CaseData = {
 };
 
 const aiTypes = [
-  { id: "ml" as const, icon: BrainCircuit, label: "ML", desc: "Predictive models & optimization", color: "#7C3AED" },
+  { id: "ml" as const, icon: BrainCircuit, label: "ML", desc: "Predictive models & optimization", color: "hsl(var(--chart-1))" },
   { id: "agents" as const, icon: Bot, label: "Agents", desc: "Intelligent task automation", color: "#6366F1" },
   { id: "assistants" as const, icon: MessageSquare, label: "Assistants", desc: "Generative AI productivity", color: "#8B5CF6" },
-  { id: "vision" as const, icon: Eye, label: "Computer Vision", desc: "Image & video processing", color: "#A78BFA" },
+  { id: "vision" as const, icon: Eye, label: "Computer Vision", desc: "Image & video processing", color: "hsl(var(--chart-3))" },
 ];
 
 const hints: Record<string, string[]> = {
@@ -176,7 +174,7 @@ export default function AICaseBuilderPage() {
 
   if (submitted) {
     return (
-      <motion.div className="max-w-2xl mx-auto py-12" initial="hidden" animate="visible" variants={{ visible: { transition: { staggerChildren: 0.1 } } }}>
+      <motion.div className="max-w-2xl mx-auto py-12" initial="hidden" animate="visible" variants={pageContainer}>
         <SEO title="AI Case Builder - Genaia" description="Build and submit AI use cases for prioritization." />
         <motion.div variants={fadeUp} className="text-center">
           <motion.div
@@ -204,7 +202,7 @@ export default function AICaseBuilderPage() {
                   </div>
                   <div className="w-full bg-muted rounded-full h-1.5">
                     <motion.div
-                      className="bg-gradient-to-r from-[#7C3AED] to-[#A78BFA] h-1.5 rounded-full"
+                      className="bg-gradient-to-r from-chart-1 to-chart-3 h-1.5 rounded-full"
                       initial={{ width: 0 }}
                       animate={{ width: `${(b.score / b.max) * 100}%` }}
                       transition={{ duration: 0.8, delay: 0.3 }}
@@ -231,7 +229,7 @@ export default function AICaseBuilderPage() {
   }
 
   return (
-    <motion.div className="max-w-4xl mx-auto space-y-6" initial="hidden" animate="visible" variants={{ visible: { transition: { staggerChildren: 0.06 } } }}>
+    <motion.div className="max-w-4xl mx-auto space-y-6" initial="hidden" animate="visible" variants={pageContainer}>
       <SEO title="AI Case Builder - Genaia" description="Build and submit AI use cases for prioritization." />
 
       <motion.div variants={fadeUp} className="flex items-center justify-between">
@@ -254,9 +252,9 @@ export default function AICaseBuilderPage() {
                 onClick={() => i < phase && setPhase(i)}
                 className={`flex items-center gap-2 px-3 py-2 rounded-lg text-xs font-medium transition-all w-full ${
                   i === phase
-                    ? "bg-[#7C3AED] text-white shadow-lg shadow-violet-500/20"
+                    ? "bg-chart-1 text-white shadow-lg shadow-violet-500/20"
                     : i < phase
-                    ? "bg-[#7C3AED]/10 text-[#7C3AED] cursor-pointer"
+                    ? "bg-chart-1/10 text-chart-1 cursor-pointer"
                     : "bg-muted text-muted-foreground"
                 }`}
                 data-testid={`button-phase-${i}`}
@@ -265,7 +263,7 @@ export default function AICaseBuilderPage() {
                 <span className="hidden md:inline truncate">{p.title}</span>
               </button>
               {i < phases.length - 1 && (
-                <ChevronRight className={`w-4 h-4 mx-1 flex-shrink-0 ${i < phase ? "text-[#7C3AED]" : "text-muted-foreground/30"}`} />
+                <ChevronRight className={`w-4 h-4 mx-1 flex-shrink-0 ${i < phase ? "text-chart-1" : "text-muted-foreground/30"}`} />
               )}
             </div>
           ))}
@@ -274,11 +272,11 @@ export default function AICaseBuilderPage() {
 
       <AnimatePresence mode="wait">
         {phase === 0 && (
-          <motion.div key="phase0" initial="hidden" animate="visible" exit="exit" variants={{ ...slideIn, ...slideOut }}>
-            <Card className="p-8 border-[#7C3AED]/10">
+          <motion.div key="phase0" initial="hidden" animate="visible" exit="exit" variants={slideInWithExit}>
+            <Card className="p-8 border-chart-1/10">
               <div className="flex items-center gap-3 mb-6">
-                <div className="w-10 h-10 rounded-xl bg-[#7C3AED]/10 flex items-center justify-center">
-                  <Sparkles className="w-5 h-5 text-[#7C3AED]" />
+                <div className="w-10 h-10 rounded-xl bg-chart-1/10 flex items-center justify-center">
+                  <Sparkles className="w-5 h-5 text-chart-1" />
                 </div>
                 <div>
                   <h2 className="text-lg font-semibold">Let's start with the basics</h2>
@@ -317,7 +315,7 @@ export default function AICaseBuilderPage() {
                           onClick={() => update("urgency", u)}
                           className={`flex-1 px-3 py-2 rounded-lg text-xs font-medium capitalize transition-all border ${
                             data.urgency === u
-                              ? "bg-[#7C3AED] text-white border-[#7C3AED]"
+                              ? "bg-chart-1 text-white border-chart-1"
                               : "bg-background border-border text-muted-foreground"
                           }`}
                           data-testid={`button-urgency-${u}`}
@@ -334,14 +332,14 @@ export default function AICaseBuilderPage() {
         )}
 
         {phase === 1 && (
-          <motion.div key="phase1" initial="hidden" animate="visible" exit="exit" variants={{ ...slideIn, ...slideOut }}>
-            <Card className="p-8 border-[#7C3AED]/10">
+          <motion.div key="phase1" initial="hidden" animate="visible" exit="exit" variants={slideInWithExit}>
+            <Card className="p-8 border-chart-1/10">
               <div className="flex items-center gap-3 mb-2">
-                <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#7C3AED] to-[#5B21B6] flex items-center justify-center">
+                <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-chart-1 to-chart-2 flex items-center justify-center">
                   <Target className="w-5 h-5 text-white" />
                 </div>
                 <div>
-                  <p className="text-[10px] font-semibold tracking-[0.2em] text-[#7C3AED] uppercase">PHASE 1</p>
+                  <p className="text-[10px] font-semibold tracking-[0.2em] text-chart-1 uppercase">PHASE 1</p>
                   <h2 className="text-lg font-semibold">Current Situation — Where are we?</h2>
                 </div>
               </div>
@@ -395,14 +393,14 @@ export default function AICaseBuilderPage() {
         )}
 
         {phase === 2 && (
-          <motion.div key="phase2" initial="hidden" animate="visible" exit="exit" variants={{ ...slideIn, ...slideOut }}>
-            <Card className="p-8 border-[#7C3AED]/10">
+          <motion.div key="phase2" initial="hidden" animate="visible" exit="exit" variants={slideInWithExit}>
+            <Card className="p-8 border-chart-1/10">
               <div className="flex items-center gap-3 mb-2">
-                <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#6366F1] to-[#7C3AED] flex items-center justify-center">
+                <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#6366F1] to-chart-1 flex items-center justify-center">
                   <BrainCircuit className="w-5 h-5 text-white" />
                 </div>
                 <div>
-                  <p className="text-[10px] font-semibold tracking-[0.2em] text-[#7C3AED] uppercase">PHASE 2</p>
+                  <p className="text-[10px] font-semibold tracking-[0.2em] text-chart-1 uppercase">PHASE 2</p>
                   <h2 className="text-lg font-semibold">Technology Solution — How do we do it?</h2>
                 </div>
               </div>
@@ -417,8 +415,8 @@ export default function AICaseBuilderPage() {
                       onClick={() => update("aiType", t.id)}
                       className={`p-6 rounded-xl border-2 text-left transition-all ${
                         isSelected
-                          ? "border-[#7C3AED] bg-[#7C3AED]/5 shadow-lg shadow-violet-500/10"
-                          : "border-border bg-background hover:border-[#7C3AED]/30"
+                          ? "border-chart-1 bg-chart-1/5 shadow-lg shadow-violet-500/10"
+                          : "border-border bg-background hover:border-chart-1/30"
                       }`}
                       whileHover={{ scale: 1.01 }}
                       whileTap={{ scale: 0.99 }}
@@ -438,7 +436,7 @@ export default function AICaseBuilderPage() {
                       </div>
                       {isSelected && (
                         <motion.div
-                          className="mt-3 flex items-center gap-1 text-[#7C3AED] text-xs font-medium"
+                          className="mt-3 flex items-center gap-1 text-chart-1 text-xs font-medium"
                           initial={{ opacity: 0 }}
                           animate={{ opacity: 1 }}
                         >
@@ -463,14 +461,14 @@ export default function AICaseBuilderPage() {
         )}
 
         {phase === 3 && (
-          <motion.div key="phase3" initial="hidden" animate="visible" exit="exit" variants={{ ...slideIn, ...slideOut }}>
-            <Card className="p-8 border-[#7C3AED]/10">
+          <motion.div key="phase3" initial="hidden" animate="visible" exit="exit" variants={slideInWithExit}>
+            <Card className="p-8 border-chart-1/10">
               <div className="flex items-center gap-3 mb-2">
-                <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#7C3AED] to-[#A78BFA] flex items-center justify-center">
+                <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-chart-1 to-chart-3 flex items-center justify-center">
                   <TrendingUp className="w-5 h-5 text-white" />
                 </div>
                 <div>
-                  <p className="text-[10px] font-semibold tracking-[0.2em] text-[#7C3AED] uppercase">PHASE 3</p>
+                  <p className="text-[10px] font-semibold tracking-[0.2em] text-chart-1 uppercase">PHASE 3</p>
                   <h2 className="text-lg font-semibold">Desired Outcome — Where do we want to go?</h2>
                 </div>
               </div>
@@ -515,15 +513,15 @@ export default function AICaseBuilderPage() {
         )}
 
         {phase === 4 && (
-          <motion.div key="phase4" initial="hidden" animate="visible" exit="exit" variants={{ ...slideIn, ...slideOut }}>
+          <motion.div key="phase4" initial="hidden" animate="visible" exit="exit" variants={slideInWithExit}>
             <div className="space-y-4">
-              <Card className="p-8 border-[#7C3AED]/10">
+              <Card className="p-8 border-chart-1/10">
                 <div className="flex items-center gap-3 mb-6">
-                  <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#7C3AED] to-[#5B21B6] flex items-center justify-center">
+                  <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-chart-1 to-chart-2 flex items-center justify-center">
                     <Send className="w-5 h-5 text-white" />
                   </div>
                   <div>
-                    <p className="text-[10px] font-semibold tracking-[0.2em] text-[#7C3AED] uppercase">FINAL REVIEW</p>
+                    <p className="text-[10px] font-semibold tracking-[0.2em] text-chart-1 uppercase">FINAL REVIEW</p>
                     <h2 className="text-lg font-semibold">Review & Submit Your Case</h2>
                   </div>
                 </div>
@@ -540,8 +538,8 @@ export default function AICaseBuilderPage() {
                   </div>
                   <div>
                     <p className="text-[10px] uppercase tracking-wider text-muted-foreground font-semibold mb-3">Priority Score</p>
-                    <div className="text-center p-4 rounded-xl bg-gradient-to-br from-[#7C3AED]/5 to-[#5B21B6]/5 border border-[#7C3AED]/10">
-                      <p className="text-5xl font-bold bg-gradient-to-r from-[#7C3AED] to-[#A78BFA] bg-clip-text text-transparent">{score}</p>
+                    <div className="text-center p-4 rounded-xl bg-gradient-to-br from-chart-1/5 to-chart-2/5 border border-chart-1/10">
+                      <p className="text-5xl font-bold bg-gradient-to-r from-chart-1 to-chart-3 bg-clip-text text-transparent">{score}</p>
                       <p className="text-xs text-muted-foreground mt-1">out of 100</p>
                       <Badge className={`${priority.bg} text-white border-0 mt-2`}>{priority.label}</Badge>
                     </div>
@@ -591,7 +589,7 @@ export default function AICaseBuilderPage() {
             <div
               key={i}
               className={`w-2 h-2 rounded-full transition-all ${
-                i === phase ? "bg-[#7C3AED] w-6" : i < phase ? "bg-[#7C3AED]/40" : "bg-muted-foreground/20"
+                i === phase ? "bg-chart-1 w-6" : i < phase ? "bg-chart-1/40" : "bg-muted-foreground/20"
               }`}
             />
           ))}
@@ -599,7 +597,7 @@ export default function AICaseBuilderPage() {
 
         {phase < 4 ? (
           <Button
-            className="rounded-full bg-[#7C3AED] text-white border-[#7C3AED]"
+            className="rounded-full bg-chart-1 text-white border-chart-1"
             onClick={() => setPhase(p => p + 1)}
             disabled={!canAdvance()}
             data-testid="button-next"
@@ -608,7 +606,7 @@ export default function AICaseBuilderPage() {
           </Button>
         ) : (
           <Button
-            className="rounded-full bg-gradient-to-r from-[#7C3AED] to-[#5B21B6] text-white border-0"
+            className="rounded-full bg-gradient-to-r from-chart-1 to-chart-2 text-white border-0"
             onClick={() => setSubmitted(true)}
             data-testid="button-submit-case"
           >
@@ -632,7 +630,7 @@ function FieldBlock({
     <div>
       <div className="flex items-center justify-between mb-2">
         <label className="text-sm font-medium flex items-center gap-2">
-          {Icon && <Icon className="w-4 h-4 text-[#7C3AED]" />}
+          {Icon && <Icon className="w-4 h-4 text-chart-1" />}
           {label}
         </label>
         {value.length > 0 && (
@@ -648,7 +646,7 @@ function FieldBlock({
       />
       <div className="flex items-center justify-between mt-1.5">
         <button
-          className="text-[11px] text-[#7C3AED] flex items-center gap-1 font-medium"
+          className="text-[11px] text-chart-1 flex items-center gap-1 font-medium"
           onClick={() => setShowHint(showHint === hintKey ? null : hintKey)}
           data-testid={`button-hint-${hintKey}`}
         >
@@ -692,7 +690,7 @@ function ReviewSection({ title, content }: { title: string; content: string }) {
   if (!content) return null;
   return (
     <div className="p-4 rounded-lg bg-muted/30 border border-border/50">
-      <p className="text-[10px] uppercase tracking-wider text-[#7C3AED] font-semibold mb-1.5">{title}</p>
+      <p className="text-[10px] uppercase tracking-wider text-chart-1 font-semibold mb-1.5">{title}</p>
       <p className="text-sm text-muted-foreground leading-relaxed">{content}</p>
     </div>
   );

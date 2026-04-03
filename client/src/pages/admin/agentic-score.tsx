@@ -4,8 +4,12 @@ import { Badge } from "@/components/ui/badge";
 import { SQRing } from "@/components/nq-ring";
 import { TrendingUp, ChevronRight } from "lucide-react";
 import { ResponsiveContainer, RadarChart, PolarGrid, PolarAngleAxis, Radar, BarChart, Bar, XAxis, YAxis, Tooltip, CartesianGrid } from "recharts";
+import { fadeUp, pageContainer } from "@/lib/motion-variants";
 
-const fadeUp = { hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0 } };
+const CHART_1 = "hsl(var(--chart-1))";
+const CHART_2 = "hsl(var(--chart-2))";
+const CHART_3 = "hsl(var(--chart-3))";
+const tooltipStyle = { backgroundColor: "hsl(var(--card))", border: "1px solid hsl(var(--border))", borderRadius: "6px", fontSize: "12px", color: "hsl(var(--foreground))" };
 
 const compositionData = [
   { component: "Avg SQ", score: 62, weight: "25%", fullName: "Average SQ Score" },
@@ -34,9 +38,9 @@ export default function AgenticScorePage() {
   const agenticLevel = "AI-Enabled";
 
   return (
-    <motion.div className="max-w-5xl mx-auto space-y-6" initial="hidden" animate="visible" variants={{ visible: { transition: { staggerChildren: 0.06 } } }}>
+    <motion.div className="max-w-5xl mx-auto space-y-6" initial="hidden" animate="visible" variants={pageContainer}>
       <motion.div variants={fadeUp}>
-        <h1 className="text-2xl font-bold">Agentic Enterprise Score</h1>
+        <h1 className="text-display-xs font-bold">Agentic Enterprise Score</h1>
         <p className="text-muted-foreground text-sm mt-1">Holistic measure of organizational AI maturity</p>
       </motion.div>
 
@@ -56,7 +60,7 @@ export default function AgenticScorePage() {
               <div className="mt-4 flex gap-4 text-sm flex-wrap justify-center md:justify-start">
                 <div><span className="text-muted-foreground">Traditional</span> <span className="font-medium">0-25</span></div>
                 <div><span className="text-muted-foreground">AI-Curious</span> <span className="font-medium">26-50</span></div>
-                <div className="text-[#7C3AED] font-semibold">AI-Enabled 51-75</div>
+                <div className="text-chart-1 font-semibold">AI-Enabled 51-75</div>
                 <div><span className="text-muted-foreground">Agentic</span> <span className="font-medium">76-100</span></div>
               </div>
             </div>
@@ -73,7 +77,7 @@ export default function AgenticScorePage() {
                 <RadarChart data={compositionData}>
                   <PolarGrid stroke="hsl(var(--border))" />
                   <PolarAngleAxis dataKey="component" tick={{ fontSize: 10, fill: "hsl(var(--muted-foreground))" }} />
-                  <Radar name="Score" dataKey="score" stroke="#7C3AED" fill="#7C3AED" fillOpacity={0.2} strokeWidth={2} />
+                  <Radar name="Score" dataKey="score" stroke={CHART_1} fill={CHART_1} fillOpacity={0.2} strokeWidth={2} />
                 </RadarChart>
               </ResponsiveContainer>
             </div>
@@ -89,8 +93,8 @@ export default function AgenticScorePage() {
                   <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
                   <XAxis type="number" domain={[0, 100]} tick={{ fontSize: 11, fill: "hsl(var(--muted-foreground))" }} />
                   <YAxis type="category" dataKey="label" tick={{ fontSize: 11, fill: "hsl(var(--muted-foreground))" }} width={90} />
-                  <Tooltip contentStyle={{ backgroundColor: "hsl(var(--card))", border: "1px solid hsl(var(--border))", borderRadius: "6px", fontSize: "12px" }} />
-                  <Bar dataKey="value" fill="#7C3AED" radius={[0, 4, 4, 0]} />
+                  <Tooltip contentStyle={tooltipStyle} />
+                  <Bar dataKey="value" fill={CHART_1} radius={[0, 4, 4, 0]} />
                 </BarChart>
               </ResponsiveContainer>
             </div>
@@ -107,7 +111,7 @@ export default function AgenticScorePage() {
                 <div className="w-28 text-sm font-medium flex-shrink-0">{comp.fullName}</div>
                 <div className="flex-1">
                   <div className="w-full bg-muted rounded-full h-2">
-                    <div className="bg-[#7C3AED] h-2 rounded-full transition-all" style={{ width: `${comp.score}%` }} />
+                    <div className="bg-chart-1 h-2 rounded-full transition-all" style={{ width: `${comp.score}%` }} />
                   </div>
                 </div>
                 <span className="text-sm font-semibold w-10 text-right">{comp.score}</span>

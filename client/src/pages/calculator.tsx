@@ -10,6 +10,7 @@ import { SQRing } from "@/components/nq-ring";
 import { apiRequest } from "@/lib/queryClient";
 import { SEO } from "@/components/seo";
 import logoImg from "@assets/image_1773976580990.png";
+import { fadeUp, fadeIn, pageContainer } from "@/lib/motion-variants";
 
 const roles = Object.keys(ROLE_TASKS);
 const roleIcons: Record<string, string> = {
@@ -72,9 +73,9 @@ export default function CalculatorPage() {
       <main className="pt-24 pb-16 px-6 max-w-3xl mx-auto">
         <AnimatePresence mode="wait">
           {step === "role" && (
-            <motion.div key="role" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }}>
+            <motion.div key="role" variants={fadeUp} initial="hidden" animate="visible" exit={{ opacity: 0, y: -20 }}>
               <div className="text-center mb-10">
-                <p className="text-xs font-semibold tracking-[0.2em] uppercase text-[#7C3AED] mb-3">SQ CALCULATOR</p>
+                <p className="text-xs font-semibold tracking-[0.2em] uppercase text-chart-1 mb-3">SQ CALCULATOR</p>
                 <h1 className="text-3xl md:text-4xl font-bold mb-3">Select your role</h1>
                 <p className="text-muted-foreground">Choose the role that best describes your daily work.</p>
               </div>
@@ -86,8 +87,8 @@ export default function CalculatorPage() {
                     onClick={() => handleRoleSelect(role)}
                     data-testid={`card-role-${role.toLowerCase().replace(/\s/g, "-")}`}
                   >
-                    <div className="w-12 h-12 rounded-full bg-[#7C3AED]/10 flex items-center justify-center mx-auto mb-3">
-                      <span className="text-[#7C3AED] font-bold text-sm">{roleIcons[role]}</span>
+                    <div className="w-12 h-12 rounded-full bg-chart-1/10 flex items-center justify-center mx-auto mb-3">
+                      <span className="text-chart-1 font-bold text-sm">{roleIcons[role]}</span>
                     </div>
                     <p className="font-medium text-sm">{role}</p>
                   </Card>
@@ -97,9 +98,9 @@ export default function CalculatorPage() {
           )}
 
           {step === "tasks" && (
-            <motion.div key="tasks" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -20 }}>
+            <motion.div key="tasks" variants={fadeUp} initial="hidden" animate="visible" exit={{ opacity: 0, y: -20 }}>
               <div className="text-center mb-10">
-                <p className="text-xs font-semibold tracking-[0.2em] uppercase text-[#7C3AED] mb-3">{selectedRole}</p>
+                <p className="text-xs font-semibold tracking-[0.2em] uppercase text-chart-1 mb-3">{selectedRole}</p>
                 <h1 className="text-3xl font-bold mb-3">Adjust your hours</h1>
                 <p className="text-muted-foreground text-sm">How many hours per week do you spend on each task?</p>
               </div>
@@ -113,7 +114,7 @@ export default function CalculatorPage() {
                           {task.category === "automatable" ? "Automatable" : task.category === "augmentable" ? "Augmentable" : "Human Essential"}
                         </span>
                       </div>
-                      <span className="text-sm font-semibold text-[#7C3AED] min-w-[40px] text-right">{taskHours[i]}h</span>
+                      <span className="text-sm font-semibold text-chart-1 min-w-[40px] text-right">{taskHours[i]}h</span>
                     </div>
                     <Slider
                       value={[taskHours[i]]}
@@ -135,7 +136,7 @@ export default function CalculatorPage() {
                 <Button variant="outline" className="rounded-full" onClick={() => setStep("role")} data-testid="button-back-role">
                   <ArrowLeft className="w-4 h-4 mr-1" /> Back
                 </Button>
-                <Button className="rounded-full flex-1 bg-[#7C3AED] text-white border-[#7C3AED]" onClick={handleCalculate} data-testid="button-reveal-sq">
+                <Button className="rounded-full flex-1 bg-chart-1 text-white border-chart-1" onClick={handleCalculate} data-testid="button-reveal-sq">
                   Reveal my SQ <ArrowRight className="w-4 h-4 ml-1" />
                 </Button>
               </div>
@@ -143,15 +144,15 @@ export default function CalculatorPage() {
           )}
 
           {step === "loading" && (
-            <motion.div key="loading" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="flex flex-col items-center justify-center min-h-[60vh]">
+            <motion.div key="loading" variants={fadeIn} initial="hidden" animate="visible" exit={{ opacity: 0 }} className="flex flex-col items-center justify-center min-h-[60vh]">
               <div className="relative w-20 h-20 mb-6">
                 <motion.div
-                  className="absolute inset-0 rounded-full border-4 border-[#7C3AED]/20"
+                  className="absolute inset-0 rounded-full border-4 border-chart-1/20"
                   animate={{ rotate: 360 }}
                   transition={{ duration: 1.5, repeat: Infinity, ease: "linear" }}
                 />
                 <motion.div
-                  className="absolute inset-0 rounded-full border-4 border-transparent border-t-[#7C3AED]"
+                  className="absolute inset-0 rounded-full border-4 border-transparent border-t-chart-1"
                   animate={{ rotate: 360 }}
                   transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
                 />
@@ -161,9 +162,9 @@ export default function CalculatorPage() {
           )}
 
           {step === "result" && result && (
-            <motion.div key="result" initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
+            <motion.div key="result" variants={fadeUp} initial="hidden" animate="visible">
               <div className="text-center mb-10">
-                <p className="text-xs font-semibold tracking-[0.2em] uppercase text-[#7C3AED] mb-3">YOUR SQ SCORE</p>
+                <p className="text-xs font-semibold tracking-[0.2em] uppercase text-chart-1 mb-3">YOUR SQ SCORE</p>
                 <div className="flex justify-center mb-4">
                   <SQRing score={result.score} size={200} label={result.level} />
                 </div>
@@ -172,17 +173,17 @@ export default function CalculatorPage() {
 
               <div className="grid grid-cols-3 gap-4 mb-8">
                 <Card className="p-4 text-center">
-                  <Clock className="w-5 h-5 text-[#7C3AED] mx-auto mb-2" />
+                  <Clock className="w-5 h-5 text-chart-1 mx-auto mb-2" />
                   <p className="text-xl font-bold">{result.recoverableHours}h</p>
                   <p className="text-xs text-muted-foreground">Hours/week recoverable</p>
                 </Card>
                 <Card className="p-4 text-center">
-                  <Calendar className="w-5 h-5 text-[#7C3AED] mx-auto mb-2" />
+                  <Calendar className="w-5 h-5 text-chart-1 mx-auto mb-2" />
                   <p className="text-xl font-bold">{Math.round(result.recoverableHours * 48)}h</p>
                   <p className="text-xs text-muted-foreground">Hours/year saved</p>
                 </Card>
                 <Card className="p-4 text-center">
-                  <DollarSign className="w-5 h-5 text-[#7C3AED] mx-auto mb-2" />
+                  <DollarSign className="w-5 h-5 text-chart-1 mx-auto mb-2" />
                   <p className="text-xl font-bold">${(result.dollarsSaved / 1000).toFixed(0)}K</p>
                   <p className="text-xs text-muted-foreground">Value/year</p>
                 </Card>
@@ -204,7 +205,7 @@ export default function CalculatorPage() {
               </Card>
 
               <div className="flex flex-wrap gap-4 justify-center">
-                <Button className="rounded-full bg-[#7C3AED] text-white border-[#7C3AED]" data-testid="button-book-demo-result">
+                <Button className="rounded-full bg-chart-1 text-white border-chart-1" data-testid="button-book-demo-result">
                   Run for your team <ArrowRight className="w-4 h-4 ml-1" />
                 </Button>
                 <Button variant="outline" className="rounded-full" onClick={() => { setStep("role"); setResult(null); }} data-testid="button-retake">

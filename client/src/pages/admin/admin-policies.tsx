@@ -6,7 +6,7 @@ import { useQuery } from "@tanstack/react-query";
 import type { Policy } from "@shared/schema";
 import { FileText, Eye, MessageSquare, AlertTriangle, CheckCircle2 } from "lucide-react";
 
-const fadeUp = { hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0 } };
+import { fadeUp, pageContainer } from "@/lib/motion-variants";
 
 const policyAnalytics = [
   { title: "Acceptable AI Use Policy", views: 342, questions: 28, acknowledged: 89, gaps: 2 },
@@ -26,13 +26,13 @@ export default function AdminPoliciesPage() {
   const { data: policies } = useQuery<Policy[]>({ queryKey: ["/api/policies"] });
 
   return (
-    <motion.div className="max-w-5xl mx-auto space-y-6" initial="hidden" animate="visible" variants={{ visible: { transition: { staggerChildren: 0.06 } } }}>
+    <motion.div className="max-w-5xl mx-auto space-y-6" initial="hidden" animate="visible" variants={pageContainer}>
       <motion.div variants={fadeUp} className="flex items-center justify-between gap-4 flex-wrap">
         <div>
-          <h1 className="text-2xl font-bold">Policy Management</h1>
+          <h1 className="text-display-xs font-bold">Policy Management</h1>
           <p className="text-muted-foreground text-sm mt-1">Analytics, compliance, and gap analysis</p>
         </div>
-        <Button size="sm" className="rounded-full bg-[#7C3AED] text-white border-[#7C3AED]" data-testid="button-create-policy">
+        <Button size="sm" className="rounded-full" data-testid="button-create-policy">
           Create Policy
         </Button>
       </motion.div>
@@ -58,7 +58,7 @@ export default function AdminPoliciesPage() {
                   <tr key={p.title} className="border-b">
                     <td className="p-3">
                       <div className="flex items-center gap-2">
-                        <FileText className="w-4 h-4 text-[#7C3AED]" />
+                        <FileText className="w-4 h-4 text-chart-1" />
                         <span className="font-medium">{p.title}</span>
                       </div>
                     </td>

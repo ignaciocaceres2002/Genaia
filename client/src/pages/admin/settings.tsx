@@ -5,21 +5,20 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import { Building2, Users, Bell, Shield, Download, Key } from "lucide-react";
-
-const fadeUp = { hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0 } };
+import { fadeUp, pageContainer } from "@/lib/motion-variants";
 
 export default function SettingsPage() {
   return (
-    <motion.div className="max-w-3xl mx-auto space-y-6" initial="hidden" animate="visible" variants={{ visible: { transition: { staggerChildren: 0.06 } } }}>
+    <motion.div className="max-w-3xl mx-auto space-y-6" initial="hidden" animate="visible" variants={pageContainer}>
       <motion.div variants={fadeUp}>
-        <h1 className="text-2xl font-bold">Settings</h1>
+        <h1 className="text-display-xs font-bold">Settings</h1>
         <p className="text-muted-foreground text-sm mt-1">Organization profile and system configuration</p>
       </motion.div>
 
       <motion.div variants={fadeUp}>
         <Card className="p-5">
           <div className="flex items-center gap-2 mb-4">
-            <Building2 className="w-4 h-4 text-[#7C3AED]" />
+            <Building2 className="w-4 h-4 text-chart-1" />
             <h3 className="font-semibold text-sm">Organization Profile</h3>
           </div>
           <div className="space-y-4">
@@ -42,7 +41,7 @@ export default function SettingsPage() {
       <motion.div variants={fadeUp}>
         <Card className="p-5">
           <div className="flex items-center gap-2 mb-4">
-            <Shield className="w-4 h-4 text-[#7C3AED]" />
+            <Shield className="w-4 h-4 text-chart-1" />
             <h3 className="font-semibold text-sm">Security</h3>
           </div>
           <div className="space-y-4">
@@ -67,7 +66,7 @@ export default function SettingsPage() {
       <motion.div variants={fadeUp}>
         <Card className="p-5">
           <div className="flex items-center gap-2 mb-4">
-            <Bell className="w-4 h-4 text-[#7C3AED]" />
+            <Bell className="w-4 h-4 text-chart-1" />
             <h3 className="font-semibold text-sm">Notifications</h3>
           </div>
           <div className="space-y-4">
@@ -91,7 +90,7 @@ export default function SettingsPage() {
       <motion.div variants={fadeUp}>
         <Card className="p-5">
           <div className="flex items-center gap-2 mb-4">
-            <Download className="w-4 h-4 text-[#7C3AED]" />
+            <Download className="w-4 h-4 text-chart-1" />
             <h3 className="font-semibold text-sm">Data & API</h3>
           </div>
           <div className="space-y-3">
@@ -106,7 +105,7 @@ export default function SettingsPage() {
       </motion.div>
 
       <motion.div variants={fadeUp}>
-        <Button className="rounded-full bg-[#7C3AED] text-white border-[#7C3AED]" data-testid="button-save-settings">
+        <Button className="rounded-full" data-testid="button-save-settings">
           Save Changes
         </Button>
       </motion.div>

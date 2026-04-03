@@ -13,8 +13,10 @@ import { useState, useRef, useCallback } from "react";
 import { ResponsiveContainer, RadarChart, PolarGrid, PolarAngleAxis, Radar } from "recharts";
 import * as XLSX from "xlsx";
 import { useToast } from "@/hooks/use-toast";
+import { fadeUp, pageContainer } from "@/lib/motion-variants";
 
-const fadeUp = { hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0 } };
+const CHART_1 = "hsl(var(--chart-1))";
+const CHART_2 = "hsl(var(--chart-2))";
 
 const defaultTeams: Team[] = [
   { id: "1", name: "Engineering", department: "Engineering", headcount: 45, avgNq: 62, completionPct: 78, engagementScore: 85, champion: "Marcus Johnson" },
@@ -224,10 +226,10 @@ export default function AdminTeamsPage() {
   }
 
   return (
-    <motion.div className="max-w-5xl mx-auto space-y-6" initial="hidden" animate="visible" variants={{ visible: { transition: { staggerChildren: 0.06 } } }}>
+    <motion.div className="max-w-5xl mx-auto space-y-6" initial="hidden" animate="visible" variants={pageContainer}>
       <motion.div variants={fadeUp} className="flex items-center justify-between gap-4 flex-wrap">
         <div>
-          <h1 className="text-2xl font-bold">Teams</h1>
+          <h1 className="text-display-xs font-bold">Teams</h1>
           <p className="text-muted-foreground text-sm mt-1">Compare team performance and AI adoption</p>
         </div>
         <div className="flex items-center gap-2 flex-wrap">
@@ -329,7 +331,7 @@ export default function AdminTeamsPage() {
                         return (
                           <tr
                             key={team.id}
-                            className={`border-b cursor-pointer hover-elevate ${selectedTeam === team.id ? "bg-[#7C3AED]/5" : ""}`}
+                            className={`border-b cursor-pointer hover-elevate ${selectedTeam === team.id ? "bg-chart-1/5" : ""}`}
                             onClick={() => setSelectedTeam(team.id)}
                             data-testid={`row-team-${team.id}`}
                           >
@@ -371,7 +373,7 @@ export default function AdminTeamsPage() {
                     <RadarChart data={selectedTeamSkills}>
                       <PolarGrid stroke="hsl(var(--border))" />
                       <PolarAngleAxis dataKey="skill" tick={{ fontSize: 10, fill: "hsl(var(--muted-foreground))" }} />
-                      <Radar name="Team" dataKey="score" stroke="#7C3AED" fill="#7C3AED" fillOpacity={0.2} strokeWidth={2} />
+                      <Radar name="Team" dataKey="score" stroke={CHART_1} fill={CHART_1} fillOpacity={0.2} strokeWidth={2} />
                       <Radar name="Company" dataKey="companyAvg" stroke="hsl(var(--muted-foreground))" fill="none" strokeDasharray="4 4" strokeWidth={1} />
                     </RadarChart>
                   </ResponsiveContainer>

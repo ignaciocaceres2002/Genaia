@@ -9,8 +9,12 @@ import { Link } from "wouter";
 import { useQuery } from "@tanstack/react-query";
 import type { User } from "@shared/schema";
 import { ResponsiveContainer, RadarChart, PolarGrid, PolarAngleAxis, Radar, LineChart, Line, XAxis, YAxis, Tooltip, BarChart, Bar, CartesianGrid } from "recharts";
+import { fadeUp, pageContainer } from "@/lib/motion-variants";
 
-const fadeUp = { hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0 } };
+const CHART_1 = "hsl(var(--chart-1))";
+const CHART_2 = "hsl(var(--chart-2))";
+const CHART_3 = "hsl(var(--chart-3))";
+const tooltipStyle = { backgroundColor: "hsl(var(--card))", border: "1px solid hsl(var(--border))", borderRadius: "6px", fontSize: "12px", color: "hsl(var(--foreground))" };
 
 export default function MySQPage() {
   const { data: user } = useQuery<User>({ queryKey: ["/api/user/me"] });
@@ -66,11 +70,11 @@ export default function MySQPage() {
   };
 
   return (
-    <motion.div className="max-w-4xl mx-auto space-y-8" initial="hidden" animate="visible" variants={{ visible: { transition: { staggerChildren: 0.08 } } }}>
+    <motion.div className="max-w-4xl mx-auto space-y-8" initial="hidden" animate="visible" variants={pageContainer}>
       <motion.div variants={fadeUp} className="flex flex-col md:flex-row items-center gap-8">
         <SQRing score={currentUser.nqScore || 67} size={180} label="Expert" />
         <div>
-          <h1 className="text-2xl font-bold">Your SQ Score</h1>
+          <h1 className="text-display-xs font-bold">Your SQ Score</h1>
           <p className="text-muted-foreground text-sm mt-1">
             Top 34% of {currentUser.department || "Marketing"} professionals
           </p>
@@ -90,7 +94,7 @@ export default function MySQPage() {
               <RadarChart data={radarData}>
                 <PolarGrid stroke="hsl(var(--border))" />
                 <PolarAngleAxis dataKey="skill" tick={{ fontSize: 11, fill: "hsl(var(--muted-foreground))" }} />
-                <Radar name="You" dataKey="score" stroke="#7C3AED" fill="#7C3AED" fillOpacity={0.2} strokeWidth={2} />
+                <Radar name="You" dataKey="score" stroke={CHART_1} fill={CHART_1} fillOpacity={0.2} strokeWidth={2} />
                 <Radar name="Benchmark" dataKey="benchmark" stroke="hsl(var(--muted-foreground))" fill="none" strokeDasharray="4 4" strokeWidth={1} />
               </RadarChart>
             </ResponsiveContainer>
@@ -121,7 +125,7 @@ export default function MySQPage() {
                   </div>
                 </div>
                 <div className="w-full bg-muted rounded-full h-1.5 mb-3">
-                  <div className="bg-[#7C3AED] h-1.5 rounded-full transition-all" style={{ width: `${score}%` }} />
+                  <div className="bg-chart-1 h-1.5 rounded-full transition-all" style={{ width: `${score}%` }} />
                 </div>
                 <Link href="/dashboard/learning">
                   <Button variant="ghost" size="sm" className="w-full text-xs" data-testid={`button-continue-${skill.key}`}>
@@ -144,8 +148,8 @@ export default function MySQPage() {
                   <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
                   <XAxis dataKey="week" tick={{ fontSize: 11, fill: "hsl(var(--muted-foreground))" }} />
                   <YAxis tick={{ fontSize: 11, fill: "hsl(var(--muted-foreground))" }} domain={[0, 100]} />
-                  <Tooltip contentStyle={{ backgroundColor: "hsl(var(--card))", border: "1px solid hsl(var(--border))", borderRadius: "6px", fontSize: "12px" }} />
-                  <Line type="monotone" dataKey="score" stroke="#7C3AED" strokeWidth={2} dot={{ fill: "#7C3AED", r: 3 }} />
+                  <Tooltip contentStyle={tooltipStyle} />
+                  <Line type="monotone" dataKey="score" stroke={CHART_1} strokeWidth={2} dot={{ fill: CHART_1, r: 3 }} />
                 </LineChart>
               </ResponsiveContainer>
             </div>
@@ -161,8 +165,8 @@ export default function MySQPage() {
                   <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
                   <XAxis type="number" domain={[0, 100]} tick={{ fontSize: 11, fill: "hsl(var(--muted-foreground))" }} />
                   <YAxis type="category" dataKey="label" tick={{ fontSize: 11, fill: "hsl(var(--muted-foreground))" }} width={70} />
-                  <Tooltip contentStyle={{ backgroundColor: "hsl(var(--card))", border: "1px solid hsl(var(--border))", borderRadius: "6px", fontSize: "12px" }} />
-                  <Bar dataKey="value" fill="#7C3AED" radius={[0, 4, 4, 0]} />
+                  <Tooltip contentStyle={tooltipStyle} />
+                  <Bar dataKey="value" fill={CHART_1} radius={[0, 4, 4, 0]} />
                 </BarChart>
               </ResponsiveContainer>
             </div>

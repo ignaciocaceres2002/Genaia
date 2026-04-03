@@ -9,7 +9,7 @@ import { useQuery } from "@tanstack/react-query";
 import type { User, Activity, AiUseCase } from "@shared/schema";
 import { SEO } from "@/components/seo";
 
-const fadeUp = { hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0 } };
+import { fadeUp, pageContainer } from "@/lib/motion-variants";
 
 const weekDays = ["M", "T", "W", "T", "F", "S", "S"];
 
@@ -32,7 +32,7 @@ export default function DashboardHome() {
   const todayIndex = new Date().getDay();
 
   return (
-    <motion.div className="max-w-4xl mx-auto space-y-8" initial="hidden" animate="visible" variants={{ visible: { transition: { staggerChildren: 0.08 } } }}>
+    <motion.div className="max-w-4xl mx-auto space-y-8" initial="hidden" animate="visible" variants={pageContainer}>
       <SEO title="Dashboard - Genaia" description="Your personal AI adoption dashboard. Track your SQ score, streaks, learning progress, and more." />
       <motion.div variants={fadeUp} className="flex flex-col md:flex-row items-start gap-6">
         <div className="flex-shrink-0">
@@ -40,11 +40,11 @@ export default function DashboardHome() {
         </div>
         <div className="flex-1 space-y-4">
           <div>
-            <h1 className="text-2xl font-bold" data-testid="text-welcome">Welcome back, {currentUser.name?.split(" ")[0]}</h1>
+            <h1 className="text-display-xs font-bold" data-testid="text-welcome">Welcome back, {currentUser.name?.split(" ")[0]}</h1>
             <p className="text-muted-foreground text-sm mt-1">Your SQ is <span className="font-semibold text-foreground">{currentUser.nqScore}</span> — keep going!</p>
           </div>
 
-          <Card className="p-4 border-l-4 border-l-[#7C3AED]">
+          <Card className="p-4 border-l-4 border-l-chart-1">
             <div className="flex items-center justify-between gap-4 flex-wrap">
               <div>
                 <p className="font-medium text-sm">Daily Challenge</p>
@@ -53,7 +53,7 @@ export default function DashboardHome() {
               <div className="flex items-center gap-3">
                 <Badge variant="secondary" className="text-xs">5 min</Badge>
                 <Badge variant="secondary" className="text-xs"><Zap className="w-3 h-3 mr-0.5" />+150 XP</Badge>
-                <Button size="sm" className="rounded-full bg-[#7C3AED] text-white border-[#7C3AED]" data-testid="button-daily-challenge">
+                <Button size="sm" className="rounded-full bg-chart-1 text-white border-chart-1" data-testid="button-daily-challenge">
                   Start
                 </Button>
               </div>
@@ -82,9 +82,9 @@ export default function DashboardHome() {
                 <div
                   className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-medium transition-all ${
                     streakDays[i]
-                      ? "bg-[#7C3AED] text-white"
+                      ? "bg-chart-1 text-white"
                       : i === todayIndex
-                        ? "border-2 border-[#7C3AED] text-[#7C3AED]"
+                        ? "border-2 border-chart-1 text-chart-1"
                         : "bg-muted text-muted-foreground"
                   }`}
                 >
@@ -101,10 +101,10 @@ export default function DashboardHome() {
         <motion.div variants={fadeUp}>
           <Card className="p-4">
             <div className="flex items-center gap-2 mb-3">
-              <Lightbulb className="w-4 h-4 text-[#7C3AED]" />
+              <Lightbulb className="w-4 h-4 text-chart-1" />
               <span className="font-medium text-sm">AI Contributions</span>
               <span className="text-xs text-muted-foreground">Last 30 days</span>
-              <Link href="/dashboard/use-cases" className="ml-auto text-xs text-[#7C3AED] hover:underline">View all</Link>
+              <Link href="/dashboard/use-cases" className="ml-auto text-xs text-chart-1 hover:underline">View all</Link>
             </div>
             <div className="flex gap-1">
               {(() => {
@@ -168,8 +168,8 @@ export default function DashboardHome() {
                 { id: "5", title: "Finished Reading the Machine Module 1", xpEarned: 150, type: "course", createdAt: new Date(Date.now() - 345600000).toISOString() },
               ]).slice(0, 5).map((act: any) => (
                 <div key={act.id} className="flex items-start gap-3">
-                  <div className="w-7 h-7 rounded-full bg-[#7C3AED]/10 flex items-center justify-center flex-shrink-0 mt-0.5">
-                    <Zap className="w-3.5 h-3.5 text-[#7C3AED]" />
+                  <div className="w-7 h-7 rounded-full bg-chart-1/10 flex items-center justify-center flex-shrink-0 mt-0.5">
+                    <Zap className="w-3.5 h-3.5 text-chart-1" />
                   </div>
                   <div className="flex-1 min-w-0">
                     <p className="text-sm truncate">{act.title}</p>
@@ -196,8 +196,8 @@ export default function DashboardHome() {
                   <span className={`text-xs font-bold w-5 ${i === 0 ? "text-amber-500" : i === 1 ? "text-gray-400" : i === 2 ? "text-amber-700" : "text-muted-foreground"}`}>
                     #{i + 1}
                   </span>
-                  <div className="w-7 h-7 rounded-full bg-[#7C3AED]/10 flex items-center justify-center flex-shrink-0">
-                    <span className="text-xs font-medium text-[#7C3AED]">{u.name?.split(" ").map((n: string) => n[0]).join("")}</span>
+                  <div className="w-7 h-7 rounded-full bg-chart-1/10 flex items-center justify-center flex-shrink-0">
+                    <span className="text-xs font-medium text-chart-1">{u.name?.split(" ").map((n: string) => n[0]).join("")}</span>
                   </div>
                   <div className="flex-1 min-w-0">
                     <p className="text-sm truncate">{u.name}</p>

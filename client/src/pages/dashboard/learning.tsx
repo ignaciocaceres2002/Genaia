@@ -6,7 +6,7 @@ import { useQuery } from "@tanstack/react-query";
 import type { Course } from "@shared/schema";
 import { CheckCircle2, Lock, Circle, ArrowRight } from "lucide-react";
 
-const fadeUp = { hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0 } };
+import { fadeUp, pageContainer } from "@/lib/motion-variants";
 
 const defaultCourses = [
   { id: "1", title: "Reading the Machine", skill: "Data Fluency", description: "Learn to interpret AI outputs with confidence", modulesCount: 6, progress: 83, status: "active" },
@@ -39,9 +39,9 @@ export default function LearningPage() {
   const recommendedIndex = displayCourses.findIndex((c) => c.progress > 0 && c.progress < 100);
 
   return (
-    <motion.div className="max-w-3xl mx-auto space-y-6" initial="hidden" animate="visible" variants={{ visible: { transition: { staggerChildren: 0.06 } } }}>
+    <motion.div className="max-w-3xl mx-auto space-y-6" initial="hidden" animate="visible" variants={pageContainer}>
       <motion.div variants={fadeUp}>
-        <h1 className="text-2xl font-bold">Learning Path</h1>
+        <h1 className="text-display-xs font-bold">Learning Path</h1>
         <p className="text-muted-foreground text-sm mt-1">Duolingo-style progression through 8 courses</p>
       </motion.div>
 
@@ -59,7 +59,7 @@ export default function LearningPage() {
                     <div className="flex items-center gap-2 flex-wrap">
                       <h3 className="font-semibold">{course.title}</h3>
                       {isRecommended && (
-                        <Badge className="bg-[#7C3AED] text-white text-[10px] no-default-hover-elevate no-default-active-elevate">Recommended</Badge>
+                        <Badge className="bg-chart-1 text-white text-[10px] no-default-hover-elevate no-default-active-elevate">Recommended</Badge>
                       )}
                     </div>
                     <p className="text-xs text-muted-foreground mt-0.5">{course.skill} · {course.description}</p>
@@ -74,13 +74,13 @@ export default function LearningPage() {
                   <div className="flex items-center gap-2 flex-1">
                     {modules.map((status, i) => (
                       <div key={i} className="flex items-center gap-2">
-                        {i > 0 && <div className={`w-4 h-0.5 ${status === "locked" ? "bg-muted" : "bg-[#7C3AED]"}`} />}
+                        {i > 0 && <div className={`w-4 h-0.5 ${status === "locked" ? "bg-muted" : "bg-chart-1"}`} />}
                         <div className="relative">
                           {status === "done" ? (
-                            <CheckCircle2 className="w-7 h-7 text-[#7C3AED]" />
+                            <CheckCircle2 className="w-7 h-7 text-chart-1" />
                           ) : status === "current" ? (
                             <motion.div animate={{ scale: [1, 1.15, 1] }} transition={{ duration: 2, repeat: Infinity }}>
-                              <Circle className="w-7 h-7 text-[#7C3AED] stroke-2" />
+                              <Circle className="w-7 h-7 text-chart-1 stroke-2" />
                             </motion.div>
                           ) : (
                             <Lock className="w-5 h-5 text-muted-foreground mx-1" />

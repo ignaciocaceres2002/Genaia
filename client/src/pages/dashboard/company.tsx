@@ -6,7 +6,7 @@ import { useQuery } from "@tanstack/react-query";
 import type { Team } from "@shared/schema";
 import { TrendingUp, AlertTriangle, Trophy, Users } from "lucide-react";
 
-const fadeUp = { hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0 } };
+import { fadeUp, pageContainer } from "@/lib/motion-variants";
 
 const defaultTeams = [
   { id: "1", name: "Engineering", headcount: 45, avgNq: 62, completionPct: 78, champion: "Marcus Johnson" },
@@ -25,9 +25,9 @@ export default function CompanyPage() {
   const agenticLevel = agenticLevels[Math.floor(agenticScore / 25)] || agenticLevels[0];
 
   return (
-    <motion.div className="max-w-4xl mx-auto space-y-8" initial="hidden" animate="visible" variants={{ visible: { transition: { staggerChildren: 0.08 } } }}>
+    <motion.div className="max-w-4xl mx-auto space-y-8" initial="hidden" animate="visible" variants={pageContainer}>
       <motion.div variants={fadeUp}>
-        <h1 className="text-2xl font-bold">My Company</h1>
+        <h1 className="text-display-xs font-bold">My Company</h1>
         <p className="text-muted-foreground text-sm mt-1">Organization-wide AI adoption overview</p>
       </motion.div>
 
@@ -70,7 +70,7 @@ export default function CompanyPage() {
                 </div>
               </div>
               <div className="w-full bg-muted rounded-full h-1.5">
-                <div className="bg-[#7C3AED] h-1.5 rounded-full" style={{ width: `${team.avgNq}%` }} />
+                <div className="bg-chart-1 h-1.5 rounded-full" style={{ width: `${team.avgNq}%` }} />
               </div>
               {team.champion && (
                 <div className="flex items-center gap-1 mt-2">

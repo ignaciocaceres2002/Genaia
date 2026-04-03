@@ -13,7 +13,7 @@ import {
 } from "lucide-react";
 import { useState } from "react";
 
-const fadeUp = { hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0 } };
+import { fadeUp, pageContainer } from "@/lib/motion-variants";
 
 const categoryIcons: Record<string, LucideIcon> = {
   "Writing": FileText, "Code": Code, "Image": Image, "Chat": MessageSquare, "Analytics": BarChart3, "Assistant": Bot,
@@ -193,7 +193,7 @@ export default function ToolsPage() {
             {STEPS.map((s, i) => (
               <div key={s.title} className="flex items-center flex-1">
                 <div className={`flex items-center gap-2 px-3 py-2 rounded-lg text-xs font-medium transition-all ${
-                  i === step ? "bg-[#7C3AED]/10 text-[#7C3AED]" : i < step ? "text-green-600" : "text-muted-foreground"
+                  i === step ? "bg-chart-1/10 text-chart-1" : i < step ? "text-green-600" : "text-muted-foreground"
                 }`}>
                   {i < step ? (
                     <CheckCircle2 className="w-4 h-4 text-green-500" />
@@ -222,7 +222,7 @@ export default function ToolsPage() {
               </p>
               <div className="flex items-center justify-center gap-3 mb-6">
                 <div className="text-center px-4 py-2 rounded-lg bg-muted/50">
-                  <p className="text-lg font-bold text-[#7C3AED]">{totalHours}h</p>
+                  <p className="text-lg font-bold text-chart-1">{totalHours}h</p>
                   <p className="text-[10px] text-muted-foreground">per week saved</p>
                 </div>
                 <div className="text-center px-4 py-2 rounded-lg bg-muted/50">
@@ -230,7 +230,7 @@ export default function ToolsPage() {
                   <p className="text-[10px] text-muted-foreground">estimated savings</p>
                 </div>
               </div>
-              <Button onClick={handleClose} className="rounded-full bg-[#7C3AED] text-white border-[#7C3AED]" data-testid="button-back-to-tools">
+              <Button onClick={handleClose} className="rounded-full bg-chart-1 text-white border-chart-1" data-testid="button-back-to-tools">
                 Back to Tools
               </Button>
             </motion.div>
@@ -246,7 +246,7 @@ export default function ToolsPage() {
                           onClick={() => updateForm({ toolSource: "approved" })}
                           className={`flex-1 px-4 py-2.5 rounded-lg text-sm font-medium border transition-all ${
                             form.toolSource === "approved"
-                              ? "border-[#7C3AED] bg-[#7C3AED]/5 text-[#7C3AED]"
+                              ? "border-chart-1 bg-chart-1/5 text-chart-1"
                               : "border-border text-muted-foreground"
                           }`}
                           data-testid="button-source-approved"
@@ -257,7 +257,7 @@ export default function ToolsPage() {
                           onClick={() => updateForm({ toolSource: "custom" })}
                           className={`flex-1 px-4 py-2.5 rounded-lg text-sm font-medium border transition-all ${
                             form.toolSource === "custom"
-                              ? "border-[#7C3AED] bg-[#7C3AED]/5 text-[#7C3AED]"
+                              ? "border-chart-1 bg-chart-1/5 text-chart-1"
                               : "border-border text-muted-foreground"
                           }`}
                           data-testid="button-source-custom"
@@ -276,8 +276,8 @@ export default function ToolsPage() {
                                 onClick={() => updateForm({ toolName: t })}
                                 className={`px-3 py-2 rounded-lg text-xs font-medium text-left border transition-all ${
                                   form.toolName === t
-                                    ? "border-[#7C3AED] bg-[#7C3AED]/5 text-[#7C3AED]"
-                                    : "border-border text-foreground hover:border-[#7C3AED]/30"
+                                    ? "border-chart-1 bg-chart-1/5 text-chart-1"
+                                    : "border-border text-foreground hover:border-chart-1/30"
                                 }`}
                                 data-testid={`button-tool-${t.replace(/\s+/g, "-").toLowerCase()}`}
                               >
@@ -295,7 +295,7 @@ export default function ToolsPage() {
                               value={form.customToolName}
                               onChange={(e) => updateForm({ customToolName: e.target.value })}
                               placeholder="e.g., Otter.ai, Loom AI, Fireflies..."
-                              className="w-full px-3 py-2 rounded-lg border border-border bg-background text-sm focus:outline-none focus:ring-2 focus:ring-[#7C3AED]/30 focus:border-[#7C3AED]"
+                              className="w-full px-3 py-2 rounded-lg border border-border bg-background text-sm focus:outline-none focus:ring-2 focus:ring-chart-1/30 focus:border-chart-1"
                               data-testid="input-custom-tool-name"
                             />
                           </div>
@@ -308,7 +308,7 @@ export default function ToolsPage() {
                                   onClick={() => updateForm({ toolCategory: c })}
                                   className={`px-2.5 py-1 rounded-full text-[11px] font-medium border transition-all ${
                                     form.toolCategory === c
-                                      ? "border-[#7C3AED] bg-[#7C3AED]/10 text-[#7C3AED]"
+                                      ? "border-chart-1 bg-chart-1/10 text-chart-1"
                                       : "border-border text-muted-foreground"
                                   }`}
                                   data-testid={`button-category-${c.toLowerCase()}`}
@@ -346,7 +346,7 @@ export default function ToolsPage() {
                               value={task.description}
                               onChange={(e) => updateTask(i, "description", e.target.value)}
                               placeholder="Describe the task..."
-                              className="w-full px-3 py-2 rounded-lg border border-border bg-background text-sm focus:outline-none focus:ring-2 focus:ring-[#7C3AED]/30 focus:border-[#7C3AED]"
+                              className="w-full px-3 py-2 rounded-lg border border-border bg-background text-sm focus:outline-none focus:ring-2 focus:ring-chart-1/30 focus:border-chart-1"
                               data-testid={`input-task-description-${i}`}
                             />
                             <div className="grid grid-cols-2 gap-3">
@@ -361,7 +361,7 @@ export default function ToolsPage() {
                                   value={task.hoursPerWeek || ""}
                                   onChange={(e) => updateTask(i, "hoursPerWeek", parseFloat(e.target.value) || 0)}
                                   placeholder="0"
-                                  className="w-full px-3 py-2 rounded-lg border border-border bg-background text-sm focus:outline-none focus:ring-2 focus:ring-[#7C3AED]/30 focus:border-[#7C3AED]"
+                                  className="w-full px-3 py-2 rounded-lg border border-border bg-background text-sm focus:outline-none focus:ring-2 focus:ring-chart-1/30 focus:border-chart-1"
                                   data-testid={`input-task-hours-${i}`}
                                 />
                               </div>
@@ -375,7 +375,7 @@ export default function ToolsPage() {
                                   value={task.dollarsSaved || ""}
                                   onChange={(e) => updateTask(i, "dollarsSaved", parseFloat(e.target.value) || 0)}
                                   placeholder="0"
-                                  className="w-full px-3 py-2 rounded-lg border border-border bg-background text-sm focus:outline-none focus:ring-2 focus:ring-[#7C3AED]/30 focus:border-[#7C3AED]"
+                                  className="w-full px-3 py-2 rounded-lg border border-border bg-background text-sm focus:outline-none focus:ring-2 focus:ring-chart-1/30 focus:border-chart-1"
                                   data-testid={`input-task-dollars-${i}`}
                                 />
                               </div>
@@ -387,7 +387,7 @@ export default function ToolsPage() {
                       {form.tasks.length < MAX_TASKS && (
                         <button
                           onClick={addTask}
-                          className="mt-3 flex items-center gap-1.5 text-xs font-medium text-[#7C3AED] hover:text-[#5B21B6] transition-colors"
+                          className="mt-3 flex items-center gap-1.5 text-xs font-medium text-chart-1 hover:text-chart-2 transition-colors"
                           data-testid="button-add-task"
                         >
                           <Plus className="w-3.5 h-3.5" /> Add another task
@@ -395,15 +395,15 @@ export default function ToolsPage() {
                       )}
 
                       {form.tasks.some((t) => t.hoursPerWeek > 0 || t.dollarsSaved > 0) && (
-                        <div className="mt-4 flex items-center gap-4 p-3 rounded-lg bg-[#7C3AED]/5 border border-[#7C3AED]/10">
+                        <div className="mt-4 flex items-center gap-4 p-3 rounded-lg bg-chart-1/5 border border-chart-1/10">
                           <div className="flex items-center gap-2">
-                            <Clock className="w-4 h-4 text-[#7C3AED]" />
+                            <Clock className="w-4 h-4 text-chart-1" />
                             <div>
-                              <p className="text-sm font-bold text-[#7C3AED]">{totalHours}h / week</p>
+                              <p className="text-sm font-bold text-chart-1">{totalHours}h / week</p>
                               <p className="text-[10px] text-muted-foreground">Total time saved</p>
                             </div>
                           </div>
-                          <div className="w-px h-8 bg-[#7C3AED]/10" />
+                          <div className="w-px h-8 bg-chart-1/10" />
                           <div className="flex items-center gap-2">
                             <DollarSign className="w-4 h-4 text-green-600" />
                             <div>
@@ -427,7 +427,7 @@ export default function ToolsPage() {
                         onChange={(e) => updateForm({ reason: e.target.value })}
                         placeholder="e.g., I need to transcribe client meetings automatically and generate summaries..."
                         rows={3}
-                        className="w-full px-3 py-2 rounded-lg border border-border bg-background text-sm focus:outline-none focus:ring-2 focus:ring-[#7C3AED]/30 focus:border-[#7C3AED] resize-none"
+                        className="w-full px-3 py-2 rounded-lg border border-border bg-background text-sm focus:outline-none focus:ring-2 focus:ring-chart-1/30 focus:border-chart-1 resize-none"
                         data-testid="input-reason"
                       />
                     </div>
@@ -440,7 +440,7 @@ export default function ToolsPage() {
                         onChange={(e) => updateForm({ currentLimitation: e.target.value })}
                         placeholder="e.g., I'm taking notes manually which takes 30 min per meeting. Google Docs doesn't have AI transcription..."
                         rows={3}
-                        className="w-full px-3 py-2 rounded-lg border border-border bg-background text-sm focus:outline-none focus:ring-2 focus:ring-[#7C3AED]/30 focus:border-[#7C3AED] resize-none"
+                        className="w-full px-3 py-2 rounded-lg border border-border bg-background text-sm focus:outline-none focus:ring-2 focus:ring-chart-1/30 focus:border-chart-1 resize-none"
                         data-testid="input-limitation"
                       />
                     </div>
@@ -458,12 +458,12 @@ export default function ToolsPage() {
                               onClick={() => updateForm({ requestType: opt.value })}
                               className={`w-full text-left px-3 py-2.5 rounded-lg border transition-all ${
                                 form.requestType === opt.value
-                                  ? "border-[#7C3AED] bg-[#7C3AED]/5"
+                                  ? "border-chart-1 bg-chart-1/5"
                                   : "border-border"
                               }`}
                               data-testid={`button-type-${opt.value}`}
                             >
-                              <p className={`text-xs font-medium ${form.requestType === opt.value ? "text-[#7C3AED]" : "text-foreground"}`}>{opt.label}</p>
+                              <p className={`text-xs font-medium ${form.requestType === opt.value ? "text-chart-1" : "text-foreground"}`}>{opt.label}</p>
                               <p className="text-[10px] text-muted-foreground">{opt.desc}</p>
                             </button>
                           ))}
@@ -484,7 +484,7 @@ export default function ToolsPage() {
                               onClick={() => updateForm({ urgency: opt.value })}
                               className={`w-full text-left px-3 py-2 rounded-lg border transition-all ${
                                 form.urgency === opt.value
-                                  ? "border-[#7C3AED] bg-[#7C3AED]/5"
+                                  ? "border-chart-1 bg-chart-1/5"
                                   : "border-border"
                               }`}
                               data-testid={`button-urgency-${opt.value}`}
@@ -503,7 +503,7 @@ export default function ToolsPage() {
                         onChange={(e) => updateForm({ additionalContext: e.target.value })}
                         placeholder="Links, documentation, team members who also need it..."
                         rows={2}
-                        className="w-full px-3 py-2 rounded-lg border border-border bg-background text-sm focus:outline-none focus:ring-2 focus:ring-[#7C3AED]/30 focus:border-[#7C3AED] resize-none"
+                        className="w-full px-3 py-2 rounded-lg border border-border bg-background text-sm focus:outline-none focus:ring-2 focus:ring-chart-1/30 focus:border-chart-1 resize-none"
                         data-testid="input-additional"
                       />
                     </div>
@@ -550,8 +550,8 @@ export default function ToolsPage() {
                       </div>
 
                       <div className="grid grid-cols-2 gap-3">
-                        <div className="p-3 rounded-lg bg-[#7C3AED]/5 border border-[#7C3AED]/10 text-center">
-                          <p className="text-xl font-bold text-[#7C3AED]">{totalHours}h</p>
+                        <div className="p-3 rounded-lg bg-chart-1/5 border border-chart-1/10 text-center">
+                          <p className="text-xl font-bold text-chart-1">{totalHours}h</p>
                           <p className="text-[10px] text-muted-foreground">saved per week</p>
                         </div>
                         <div className="p-3 rounded-lg bg-green-50 border border-green-100 text-center">
@@ -594,7 +594,7 @@ export default function ToolsPage() {
                     size="sm"
                     onClick={() => setStep(step + 1)}
                     disabled={!canAdvance(step)}
-                    className="rounded-full bg-[#7C3AED] text-white border-[#7C3AED]"
+                    className="rounded-full bg-chart-1 text-white border-chart-1"
                     data-testid="button-next"
                   >
                     Next <ArrowRight className="w-4 h-4 ml-1" />
@@ -604,7 +604,7 @@ export default function ToolsPage() {
                     size="sm"
                     onClick={handleSubmit}
                     disabled={mutation.isPending}
-                    className="rounded-full bg-[#7C3AED] text-white border-[#7C3AED]"
+                    className="rounded-full bg-chart-1 text-white border-chart-1"
                     data-testid="button-submit-request"
                   >
                     {mutation.isPending ? "Submitting..." : "Submit Request"}
@@ -619,15 +619,15 @@ export default function ToolsPage() {
   }
 
   return (
-    <motion.div className="max-w-4xl mx-auto space-y-6" initial="hidden" animate="visible" variants={{ visible: { transition: { staggerChildren: 0.08 } } }}>
+    <motion.div className="max-w-4xl mx-auto space-y-6" initial="hidden" animate="visible" variants={pageContainer}>
       <motion.div variants={fadeUp} className="flex items-center justify-between gap-4 flex-wrap">
         <div>
-          <h1 className="text-2xl font-bold">AI Tools</h1>
+          <h1 className="text-display-xs font-bold">AI Tools</h1>
           <p className="text-muted-foreground text-sm mt-1">Your approved tools and requests</p>
         </div>
         <Button
           size="sm"
-          className="rounded-full bg-[#7C3AED] text-white border-[#7C3AED]"
+          className="rounded-full bg-chart-1 text-white border-chart-1"
           onClick={() => setShowForm(true)}
           data-testid="button-request-tool"
         >
@@ -642,8 +642,8 @@ export default function ToolsPage() {
             <motion.div key={tool.id} variants={fadeUp}>
               <Card className="p-4 h-full flex flex-col" data-testid={`card-tool-${tool.id}`}>
                 <div className="flex items-start justify-between gap-2 mb-3">
-                  <div className="w-9 h-9 rounded-md bg-[#7C3AED]/10 flex items-center justify-center">
-                    <Icon className="w-4.5 h-4.5 text-[#7C3AED]" />
+                  <div className="w-9 h-9 rounded-md bg-chart-1/10 flex items-center justify-center">
+                    <Icon className="w-4.5 h-4.5 text-chart-1" />
                   </div>
                   <Badge variant={tool.status === "approved" ? "secondary" : "outline"} className="text-[10px]">
                     {tool.status === "approved" ? "Approved" : "In Review"}

@@ -5,7 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { SKILLS } from "@shared/schema";
 import { BarChart3, RefreshCw, ShieldCheck, Users, Rocket, Lightbulb, Clock } from "lucide-react";
 
-const fadeUp = { hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0 } };
+import { fadeUp, pageContainer } from "@/lib/motion-variants";
 
 const iconMap: Record<string, any> = {
   BarChart3, RefreshCw, ShieldCheck, Users, Rocket, Lightbulb,
@@ -22,9 +22,9 @@ const assessmentData = [
 
 export default function AssessmentsPage() {
   return (
-    <motion.div className="max-w-4xl mx-auto space-y-6" initial="hidden" animate="visible" variants={{ visible: { transition: { staggerChildren: 0.08 } } }}>
+    <motion.div className="max-w-4xl mx-auto space-y-6" initial="hidden" animate="visible" variants={pageContainer}>
       <motion.div variants={fadeUp}>
-        <h1 className="text-2xl font-bold">Assessments</h1>
+        <h1 className="text-display-xs font-bold">Assessments</h1>
         <p className="text-muted-foreground text-sm mt-1">Scenario-based evaluations across 6 skill domains</p>
       </motion.div>
 
@@ -38,8 +38,8 @@ export default function AssessmentsPage() {
             <motion.div key={skill.key} variants={fadeUp}>
               <Card className="p-5 h-full flex flex-col" data-testid={`card-assessment-${skill.key}`}>
                 <div className="flex items-start justify-between gap-2 mb-4">
-                  <div className="w-10 h-10 rounded-md bg-[#7C3AED]/10 flex items-center justify-center">
-                    <Icon className="w-5 h-5 text-[#7C3AED]" />
+                  <div className="w-10 h-10 rounded-md bg-chart-1/10 flex items-center justify-center">
+                    <Icon className="w-5 h-5 text-chart-1" />
                   </div>
                   <Badge variant="secondary" className="text-[10px]">
                     <Clock className="w-3 h-3 mr-0.5" />{assessment.timeEstimate}
@@ -53,7 +53,7 @@ export default function AssessmentsPage() {
                 )}
                 <div className="mt-4">
                   {assessment.available ? (
-                    <Button size="sm" className="w-full rounded-full bg-[#7C3AED] text-white border-[#7C3AED]" data-testid={`button-take-${skill.key}`}>
+                    <Button size="sm" className="w-full rounded-full bg-chart-1 text-white border-chart-1" data-testid={`button-take-${skill.key}`}>
                       {assessment.lastScore !== null ? "Retake" : "Take Assessment"}
                     </Button>
                   ) : (
@@ -78,7 +78,7 @@ export default function AssessmentsPage() {
               { step: "3", title: "Instant Results", desc: "Get your score, strengths, gaps, and recommended next steps" },
             ].map((item) => (
               <div key={item.step} className="text-center">
-                <div className="w-8 h-8 rounded-full bg-[#7C3AED] text-white flex items-center justify-center mx-auto mb-2 text-sm font-bold">
+                <div className="w-8 h-8 rounded-full bg-chart-1 text-white flex items-center justify-center mx-auto mb-2 text-sm font-bold">
                   {item.step}
                 </div>
                 <p className="text-sm font-medium">{item.title}</p>

@@ -5,6 +5,26 @@ export default {
   content: ["./client/index.html", "./client/src/**/*.{js,jsx,ts,tsx}"],
   theme: {
     extend: {
+      backgroundImage: {
+        "gradient-brand": "var(--gradient-brand)",
+        "gradient-violet-blue": "var(--gradient-violet-blue)",
+        "gradient-aurora": "var(--gradient-aurora)",
+        "gradient-mesh": "var(--gradient-mesh)",
+        "gradient-card-glow": "var(--gradient-card-glow)",
+        "gradient-subtle": "var(--gradient-subtle)",
+      },
+      fontSize: {
+        "display-2xl": ["var(--text-display-2xl)", { lineHeight: "1.1" }],
+        "display-xl": ["var(--text-display-xl)", { lineHeight: "1.1" }],
+        "display-lg": ["var(--text-display-lg)", { lineHeight: "1.25" }],
+        "display-md": ["var(--text-display-md)", { lineHeight: "1.25" }],
+        "display-sm": ["var(--text-display-sm)", { lineHeight: "1.375" }],
+        "display-xs": ["var(--text-display-xs)", { lineHeight: "1.375" }],
+        "label-lg": ["var(--text-label-lg)", { lineHeight: "1.5", letterSpacing: "0.025em", fontWeight: "600" }],
+        "label-md": ["var(--text-label-md)", { lineHeight: "1.5", letterSpacing: "0.025em", fontWeight: "600" }],
+        "label-sm": ["var(--text-label-sm)", { lineHeight: "1.5", letterSpacing: "0.05em", fontWeight: "600" }],
+        "label-xs": ["var(--text-label-xs)", { lineHeight: "1.5", letterSpacing: "0.1em", fontWeight: "700" }],
+      },
       borderRadius: {
         lg: ".5625rem", /* 9px */
         md: ".375rem", /* 6px */

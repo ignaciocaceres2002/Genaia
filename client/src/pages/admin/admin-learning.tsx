@@ -4,8 +4,10 @@ import { Badge } from "@/components/ui/badge";
 import { useQuery } from "@tanstack/react-query";
 import type { Course } from "@shared/schema";
 import { ResponsiveContainer, BarChart, Bar, XAxis, YAxis, Tooltip, CartesianGrid } from "recharts";
+import { fadeUp, pageContainer } from "@/lib/motion-variants";
 
-const fadeUp = { hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0 } };
+const CHART_1 = "hsl(var(--chart-1))";
+const tooltipStyle = { backgroundColor: "hsl(var(--card))", border: "1px solid hsl(var(--border))", borderRadius: "6px", fontSize: "12px", color: "hsl(var(--foreground))" };
 
 const courseCompletionData = [
   { course: "Reading the Machine", assigned: 120, completed: 78, avgScore: 74, avgTime: "42min" },
@@ -34,9 +36,9 @@ export default function AdminLearningPage() {
   const { data: courses } = useQuery<Course[]>({ queryKey: ["/api/courses"] });
 
   return (
-    <motion.div className="max-w-5xl mx-auto space-y-6" initial="hidden" animate="visible" variants={{ visible: { transition: { staggerChildren: 0.06 } } }}>
+    <motion.div className="max-w-5xl mx-auto space-y-6" initial="hidden" animate="visible" variants={pageContainer}>
       <motion.div variants={fadeUp}>
-        <h1 className="text-2xl font-bold">Learning Analytics</h1>
+        <h1 className="text-display-xs font-bold">Learning Analytics</h1>
         <p className="text-muted-foreground text-sm mt-1">Course completion, engagement, and performance</p>
       </motion.div>
 
@@ -92,8 +94,8 @@ export default function AdminLearningPage() {
                 <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
                 <XAxis type="number" domain={[0, 100]} tick={{ fontSize: 11, fill: "hsl(var(--muted-foreground))" }} />
                 <YAxis type="category" dataKey="team" tick={{ fontSize: 11, fill: "hsl(var(--muted-foreground))" }} width={80} />
-                <Tooltip contentStyle={{ backgroundColor: "hsl(var(--card))", border: "1px solid hsl(var(--border))", borderRadius: "6px", fontSize: "12px" }} />
-                <Bar dataKey="pct" fill="#7C3AED" radius={[0, 4, 4, 0]} />
+                <Tooltip contentStyle={tooltipStyle} />
+                <Bar dataKey="pct" fill={CHART_1} radius={[0, 4, 4, 0]} />
               </BarChart>
             </ResponsiveContainer>
           </div>

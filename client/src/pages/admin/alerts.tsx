@@ -6,7 +6,7 @@ import { useQuery } from "@tanstack/react-query";
 import type { Alert } from "@shared/schema";
 import { AlertTriangle, Info, AlertCircle, X, Clock, ArrowRight } from "lucide-react";
 
-const fadeUp = { hidden: { opacity: 0, y: 20 }, visible: { opacity: 1, y: 0 } };
+import { fadeUp, pageContainer } from "@/lib/motion-variants";
 
 const defaultAlerts: Alert[] = [
   { id: "1", type: "Inactivity", severity: "warning", title: "5 team members inactive 14+ days", description: "Sales team members haven't completed any training modules in the last 14 days. Consider sending a nudge or scheduling a check-in.", team: "Sales", dismissed: false, createdAt: new Date(Date.now() - 86400000) },
@@ -27,10 +27,10 @@ export default function AlertsPage() {
   const displayAlerts = alerts || defaultAlerts;
 
   return (
-    <motion.div className="max-w-5xl mx-auto space-y-6" initial="hidden" animate="visible" variants={{ visible: { transition: { staggerChildren: 0.06 } } }}>
+    <motion.div className="max-w-5xl mx-auto space-y-6" initial="hidden" animate="visible" variants={pageContainer}>
       <motion.div variants={fadeUp} className="flex items-center justify-between gap-4 flex-wrap">
         <div>
-          <h1 className="text-2xl font-bold">Alerts</h1>
+          <h1 className="text-display-xs font-bold">Alerts</h1>
           <p className="text-muted-foreground text-sm mt-1">{displayAlerts.filter((a: Alert) => !a.dismissed).length} active alerts</p>
         </div>
         <div className="flex items-center gap-2 flex-wrap">
