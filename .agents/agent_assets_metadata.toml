@@ -1,0 +1,20 @@
+uploads = []
+outputs = []
+
+[[generated]]
+id = "Ah-Xspi3GDra7iN-9PR2c"
+uri = "file://artifacts/mockup-sandbox/public/images/darktech-hero.png"
+type = "image"
+title = "Dark abstract tech neural network"
+
+[[generated]]
+id = "8JGLlddi3xVDEd9FuMBkz"
+uri = "file://artifacts/mockup-sandbox/public/images/warmhuman-hero.png"
+type = "image"
+title = "Warm human AI illustration"
+
+[[generated]]
+id = "Gjp6izKrB_f8t87x95JY9"
+uri = "file://artifacts/mockup-sandbox/public/images/corporate-hero.png"
+type = "image"
+title = "Minimal enterprise AI data visualization"
