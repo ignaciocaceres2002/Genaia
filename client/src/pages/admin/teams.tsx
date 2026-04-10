@@ -11,8 +11,8 @@ import type { Team, ImportedEmployee } from "@shared/schema";
 import { Search, Minus, Trophy, Users, Download, Upload, FileSpreadsheet, ChevronUp, ChevronDown } from "lucide-react";
 import { useState, useRef, useCallback } from "react";
 import { ResponsiveContainer, RadarChart, PolarGrid, PolarAngleAxis, Radar } from "recharts";
-import writeXlsxFile from "write-excel-file";
-import readXlsxFile from "read-excel-file";
+import writeXlsxFile from "write-excel-file/browser";
+import readXlsxFile from "read-excel-file/browser";
 import { useToast } from "@/hooks/use-toast";
 import { fadeUp, pageContainer } from "@/lib/motion-variants";
 
