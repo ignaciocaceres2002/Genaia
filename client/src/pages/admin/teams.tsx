@@ -11,7 +11,8 @@ import type { Team, ImportedEmployee } from "@shared/schema";
 import { Search, Minus, Trophy, Users, Download, Upload, FileSpreadsheet, ChevronUp, ChevronDown } from "lucide-react";
 import { useState, useRef, useCallback } from "react";
 import { ResponsiveContainer, RadarChart, PolarGrid, PolarAngleAxis, Radar } from "recharts";
-import * as XLSX from "xlsx";
+import writeXlsxFile from "write-excel-file";
+import readXlsxFile from "read-excel-file";
 import { useToast } from "@/hooks/use-toast";
 import { fadeUp, pageContainer } from "@/lib/motion-variants";
 
@@ -50,16 +51,21 @@ type KnownFieldKey = typeof KNOWN_FIELDS[number]["key"];
 
 type SortKey = keyof Pick<ImportedEmployee, "name" | "email" | "role" | "department" | "title" | "isChampion">;
 
-function downloadTemplate(format: "csv" | "xlsx") {
+async function downloadTemplate(format: "csv" | "xlsx") {
   const headers = ["Name", "Email", "Role", "Team/Department", "Title", "Is Champion"];
-  const wb = XLSX.utils.book_new();
-  const ws = XLSX.utils.aoa_to_sheet([headers]);
-  XLSX.utils.book_append_sheet(wb, ws, "Employees");
 
   if (format === "csv") {
-    XLSX.writeFile(wb, "employee_template.csv", { bookType: "csv" });
+    const csvContent = headers.join(",") + "\n";
+    const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "employee_template.csv";
+    a.click();
+    URL.revokeObjectURL(url);
   } else {
-    XLSX.writeFile(wb, "employee_template.xlsx", { bookType: "xlsx" });
+    const data = [headers.map((h) => ({ value: h, fontWeight: "bold" as const }))];
+    await writeXlsxFile(data, { fileName: "employee_template.xlsx" });
   }
 }
 
@@ -106,50 +112,67 @@ export default function AdminTeamsPage() {
   const filteredTeams = displayTeams.filter((t: Team) => t.name.toLowerCase().includes(search.toLowerCase()));
   const selected = displayTeams.find((t: Team) => t.id === selectedTeam);
 
+  function applyParsedRows(rows: string[][]) {
+    if (!rows || rows.length === 0) {
+      toast({ title: "Empty file", description: "The file contains no data rows.", variant: "destructive" });
+      return;
+    }
+    const headers = rows[0].map(String);
+    if (headers.length === 0) {
+      toast({ title: "No columns found", description: "Could not detect column headers.", variant: "destructive" });
+      return;
+    }
+    const dataRows = rows.slice(1).map((r) =>
+      Object.fromEntries(headers.map((h, i) => [h, String(r[i] ?? "")]))
+    );
+    setParsedColumns(headers);
+    setParsedRows(dataRows);
+    const autoMapping: Record<string, KnownFieldKey | ""> = {};
+    for (const col of headers) {
+      const lc = col.toLowerCase().trim();
+      const match = KNOWN_FIELDS.find(
+        (f) =>
+          f.label.toLowerCase() === lc ||
+          f.key.toLowerCase() === lc ||
+          (f.key === "isChampion" && (lc === "is champion" || lc === "champion")) ||
+          (f.key === "department" && (lc === "team/department" || lc === "team" || lc === "dept"))
+      );
+      autoMapping[col] = match ? match.key : "";
+    }
+    setFieldMapping(autoMapping);
+    setImportStep("mapping");
+  }
+
   function parseFile(file: File) {
-    const reader = new FileReader();
-    reader.onload = (e) => {
-      try {
-        const data = e.target?.result;
-        const wb = XLSX.read(data, { type: "array" });
-        const ws = wb.Sheets[wb.SheetNames[0]];
-        const rows: string[][] = XLSX.utils.sheet_to_json(ws, { header: 1 });
-        if (!rows || rows.length === 0) {
-          toast({ title: "Empty file", description: "The file contains no data rows.", variant: "destructive" });
-          return;
+    const isXlsx = file.name.endsWith(".xlsx") || file.name.endsWith(".xls");
+
+    if (isXlsx) {
+      readXlsxFile(file)
+        .then((rows) => {
+          applyParsedRows(rows.map((row) => row.map((cell) => (cell === null ? "" : String(cell)))));
+        })
+        .catch(() => {
+          toast({ title: "Failed to parse file", description: "The file could not be read. Ensure it is a valid XLSX file.", variant: "destructive" });
+        });
+    } else {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        try {
+          const text = e.target?.result as string;
+          const rows = text
+            .split(/\r?\n/)
+            .filter((line) => line.trim() !== "")
+            .map((line) => line.split(",").map((cell) => cell.trim().replace(/^"|"$/g, "")));
+          applyParsedRows(rows);
+        } catch {
+          toast({ title: "Failed to parse file", description: "The file could not be read. Ensure it is a valid CSV file.", variant: "destructive" });
         }
-        const headers = rows[0].map(String);
-        if (headers.length === 0) {
-          toast({ title: "No columns found", description: "Could not detect column headers.", variant: "destructive" });
-          return;
-        }
-        const dataRows = rows.slice(1).map((r) =>
-          Object.fromEntries(headers.map((h, i) => [h, String(r[i] ?? "")]))
-        );
-        setParsedColumns(headers);
-        setParsedRows(dataRows);
-        const autoMapping: Record<string, KnownFieldKey | ""> = {};
-        for (const col of headers) {
-          const lc = col.toLowerCase().trim();
-          const match = KNOWN_FIELDS.find(
-            (f) =>
-              f.label.toLowerCase() === lc ||
-              f.key.toLowerCase() === lc ||
-              (f.key === "isChampion" && (lc === "is champion" || lc === "champion")) ||
-              (f.key === "department" && (lc === "team/department" || lc === "team" || lc === "dept"))
-          );
-          autoMapping[col] = match ? match.key : "";
-        }
-        setFieldMapping(autoMapping);
-        setImportStep("mapping");
-      } catch {
-        toast({ title: "Failed to parse file", description: "The file could not be read. Ensure it is a valid CSV or XLSX file.", variant: "destructive" });
-      }
-    };
-    reader.onerror = () => {
-      toast({ title: "File read error", description: "Could not read the file.", variant: "destructive" });
-    };
-    reader.readAsArrayBuffer(file);
+      };
+      reader.onerror = () => {
+        toast({ title: "File read error", description: "Could not read the file.", variant: "destructive" });
+      };
+      reader.readAsText(file);
+    }
   }
 
   const handleDrop = useCallback((e: React.DragEvent<HTMLDivElement>) => {
