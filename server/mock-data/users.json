@@ -1,0 +1,40 @@
+[
+  {
+    "id": "1",
+    "username": "sarah.chen",
+    "password": "demo",
+    "name": "Sarah Chen",
+    "email": "sarah@company.com",
+    "role": "user",
+    "department": "Marketing",
+    "level": 5,
+    "xp": 8450,
+    "nqScore": 67,
+    "streak": 12,
+    "isChampion": false,
+    "isAdmin": false,
+    "skillScores": { "dataFluency": 72, "adaptiveMindset": 65, "verificationMindset": 78, "coIntelligence": 58, "autonomousDrive": 70, "processReimagination": 60 },
+    "avatar": "",
+    "lastActive": "2026-04-20T12:00:00Z",
+    "createdAt": "2026-04-20T12:00:00Z"
+  },
+  {
+    "id": "2",
+    "username": "marcus.johnson",
+    "password": "demo",
+    "name": "Marcus Johnson",
+    "email": "marcus@company.com",
+    "role": "user",
+    "department": "Engineering",
+    "level": 7,
+    "xp": 22500,
+    "nqScore": 88,
+    "streak": 45,
+    "isChampion": true,
+    "isAdmin": false,
+    "skillScores": { "dataFluency": 90, "adaptiveMindset": 85, "verificationMindset": 92, "coIntelligence": 82, "autonomousDrive": 88, "processReimagination": 86 },
+    "avatar": "",
+    "lastActive": "2026-04-20T12:00:00Z",
+    "createdAt": "2026-04-20T12:00:00Z"
+  }
+]

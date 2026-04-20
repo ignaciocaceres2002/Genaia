@@ -1,0 +1,22 @@
+[
+  {
+    "id": "1",
+    "name": "Engineering",
+    "department": "Engineering",
+    "headcount": 45,
+    "avgNq": 62,
+    "completionPct": 78,
+    "engagementScore": 85,
+    "champion": "Marcus Johnson"
+  },
+  {
+    "id": "2",
+    "name": "Marketing",
+    "department": "Marketing",
+    "headcount": 22,
+    "avgNq": 58,
+    "completionPct": 65,
+    "engagementScore": 72,
+    "champion": "Elena Rodriguez"
+  }
+]

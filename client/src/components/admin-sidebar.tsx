@@ -1,5 +1,5 @@
 import { Link, useLocation } from "wouter";
-import { BarChart3, Users, GraduationCap, Target, Wrench, FileText, Trophy, Building2, AlertTriangle, Settings, Bot, Lightbulb, Gift, Palette } from "lucide-react";
+import { BarChart3, Users, GraduationCap, Target, FileText, Trophy, Building2, Settings, Bot, Gift, Palette } from "lucide-react";
 import {
   Sidebar,
   SidebarContent,
@@ -20,14 +20,11 @@ const navItems = [
   { title: "Teams", path: "/admin/teams", icon: Users },
   { title: "Learning", path: "/admin/learning", icon: GraduationCap },
   { title: "Assessments", path: "/admin/assessments", icon: Target },
-  { title: "Tools", path: "/admin/tools", icon: Wrench },
   { title: "Policies", path: "/admin/policies", icon: FileText },
   { title: "Champions", path: "/admin/champions", icon: Trophy },
   { title: "AI-First Recruiting", path: "/admin/recruiting", icon: Bot },
-  { title: "AI Case Builder", path: "/admin/case-builder", icon: Lightbulb },
   { title: "Benefits", path: "/admin/benefits", icon: Gift },
   { title: "Agentic Score", path: "/admin/agentic", icon: Building2 },
-  { title: "Alerts", path: "/admin/alerts", icon: AlertTriangle },
   { title: "Settings", path: "/admin/settings", icon: Settings },
   { title: "Design System", path: "/design-system", icon: Palette },
 ];
@@ -65,12 +62,6 @@ export function AdminSidebar() {
                       <Link href={item.path} data-testid={`admin-nav-${item.title.toLowerCase().replace(/\s/g, "-")}`}>
                         <item.icon className="w-4 h-4" />
                         <span>{item.title}</span>
-                        {item.title === "Alerts" && (
-                          <Badge variant="destructive" className="ml-auto text-[10px] px-1.5">3</Badge>
-                        )}
-                        {item.title === "Tools" && (
-                          <Badge variant="secondary" className="ml-auto text-[10px] px-1.5">3</Badge>
-                        )}
                       </Link>
                     </SidebarMenuButton>
                   </SidebarMenuItem>

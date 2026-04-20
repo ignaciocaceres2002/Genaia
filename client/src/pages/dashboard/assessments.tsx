@@ -4,6 +4,8 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { SKILLS } from "@shared/schema";
 import { BarChart3, RefreshCw, ShieldCheck, Users, Rocket, Lightbulb, Clock } from "lucide-react";
+import { Link } from "wouter";
+import { hasCompletedInitialAssessment } from "@/lib/user-onboarding";
 
 import { fadeUp, pageContainer } from "@/lib/motion-variants";
 
@@ -21,12 +23,34 @@ const assessmentData = [
 ];
 
 export default function AssessmentsPage() {
+  const hasInitialAssessment = hasCompletedInitialAssessment();
+
   return (
     <motion.div className="max-w-4xl mx-auto space-y-6" initial="hidden" animate="visible" variants={pageContainer}>
       <motion.div variants={fadeUp}>
         <h1 className="text-display-xs font-bold">Assessments</h1>
         <p className="text-muted-foreground text-sm mt-1">Scenario-based evaluations across 6 skill domains</p>
       </motion.div>
+
+      {!hasInitialAssessment && (
+        <motion.div variants={fadeUp}>
+          <Card className="p-5 border-l-4 border-l-chart-2">
+            <div className="flex items-center justify-between gap-4 flex-wrap">
+              <div>
+                <p className="font-medium text-sm">Start with your onboarding assessment</p>
+                <p className="text-xs text-muted-foreground mt-1">
+                  Your first assessment creates the initial SQ profile used across the dashboard.
+                </p>
+              </div>
+              <Link href="/onboarding">
+                <Button size="sm" className="rounded-full bg-chart-1 text-white border-chart-1">
+                  Start onboarding
+                </Button>
+              </Link>
+            </div>
+          </Card>
+        </motion.div>
+      )}
 
       <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
         {assessmentData.map((assessment) => {

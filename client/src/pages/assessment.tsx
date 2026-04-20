@@ -28,9 +28,11 @@ import {
 } from "recharts";
 import { apiRequest } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
+import { getOnboardingProfile, markOnboardingCompleted, persistInitialSqSnapshot } from "@/lib/user-onboarding";
 import {
   ArrowRight, HelpCircle, Eye, RefreshCw, Zap, Brain,
   Check, X, Minus, Share2, Copy, Users, Sparkles, BookOpen,
+  TrendingUp, TrendingDown, BarChart3,
   type LucideIcon,
 } from "lucide-react";
 
@@ -52,10 +54,204 @@ const fadeVariant = {
   exit: { opacity: 0, y: -20 },
 };
 
+type AssessmentResults = ReturnType<typeof computeSQScore>;
+
+type CounterFormat = "number" | "decimal" | "currencyK";
+
+type AnalyticsDelta = {
+  id: string;
+  label: string;
+  help: string;
+  previousValue: number;
+  currentValue: number;
+  format: CounterFormat;
+};
+
+function formatCounterValue(value: number, format: CounterFormat) {
+  if (format === "decimal") return value.toFixed(1);
+  if (format === "currencyK") return `$${Math.round(value / 1000)}k`;
+  return `${Math.round(value)}`;
+}
+
+function formatDeltaValue(value: number, format: CounterFormat) {
+  const absolute = Math.abs(value);
+  const prefix = value > 0 ? "+" : value < 0 ? "-" : "";
+  if (format === "decimal") return `${prefix}${absolute.toFixed(1)}`;
+  if (format === "currencyK") return `${prefix}$${Math.round(absolute / 1000)}k`;
+  return `${prefix}${Math.round(absolute)}`;
+}
+
+function getNeutralBinaryAnswers(): ("A" | "B")[] {
+  return BINARY_QUESTIONS.map((question, index) => {
+    const midpoint = (question.scoringA + question.scoringB) / 2;
+    const distanceA = Math.abs(question.scoringA - midpoint);
+    const distanceB = Math.abs(question.scoringB - midpoint);
+    if (distanceA === distanceB) {
+      return index % 2 === 0 ? "A" : "B";
+    }
+    return distanceA < distanceB ? "A" : "B";
+  });
+}
+
+function getNeutralScenarioAnswers(): number[] {
+  return SCENARIOS.map((scenario) => {
+    let bestIndex = 0;
+    let bestDistance = Number.POSITIVE_INFINITY;
+
+    scenario.options.forEach((option, index) => {
+      const skillValues = Object.values(option.skills);
+      const avg = skillValues.length > 0
+        ? skillValues.reduce((sum, score) => sum + score, 0) / skillValues.length
+        : 5;
+      const distance = Math.abs(avg - 6);
+      if (distance < bestDistance) {
+        bestDistance = distance;
+        bestIndex = index;
+      }
+    });
+
+    return bestIndex;
+  });
+}
+
+function buildAssessmentAnalyticsDeltas(
+  results: AssessmentResults,
+  role: AssessmentRole,
+  aiUsage: string,
+) {
+  const neutralResults = computeSQScore(
+    getNeutralBinaryAnswers(),
+    getNeutralScenarioAnswers(),
+    ROLE_TASKS[role].map((task) => task.defaultHours),
+    role,
+    [],
+    aiUsage || "none",
+  );
+
+  const skillEntries = Object.entries(results.skillScores) as Array<[Skill, number]>;
+  const strongestSkill = [...skillEntries].sort((a, b) => b[1] - a[1])[0][0];
+  const weakestSkill = [...skillEntries].sort((a, b) => a[1] - b[1])[0][0];
+
+  return [
+    {
+      id: "sq",
+      label: "SQ personalizado",
+      help: "Cómo quedó tu SQ frente a un perfil genérico del mismo rol.",
+      previousValue: neutralResults.overallScore,
+      currentValue: results.overallScore,
+      format: "number",
+    },
+    {
+      id: "recoverable-hours",
+      label: "Horas recuperables",
+      help: "La oportunidad detectada al personalizar tu semana real.",
+      previousValue: neutralResults.recoverableHours,
+      currentValue: results.recoverableHours,
+      format: "decimal",
+    },
+    {
+      id: "annual-value",
+      label: "Valor anual detectado",
+      help: "El impacto económico estimado según tu mezcla de tareas.",
+      previousValue: neutralResults.estimatedDollarsSaved,
+      currentValue: results.estimatedDollarsSaved,
+      format: "currencyK",
+    },
+    {
+      id: "strongest-skill",
+      label: `Fortaleza: ${SKILL_META[strongestSkill].shortName}`,
+      help: "La skill que más se fortaleció en tu perfil final.",
+      previousValue: neutralResults.skillScores[strongestSkill],
+      currentValue: results.skillScores[strongestSkill],
+      format: "number",
+    },
+    {
+      id: "weakest-skill",
+      label: `Brecha: ${SKILL_META[weakestSkill].shortName}`,
+      help: "La skill que quedó por debajo del perfil genérico y necesita foco.",
+      previousValue: neutralResults.skillScores[weakestSkill],
+      currentValue: results.skillScores[weakestSkill],
+      format: "number",
+    },
+  ] satisfies AnalyticsDelta[];
+}
+
+function AnimatedDeltaStat({ metric, delay = 0 }: { metric: AnalyticsDelta; delay?: number }) {
+  const [displayValue, setDisplayValue] = useState(metric.previousValue);
+
+  useEffect(() => {
+    let frameId = 0;
+    let timeoutId: ReturnType<typeof setTimeout> | null = null;
+    const duration = 1100;
+    const start = metric.previousValue;
+    const end = metric.currentValue;
+
+    timeoutId = setTimeout(() => {
+      const startedAt = performance.now();
+
+      const animate = (now: number) => {
+        const progress = Math.min((now - startedAt) / duration, 1);
+        const eased = 1 - Math.pow(1 - progress, 3);
+        setDisplayValue(start + (end - start) * eased);
+        if (progress < 1) {
+          frameId = requestAnimationFrame(animate);
+        }
+      };
+
+      frameId = requestAnimationFrame(animate);
+    }, delay);
+
+    return () => {
+      if (timeoutId) clearTimeout(timeoutId);
+      if (frameId) cancelAnimationFrame(frameId);
+    };
+  }, [metric, delay]);
+
+  const delta = metric.currentValue - metric.previousValue;
+  const isPositive = delta > 0;
+  const isNegative = delta < 0;
+
+  return (
+    <Card className="p-4 border-white/10 bg-white/5">
+      <div className="flex items-start justify-between gap-3 mb-3">
+        <div>
+          <p className="text-sm font-medium text-white/90">{metric.label}</p>
+          <p className="text-[11px] text-white/45 mt-1 leading-relaxed">{metric.help}</p>
+        </div>
+        {isPositive ? (
+          <TrendingUp className="w-4 h-4 text-emerald-400 flex-shrink-0" />
+        ) : isNegative ? (
+          <TrendingDown className="w-4 h-4 text-rose-400 flex-shrink-0" />
+        ) : (
+          <Minus className="w-4 h-4 text-white/35 flex-shrink-0" />
+        )}
+      </div>
+
+      <div className="flex items-end justify-between gap-4">
+        <div>
+          <p className="text-2xl font-light text-violet-300">{formatCounterValue(displayValue, metric.format)}</p>
+          <p className="text-[11px] text-white/35 mt-1">Antes: {formatCounterValue(metric.previousValue, metric.format)}</p>
+        </div>
+        <span className={`text-xs font-medium ${
+          isPositive ? "text-emerald-400" : isNegative ? "text-rose-400" : "text-white/35"
+        }`}>
+          {formatDeltaValue(delta, metric.format)}
+        </span>
+      </div>
+    </Card>
+  );
+}
+
 export default function AssessmentPage() {
   const [, setLocation] = useLocation();
   const { toast } = useToast();
   const [phase, setPhase] = useState<Phase>("opening");
+  const searchParams = typeof window !== "undefined" ? new URLSearchParams(window.location.search) : null;
+  const isOnboardingAssessment = searchParams?.get("mode") === "onboarding" || searchParams?.get("initial") === "1";
+  const onboardingProfile = getOnboardingProfile();
+  const onboardingName = searchParams?.get("name") || onboardingProfile?.name || "";
+  const onboardingObjective = searchParams?.get("objective") || onboardingProfile?.objective || "";
+  const onboardingRole = (searchParams?.get("role") || onboardingProfile?.role || "") as AssessmentRole | "";
 
   const [binaryIndex, setBinaryIndex] = useState(0);
   const [binaryAnswers, setBinaryAnswers] = useState<("A" | "B")[]>([]);
@@ -89,6 +285,20 @@ export default function AssessmentPage() {
       setPhase("part3-role");
     }
   }, [phase, selectedRole]);
+
+
+
+
+  useEffect(() => {
+    if (!isOnboardingAssessment) return;
+    if (onboardingRole && !selectedRole) {
+      setSelectedRole(onboardingRole);
+      initializeTasks(onboardingRole);
+    }
+    if (onboardingObjective && !hope) {
+      setHope(onboardingObjective);
+    }
+  }, [isOnboardingAssessment, onboardingRole, onboardingObjective, selectedRole, hope, initializeTasks]);
 
   const handleBinaryAnswer = useCallback((answer: "A" | "B") => {
     const elapsed = Date.now() - questionAppearedAt.current;
@@ -127,6 +337,15 @@ export default function AssessmentPage() {
     setResults(r);
     setPhase("reveal");
 
+    if (isOnboardingAssessment) {
+      persistInitialSqSnapshot({
+        overallScore: r.overallScore,
+        role: selectedRole,
+        skillScores: r.skillScores,
+      });
+      markOnboardingCompleted();
+    }
+
     let current = 0;
     const target = r.overallScore;
     const duration = 1500;
@@ -160,7 +379,7 @@ export default function AssessmentPage() {
       console.error("Failed to save assessment:", err);
       toast({ title: "Save failed", description: "Your results were calculated but couldn't be saved. Please try again.", variant: "destructive" });
     });
-  }, [selectedRole, binaryAnswers, scenarioAnswers, taskHours, drains, aiUsage, concern, hope]);
+  }, [selectedRole, binaryAnswers, scenarioAnswers, taskHours, drains, aiUsage, concern, hope, isOnboardingAssessment]);
 
   const totalWeekHours = taskHours.reduce((sum, h, i) => dismissedTasks.has(i) ? sum : sum + h, 0);
 
@@ -264,6 +483,19 @@ export default function AssessmentPage() {
             className="min-h-screen flex flex-col items-center justify-center px-4 py-12">
             <h2 className="text-2xl md:text-3xl font-light mb-2 text-center">Your world</h2>
             <p className="text-white/50 mb-10 text-center">Tell us about your work</p>
+
+            {isOnboardingAssessment && (
+              <div className="max-w-xl w-full mb-8 p-4 rounded-md border border-violet-500/20 bg-violet-600/10">
+                <p className="text-sm text-violet-200">
+                  {onboardingName ? `${onboardingName}, this first assessment will create your initial SQ baseline.` : "This first assessment will create your initial SQ baseline."}
+                </p>
+                {onboardingObjective && (
+                  <p className="text-xs text-white/55 mt-2">
+                    Initial goal: {onboardingObjective}
+                  </p>
+                )}
+              </div>
+            )}
 
             <div className="max-w-xl w-full space-y-8">
               <div>
@@ -495,6 +727,9 @@ export default function AssessmentPage() {
             concern={concern}
             hope={hope}
             role={selectedRole!}
+            aiUsage={aiUsage}
+            isOnboardingAssessment={!!isOnboardingAssessment}
+            onContinueToDashboard={() => setLocation("/dashboard/sq")}
           />
         )}
       </AnimatePresence>
@@ -682,13 +917,16 @@ function TeaseScreen({ binaryAnswers, scenarioAnswers, onContinue }: {
   );
 }
 
-function RevealScreen({ results, animatedScore, showResults, concern, hope, role }: {
-  results: ReturnType<typeof computeSQScore>;
+function RevealScreen({ results, animatedScore, showResults, concern, hope, role, aiUsage, isOnboardingAssessment, onContinueToDashboard }: {
+  results: AssessmentResults;
   animatedScore: number;
   showResults: boolean;
   concern: string;
   hope: string;
   role: AssessmentRole;
+  aiUsage: string;
+  isOnboardingAssessment: boolean;
+  onContinueToDashboard: () => void;
 }) {
   const skills: Skill[] = ["dataFluency", "adaptiveMindset", "verificationInstinct", "orchestration", "proactiveExperimentation", "systemsRedesign"];
 
@@ -708,6 +946,7 @@ function RevealScreen({ results, animatedScore, showResults, concern, hope, role
   const totalHours = essentialHours + augmentableHours + automatableHours;
 
   const fearBridge = getFearBridge(concern, results.recoverableHours, topSkill, results.skillScores);
+  const analyticsDeltas = buildAssessmentAnalyticsDeltas(results, role, aiUsage);
 
   const getUnlocks = () => {
     const weakName = SKILL_META[weakestSkill].name;
@@ -781,6 +1020,23 @@ function RevealScreen({ results, animatedScore, showResults, concern, hope, role
           transition={{ duration: 0.8 }}
           className="px-4 pb-20 max-w-3xl mx-auto space-y-12"
         >
+          <section data-testid="block-analytics-unlocked">
+            <div className="flex items-end justify-between gap-4 mb-5 flex-wrap">
+              <div>
+                <h3 className="text-lg font-medium text-violet-300">New analytics unlocked</h3>
+                <p className="text-sm text-white/50 font-light mt-1">
+                  This assessment replaced a generic role profile with your actual one. These stats animate from baseline to your personalized result.
+                </p>
+              </div>
+            </div>
+
+            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+              {analyticsDeltas.map((metric, index) => (
+                <AnimatedDeltaStat key={metric.id} metric={metric} delay={index * 120} />
+              ))}
+            </div>
+          </section>
+
           {/* Block 1 - Summary */}
           <section data-testid="block-summary">
             <h3 className="text-lg font-medium text-violet-300 mb-3">Your SQ Profile</h3>
@@ -931,6 +1187,17 @@ function RevealScreen({ results, animatedScore, showResults, concern, hope, role
           <section data-testid="block-next-steps">
             <h3 className="text-lg font-medium text-violet-300 mb-6">What's next?</h3>
             <div className="grid gap-4 sm:grid-cols-3">
+              {isOnboardingAssessment && (
+                <div
+                  className="p-5 rounded-md border border-emerald-500/20 bg-emerald-500/10 hover-elevate cursor-pointer"
+                  data-testid="cta-complete-onboarding"
+                  onClick={onContinueToDashboard}
+                >
+                  <BarChart3 className="w-6 h-6 text-emerald-400 mb-3" />
+                  <h4 className="text-sm font-medium text-white/90 mb-1">Go to my dashboard</h4>
+                  <p className="text-xs text-white/50 font-light">Enter with your initial SQ already loaded</p>
+                </div>
+              )}
               <div className="p-5 rounded-md border border-violet-500/20 bg-violet-600/10 hover-elevate cursor-pointer" data-testid="cta-start-training">
                 <BookOpen className="w-6 h-6 text-violet-400 mb-3" />
                 <h4 className="text-sm font-medium text-white/90 mb-1">Start training</h4>

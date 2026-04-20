@@ -10,6 +10,8 @@ import { useQuery } from "@tanstack/react-query";
 import type { User } from "@shared/schema";
 import { ResponsiveContainer, RadarChart, PolarGrid, PolarAngleAxis, Radar, LineChart, Line, XAxis, YAxis, Tooltip, BarChart, Bar, CartesianGrid } from "recharts";
 import { fadeUp, pageContainer } from "@/lib/motion-variants";
+import { buildCollaboratorProjection } from "@/lib/collaborator-projection";
+import { getOnboardingProfile, hasCompletedInitialAssessment, mergeUserWithInitialSqSnapshot } from "@/lib/user-onboarding";
 
 const CHART_1 = "hsl(var(--chart-1))";
 const CHART_2 = "hsl(var(--chart-2))";
@@ -19,7 +21,7 @@ const tooltipStyle = { backgroundColor: "hsl(var(--card))", border: "1px solid h
 export default function MySQPage() {
   const { data: user } = useQuery<User>({ queryKey: ["/api/user/me"] });
 
-  const currentUser = user || {
+  const currentUser = mergeUserWithInitialSqSnapshot(user || {
     name: "Sarah Chen",
     nqScore: 67,
     department: "Marketing",
@@ -31,7 +33,10 @@ export default function MySQPage() {
       autonomousDrive: 70,
       processReimagination: 60,
     },
-  };
+  });
+  const projection = buildCollaboratorProjection(currentUser);
+  const onboardingDone = hasCompletedInitialAssessment();
+  const onboardingProfile = getOnboardingProfile();
 
   const skillScores = (currentUser.skillScores as Record<string, number>) || {
     dataFluency: 72, adaptiveMindset: 65, verificationMindset: 78,
@@ -71,6 +76,26 @@ export default function MySQPage() {
 
   return (
     <motion.div className="max-w-4xl mx-auto space-y-8" initial="hidden" animate="visible" variants={pageContainer}>
+      {!onboardingDone && (
+        <motion.div variants={fadeUp}>
+          <Card className="p-5 border-l-4 border-l-chart-2">
+            <div className="flex items-center justify-between gap-4 flex-wrap">
+              <div>
+                <p className="font-medium text-sm">You still need your first SQ baseline</p>
+                <p className="text-xs text-muted-foreground mt-1">
+                  Run onboarding + first assessment to initialize your real SQ profile and projections.
+                </p>
+              </div>
+              <Link href="/onboarding">
+                <Button size="sm" className="rounded-full bg-chart-1 text-white border-chart-1">
+                  Start onboarding
+                </Button>
+              </Link>
+            </div>
+          </Card>
+        </motion.div>
+      )}
+
       <motion.div variants={fadeUp} className="flex flex-col md:flex-row items-center gap-8">
         <SQRing score={currentUser.nqScore || 67} size={180} label="Expert" />
         <div>
@@ -78,6 +103,11 @@ export default function MySQPage() {
           <p className="text-muted-foreground text-sm mt-1">
             Top 34% of {currentUser.department || "Marketing"} professionals
           </p>
+          {onboardingProfile?.objective && (
+            <p className="text-xs text-muted-foreground mt-2">
+              Started with goal: <span className="font-medium text-foreground">{onboardingProfile.objective}</span>
+            </p>
+          )}
           <div className="flex items-center gap-2 mt-3">
             <Badge variant="secondary" className="text-xs">
               <TrendingUp className="w-3 h-3 mr-1 text-green-500" /> +5 pts this month
@@ -88,6 +118,33 @@ export default function MySQPage() {
 
       <motion.div variants={fadeUp}>
         <Card className="p-6">
+          <div className="flex items-start justify-between gap-4 flex-wrap mb-5">
+            <div>
+              <h3 className="font-semibold">Proyeccion del colaborador</h3>
+              <p className="text-xs text-muted-foreground mt-1">
+                Estimacion probabilistica de tu evolucion de SQ y de la mejora potencial de tus skills.
+              </p>
+            </div>
+            <Badge variant="secondary" className="text-xs">
+              {projection.sqImprovementProbability}% probabilidad de mejora
+            </Badge>
+          </div>
+          <div className="grid md:grid-cols-3 gap-4 mb-6">
+            <div className="rounded-xl border bg-muted/30 p-4">
+              <p className="text-xs text-muted-foreground">SQ actual</p>
+              <p className="text-2xl font-bold mt-2">{projection.currentSq}</p>
+            </div>
+            <div className="rounded-xl border bg-muted/30 p-4">
+              <p className="text-xs text-muted-foreground">SQ probable</p>
+              <p className="text-2xl font-bold mt-2">{projection.probableSq}</p>
+              <p className="text-xs text-green-600 mt-1">+{projection.expectedSqLift} puntos esperados</p>
+            </div>
+            <div className="rounded-xl border bg-muted/30 p-4">
+              <p className="text-xs text-muted-foreground">Escenario optimista</p>
+              <p className="text-2xl font-bold mt-2">{projection.optimisticSq}</p>
+              <p className="text-xs text-muted-foreground mt-1">Conservador {projection.conservativeSq}</p>
+            </div>
+          </div>
           <h3 className="font-semibold mb-4">Skills Radar</h3>
           <div className="h-[300px]">
             <ResponsiveContainer width="100%" height="100%">
@@ -103,12 +160,13 @@ export default function MySQPage() {
       </motion.div>
 
       <motion.div variants={fadeUp}>
-        <h3 className="font-semibold mb-4">Skill Scores</h3>
+        <h3 className="font-semibold mb-4">Skill Scores y Propension de Mejora</h3>
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
           {SKILLS.map((skill) => {
             const score = skillScores[skill.key] || 0;
             const trend = skillTrends[skill.key];
             const modules = modulesData[skill.key] || { done: 0, total: 6 };
+            const skillProjection = projection.skillProjections.find((item) => item.key === skill.key);
             const TrendIcon = trend === "up" ? TrendingUp : trend === "down" ? TrendingDown : Minus;
             const trendColor = trend === "up" ? "text-green-500" : trend === "down" ? "text-red-500" : "text-muted-foreground";
 
@@ -127,6 +185,20 @@ export default function MySQPage() {
                 <div className="w-full bg-muted rounded-full h-1.5 mb-3">
                   <div className="bg-chart-1 h-1.5 rounded-full transition-all" style={{ width: `${score}%` }} />
                 </div>
+                {skillProjection && (
+                  <div className="mb-3">
+                    <div className="flex items-center justify-between gap-2 text-[11px] text-muted-foreground mb-1">
+                      <span>Propension a mejorar</span>
+                      <span>{skillProjection.propensity}%</span>
+                    </div>
+                    <div className="w-full bg-muted rounded-full h-1.5">
+                      <div className="bg-chart-2 h-1.5 rounded-full transition-all" style={{ width: `${skillProjection.propensity}%` }} />
+                    </div>
+                    <p className="text-[11px] text-muted-foreground mt-2">
+                      Proyeccion estimada: <span className="font-medium text-foreground">{skillProjection.projectedScore}</span> con upside de +{skillProjection.expectedGain}.
+                    </p>
+                  </div>
+                )}
                 <Link href="/dashboard/learning">
                   <Button variant="ghost" size="sm" className="w-full text-xs" data-testid={`button-continue-${skill.key}`}>
                     {modules.done > 0 ? "Continue" : "Start"} <ArrowRight className="w-3 h-3 ml-1" />

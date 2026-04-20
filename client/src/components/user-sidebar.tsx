@@ -1,5 +1,5 @@
 import { Link, useLocation } from "wouter";
-import { Home, BarChart3, GraduationCap, Target, Wrench, FileText, Trophy, Building2, Flame, Rocket, Lightbulb, Palette } from "lucide-react";
+import { Home, BarChart3, GraduationCap, Target, FileText, Trophy, Building2, Flame, Lightbulb, Palette, Sparkles } from "lucide-react";
 import {
   Sidebar,
   SidebarContent,
@@ -14,15 +14,15 @@ import {
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import logoImg from "@assets/image_1773976580990.png";
+import { hasCompletedInitialAssessment, mergeUserWithInitialSqSnapshot } from "@/lib/user-onboarding";
 
 const navItems = [
+  { title: "Onboarding", path: "/onboarding", icon: Sparkles },
   { title: "Home", path: "/dashboard", icon: Home },
   { title: "My SQ", path: "/dashboard/sq", icon: BarChart3 },
   { title: "Learning", path: "/dashboard/learning", icon: GraduationCap },
   { title: "Assessments", path: "/dashboard/assessments", icon: Target },
-  { title: "AI Tools", path: "/dashboard/tools", icon: Wrench },
   { title: "AI Use Cases", path: "/dashboard/use-cases", icon: Lightbulb },
-  { title: "AI Case Builder", path: "/dashboard/case-builder", icon: Rocket },
   { title: "Policies", path: "/dashboard/policies", icon: FileText },
   { title: "Champions", path: "/dashboard/champions", icon: Trophy },
   { title: "My Company", path: "/dashboard/company", icon: Building2 },
@@ -41,8 +41,9 @@ interface UserSidebarProps {
 
 export function UserSidebar({ user }: UserSidebarProps) {
   const [location] = useLocation();
-  const currentUser = user || { name: "Sarah Chen", level: 5, xp: 8450, streak: 12, nqScore: 67 };
+  const currentUser = mergeUserWithInitialSqSnapshot(user || { name: "Sarah Chen", level: 5, xp: 8450, streak: 12, nqScore: 67 });
   const levelNames = ["Beginner", "Learner", "Explorer", "Builder", "Achiever", "Expert", "Master", "Superagent"];
+  const onboardingDone = hasCompletedInitialAssessment();
 
   return (
     <Sidebar>
@@ -73,6 +74,13 @@ export function UserSidebar({ user }: UserSidebarProps) {
           <span>{currentUser.xp.toLocaleString()} XP</span>
           <span>SQ {currentUser.nqScore}</span>
         </div>
+        {!onboardingDone && (
+          <Link href="/onboarding">
+            <div className="mt-3 rounded-xl border border-chart-1/20 bg-chart-1/5 px-3 py-2 text-[11px] text-chart-1 cursor-pointer">
+              Complete onboarding to generate your initial SQ baseline
+            </div>
+          </Link>
+        )}
       </SidebarHeader>
       <SidebarContent>
         <SidebarGroup>

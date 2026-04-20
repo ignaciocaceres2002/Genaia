@@ -15,8 +15,8 @@ import {
   type ImportedEmployee, type InsertImportedEmployee,
   users, teams, activities, courses, userProgress, aiTools, toolRequests, policies, alerts, sqCalculations, sqAssessments, aiUseCases, benefits, importedEmployees,
 } from "@shared/schema";
-import { db } from "./db";
-import { eq, desc } from "drizzle-orm";
+// import { db } from "./db";
+// import { eq, desc } from "drizzle-orm";
 
 export interface IStorage {
   getUser(id: string): Promise<User | undefined>;
@@ -216,4 +216,5 @@ export class DatabaseStorage implements IStorage {
   }
 }
 
-export const storage = new DatabaseStorage();
+import { MockStorage } from "./mock-data/mock-storage";
+export const storage = new MockStorage();

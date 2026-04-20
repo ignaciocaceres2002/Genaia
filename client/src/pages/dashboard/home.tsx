@@ -3,11 +3,13 @@ import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { SQRing } from "@/components/nq-ring";
-import { GraduationCap, Target, Wrench, Lightbulb, Flame, Zap, Trophy } from "lucide-react";
+import { GraduationCap, Target, Wrench, Lightbulb, Flame, Zap, Trophy, TrendingUp, ArrowUpRight } from "lucide-react";
 import { Link } from "wouter";
 import { useQuery } from "@tanstack/react-query";
 import type { User, Activity, AiUseCase } from "@shared/schema";
 import { SEO } from "@/components/seo";
+import { buildCollaboratorProjection } from "@/lib/collaborator-projection";
+import { getOnboardingProfile, hasCompletedInitialAssessment, mergeUserWithInitialSqSnapshot } from "@/lib/user-onboarding";
 
 import { fadeUp, pageContainer } from "@/lib/motion-variants";
 
@@ -19,13 +21,16 @@ export default function DashboardHome() {
   const { data: leaderboard } = useQuery<User[]>({ queryKey: ["/api/user/leaderboard"] });
   const { data: useCases = [] } = useQuery<AiUseCase[]>({ queryKey: ["/api/ai-use-cases/user", "demo-user"] });
 
-  const currentUser = user || {
+  const currentUser = mergeUserWithInitialSqSnapshot(user || {
     name: "Sarah Chen",
     nqScore: 67,
     xp: 8450,
     streak: 12,
     level: 5,
-  };
+  });
+  const projection = buildCollaboratorProjection(currentUser);
+  const onboardingDone = hasCompletedInitialAssessment();
+  const onboardingProfile = getOnboardingProfile();
 
   const levelNames = ["Beginner", "Learner", "Explorer", "Builder", "Achiever", "Expert", "Master", "Superagent"];
   const streakDays = Array.from({ length: 7 }, (_, i) => i < (currentUser.streak % 7 === 0 ? 7 : currentUser.streak % 7));
@@ -42,6 +47,11 @@ export default function DashboardHome() {
           <div>
             <h1 className="text-display-xs font-bold" data-testid="text-welcome">Welcome back, {currentUser.name?.split(" ")[0]}</h1>
             <p className="text-muted-foreground text-sm mt-1">Your SQ is <span className="font-semibold text-foreground">{currentUser.nqScore}</span> — keep going!</p>
+            {onboardingProfile?.objective && (
+              <p className="text-xs text-muted-foreground mt-2">
+                Current focus: <span className="font-medium text-foreground">{onboardingProfile.objective}</span>
+              </p>
+            )}
           </div>
 
           <Card className="p-4 border-l-4 border-l-chart-1">
@@ -61,6 +71,26 @@ export default function DashboardHome() {
           </Card>
         </div>
       </motion.div>
+
+      {!onboardingDone && (
+        <motion.div variants={fadeUp}>
+          <Card className="p-5 border-l-4 border-l-chart-2">
+            <div className="flex items-center justify-between gap-4 flex-wrap">
+              <div>
+                <p className="font-medium text-sm">Complete your onboarding</p>
+                <p className="text-xs text-muted-foreground mt-1">
+                  Your first SQ Assessment will define your initial collaborator baseline and unlock your first personalized analytics.
+                </p>
+              </div>
+              <Link href="/onboarding">
+                <Button size="sm" className="rounded-full bg-chart-1 text-white border-chart-1">
+                  Start onboarding
+                </Button>
+              </Link>
+            </div>
+          </Card>
+        </motion.div>
+      )}
 
       <motion.div variants={fadeUp}>
         <Card className="p-4">
@@ -94,6 +124,85 @@ export default function DashboardHome() {
               </div>
             ))}
           </div>
+        </Card>
+      </motion.div>
+
+      <motion.div variants={fadeUp}>
+        <Card className="p-5">
+          <div className="flex items-start justify-between gap-4 flex-wrap mb-5">
+            <div>
+              <p className="text-sm font-semibold">Proyeccion del colaborador</p>
+              <p className="text-xs text-muted-foreground mt-1">
+                Modelo probabilistico de tu mejora esperada de SQ y de tu propension a desarrollar skills.
+              </p>
+            </div>
+            <Badge variant="secondary" className="text-xs">
+              <TrendingUp className="w-3 h-3 mr-1 text-green-500" />
+              {projection.momentumLabel}
+            </Badge>
+          </div>
+
+          <div className="grid md:grid-cols-3 gap-4 mb-5">
+            <Card className="p-4 bg-muted/30">
+              <p className="text-xs text-muted-foreground">SQ probable a corto plazo</p>
+              <div className="flex items-end gap-2 mt-2">
+                <span className="text-3xl font-bold">{projection.probableSq}</span>
+                <span className="text-sm text-green-600 font-medium">+{projection.expectedSqLift} pts</span>
+              </div>
+              <p className="text-xs text-muted-foreground mt-2">
+                Rango conservador {projection.conservativeSq} · optimista {projection.optimisticSq}
+              </p>
+            </Card>
+
+            <Card className="p-4 bg-muted/30">
+              <p className="text-xs text-muted-foreground">Probabilidad de mejorar tu SQ</p>
+              <div className="flex items-end gap-2 mt-2">
+                <span className="text-3xl font-bold">{projection.sqImprovementProbability}%</span>
+              </div>
+              <div className="w-full h-2 rounded-full bg-background mt-3">
+                <div className="h-2 rounded-full bg-chart-2 transition-all" style={{ width: `${projection.sqImprovementProbability}%` }} />
+              </div>
+            </Card>
+
+            <Card className="p-4 bg-muted/30">
+              <p className="text-xs text-muted-foreground">Indice de readiness</p>
+              <div className="flex items-end gap-2 mt-2">
+                <span className="text-3xl font-bold">{projection.readinessIndex}</span>
+              </div>
+              <p className="text-xs text-muted-foreground mt-2">
+                Combina tu SQ actual, streak, experiencia y headroom en skills.
+              </p>
+            </Card>
+          </div>
+
+          <div className="grid lg:grid-cols-3 gap-4">
+            {projection.topFocusSkills.map((skill) => (
+              <Card key={skill.key} className="p-4 border-dashed">
+                <div className="flex items-start justify-between gap-3 mb-3">
+                  <div>
+                    <p className="text-sm font-medium">{skill.name}</p>
+                    <p className="text-xs text-muted-foreground mt-1">Score actual {skill.currentScore}</p>
+                  </div>
+                  <Badge variant="secondary" className="text-xs">
+                    {skill.propensity}% propension
+                  </Badge>
+                </div>
+                <div className="w-full h-2 rounded-full bg-muted mb-3">
+                  <div className="h-2 rounded-full bg-chart-1 transition-all" style={{ width: `${skill.propensity}%` }} />
+                </div>
+                <p className="text-xs text-muted-foreground">
+                  Potencial de mejora estimado <span className="font-medium text-foreground">+{skill.expectedGain}</span> puntos, con SQ proyectado de la skill en{" "}
+                  <span className="font-medium text-foreground">{skill.projectedScore}</span>.
+                </p>
+              </Card>
+            ))}
+          </div>
+
+          <Link href="/dashboard/sq">
+            <Button variant="outline" size="sm" className="mt-5">
+              Ver detalle de SQ <ArrowUpRight className="w-3.5 h-3.5 ml-1" />
+            </Button>
+          </Link>
         </Card>
       </motion.div>
 

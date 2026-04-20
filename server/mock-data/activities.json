@@ -1,0 +1,18 @@
+[
+  {
+    "id": "1",
+    "userId": "1",
+    "type": "course",
+    "title": "Completed Trust But Verify Module 3",
+    "xpEarned": 200,
+    "createdAt": "2026-04-20T12:00:00Z"
+  },
+  {
+    "id": "2",
+    "userId": "1",
+    "type": "practice",
+    "title": "Practiced with DataSense Agent",
+    "xpEarned": 100,
+    "createdAt": "2026-04-20T12:00:00Z"
+  }
+]

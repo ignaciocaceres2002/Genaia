@@ -58,6 +58,7 @@ const engines = [
 
 const employeeModules = [
   { icon: Gauge, title: "SQ Score & Skill Map", desc: "Your AI readiness across 6 skills. Track progress over time." },
+  { icon: TrendingUp, title: "Collaborator Projection", desc: "Probabilistic SQ projection, expected upside, and the skills most likely to improve next." },
   { icon: Zap, title: "Daily Challenges", desc: "5-minute scenarios targeting your weakest skill. Streaks and rewards." },
   { icon: BookOpen, title: "Learning Paths", desc: "8 courses mapped to SQ skills. Micro-modules, not lectures." },
   { icon: Bot, title: "AI Practice Agents", desc: "Conversational agents that simulate real work scenarios." },
@@ -68,6 +69,7 @@ const employeeModules = [
 const leaderModules = [
   { icon: BarChart3, title: "Org Overview", desc: "Avg SQ, active users, training completion, hours recovered. One screen." },
   { icon: Target, title: "Team Heat Map", desc: "SQ scores by department. Spot where adoption works and where it doesn't." },
+  { icon: TrendingUp, title: "Projection Layer", desc: "See who has the highest probability of improving SQ and which teams have the most upside." },
   { icon: Award, title: "Champion Finder", desc: "Algorithm-ranked candidates: SQ 40% + Engagement 30% + Influence 30%." },
   { icon: Users, title: "AI-First Recruiting", desc: "Evaluate candidates' AI readiness before you hire. SQ as a hiring signal." },
   { icon: Rocket, title: "AI Case Builder", desc: "Employees submit AI project ideas. The platform structures the business case." },
@@ -103,6 +105,24 @@ const timelineSteps = [
     title: "Measure",
     desc: "SQ scores improved. Hours recovered measured. Adoption rate tracked. You have the data to present to leadership \u2014 and to decide what's next.",
     icon: TrendingUp,
+  },
+];
+
+const projectionHighlights = [
+  {
+    label: "Probabilistic SQ forecast",
+    title: "Know who is likely to improve before the lift shows up in historical averages.",
+    desc: "Each collaborator gets a probable SQ scenario, improvement range, and expected upside based on current SQ, momentum, and skill headroom.",
+  },
+  {
+    label: "Skill propensity",
+    title: "See which skills are most likely to respond to coaching and practice.",
+    desc: "Instead of generic training, Genaia surfaces the 2-3 skills where each person has the strongest improvement propensity.",
+  },
+  {
+    label: "Leadership signal",
+    title: "Turn development planning into portfolio management.",
+    desc: "Leaders can spot high-potential collaborators, compare team upside, and prioritize interventions where the projected return is highest.",
   },
 ];
 
@@ -861,6 +881,11 @@ export default function LandingPage() {
                     </Link>
                     <p className="text-[10px] text-muted-foreground mt-1.5 ml-1">Free · 5 minutes</p>
                   </div>
+                  <Link href="/onboarding">
+                    <Button size="lg" variant="outline" className="rounded-full" data-testid="button-start-onboarding-hero">
+                      Start onboarding
+                    </Button>
+                  </Link>
                   <Button size="lg" variant="outline" className="rounded-full" data-testid="button-book-demo-hero">
                     Book a demo
                   </Button>
@@ -926,6 +951,84 @@ export default function LandingPage() {
             <motion.p variants={fadeUp} className="text-lg font-medium text-foreground">
               Genaia closes the gap — with data, not guesswork.
             </motion.p>
+          </motion.div>
+        </section>
+
+        <section className="py-24 px-6">
+          <motion.div className="max-w-5xl mx-auto" initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-100px" }} variants={staggerContainer}>
+            <motion.div variants={fadeUp} className="text-center mb-14">
+              <p className="text-xs font-semibold tracking-[0.2em] uppercase text-chart-1 mb-4">NEW FEATURE</p>
+              <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight mb-4">
+                From measurement to prediction.
+              </h2>
+              <p className="text-muted-foreground max-w-2xl mx-auto leading-relaxed">
+                Genaia now projects how each collaborator could improve their SQ and estimates the probability that their core skills will actually move.
+              </p>
+            </motion.div>
+
+            <div className="grid lg:grid-cols-[1.15fr_0.85fr] gap-6 items-stretch">
+              <motion.div variants={fadeUp}>
+                <Card className="p-6 md:p-7 h-full overflow-hidden relative">
+                  <div className="absolute inset-0 bg-gradient-to-br from-chart-1/[0.04] via-transparent to-chart-3/[0.06] pointer-events-none" />
+                  <div className="relative">
+                    <div className="flex items-center justify-between gap-4 mb-6">
+                      <div>
+                        <p className="text-[11px] font-semibold tracking-[0.18em] uppercase text-chart-1">Collaborator Projection</p>
+                        <p className="text-sm text-muted-foreground mt-1">Probable SQ trajectory + skill propensity</p>
+                      </div>
+                      <div className="px-3 py-1 rounded-full bg-green-500/10 border border-green-500/20 text-xs font-semibold text-green-600">
+                        78% probability
+                      </div>
+                    </div>
+
+                    <div className="grid sm:grid-cols-3 gap-4 mb-6">
+                      {[
+                        { label: "Current SQ", value: "67", hint: "Catalyst track" },
+                        { label: "Probable SQ", value: "74", hint: "+7 pts expected" },
+                        { label: "Optimistic", value: "79", hint: "if momentum holds" },
+                      ].map((item) => (
+                        <div key={item.label} className="rounded-2xl border border-border bg-muted/30 p-4">
+                          <p className="text-[11px] text-muted-foreground">{item.label}</p>
+                          <p className="text-3xl font-bold mt-2">{item.value}</p>
+                          <p className="text-[11px] text-muted-foreground mt-1">{item.hint}</p>
+                        </div>
+                      ))}
+                    </div>
+
+                    <div className="space-y-4">
+                      {[
+                        { skill: "Co-Intelligence", current: 58, propensity: 84, projected: 69 },
+                        { skill: "Process Reimagination", current: 60, propensity: 79, projected: 70 },
+                        { skill: "Adaptive Mindset", current: 65, propensity: 73, projected: 73 },
+                      ].map((item) => (
+                        <div key={item.skill} className="rounded-xl border border-border p-4">
+                          <div className="flex items-center justify-between gap-3 mb-2">
+                            <div>
+                              <p className="text-sm font-semibold">{item.skill}</p>
+                              <p className="text-[11px] text-muted-foreground mt-1">Current {item.current} · projected {item.projected}</p>
+                            </div>
+                            <span className="text-xs font-semibold text-chart-1">{item.propensity}% propensity</span>
+                          </div>
+                          <div className="w-full h-2 rounded-full bg-muted">
+                            <div className="h-2 rounded-full bg-gradient-to-r from-chart-1 to-chart-3" style={{ width: `${item.propensity}%` }} />
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </Card>
+              </motion.div>
+
+              <motion.div variants={fadeUp} className="space-y-4">
+                {projectionHighlights.map((item) => (
+                  <Card key={item.label} className="p-5">
+                    <p className="text-[10px] font-semibold tracking-[0.18em] uppercase text-chart-1 mb-3">{item.label}</p>
+                    <h3 className="text-lg font-bold tracking-tight mb-2">{item.title}</h3>
+                    <p className="text-sm text-muted-foreground leading-relaxed">{item.desc}</p>
+                  </Card>
+                ))}
+              </motion.div>
+            </div>
           </motion.div>
         </section>
 

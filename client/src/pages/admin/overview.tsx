@@ -8,6 +8,7 @@ import { TrendingUp, Users, GraduationCap, Clock, Send, FileText, Wrench, Downlo
 import { ResponsiveContainer, BarChart, Bar, Cell, XAxis, YAxis, Tooltip, CartesianGrid, LineChart, Line, Treemap } from "recharts";
 import { SEO } from "@/components/seo";
 import { fadeUp, staggerContainer, pageContainer } from "@/lib/motion-variants";
+import { buildProjectionSummary } from "@/lib/collaborator-projection";
 
 const CHART_1 = "hsl(var(--chart-1))";
 const CHART_2 = "hsl(var(--chart-2))";
@@ -39,6 +40,17 @@ const heatmapData = [
   { name: "Sales", size: 30, sq: 44 },
   { name: "Legal", size: 10, sq: 55 },
   { name: "People Ops", size: 12, sq: 60 },
+];
+
+const fallbackUsers: Partial<User>[] = [
+  { name: "Sarah Chen", department: "Marketing", nqScore: 67, xp: 8450, streak: 12, skillScores: { dataFluency: 72, adaptiveMindset: 65, verificationMindset: 78, coIntelligence: 58, autonomousDrive: 70, processReimagination: 60 } },
+  { name: "Marcus Johnson", department: "Engineering", nqScore: 88, xp: 22500, streak: 45, skillScores: { dataFluency: 90, adaptiveMindset: 85, verificationMindset: 92, coIntelligence: 82, autonomousDrive: 88, processReimagination: 86 } },
+  { name: "Elena Rodriguez", department: "Marketing", nqScore: 82, xp: 15200, streak: 30, skillScores: { dataFluency: 78, adaptiveMindset: 80, verificationMindset: 85, coIntelligence: 76, autonomousDrive: 84, processReimagination: 89 } },
+  { name: "Alex Rivera", department: "Product", nqScore: 62, xp: 7200, streak: 8, skillScores: { dataFluency: 65, adaptiveMindset: 60, verificationMindset: 68, coIntelligence: 55, autonomousDrive: 62, processReimagination: 58 } },
+  { name: "Priya Patel", department: "Finance", nqScore: 59, xp: 6800, streak: 5, skillScores: { dataFluency: 62, adaptiveMindset: 55, verificationMindset: 64, coIntelligence: 50, autonomousDrive: 58, processReimagination: 52 } },
+  { name: "David Kim", department: "Legal", nqScore: 52, xp: 5100, streak: 3, skillScores: { dataFluency: 55, adaptiveMindset: 48, verificationMindset: 58, coIntelligence: 45, autonomousDrive: 52, processReimagination: 48 } },
+  { name: "James Wright", department: "Finance", nqScore: 79, xp: 14500, streak: 22, skillScores: { dataFluency: 85, adaptiveMindset: 75, verificationMindset: 82, coIntelligence: 70, autonomousDrive: 78, processReimagination: 74 } },
+  { name: "Aisha Patel", department: "Product", nqScore: 85, xp: 16200, streak: 35, skillScores: { dataFluency: 82, adaptiveMindset: 88, verificationMindset: 80, coIntelligence: 86, autonomousDrive: 90, processReimagination: 84 } },
 ];
 
 const TREEMAP_COLORS = [CHART_1, CHART_2, CHART_3, CHART_4, CHART_5];
@@ -73,6 +85,7 @@ const CustomTreemapContent = (props: TreemapContentProps) => {
 export default function AdminOverview() {
   const { data: teams } = useQuery<Team[]>({ queryKey: ["/api/teams"] });
   const { data: users } = useQuery<User[]>({ queryKey: ["/api/admin/users"] });
+  const projectionSummary = buildProjectionSummary((users && users.length > 0 ? users : fallbackUsers) as Partial<User>[]);
 
   return (
     <motion.div className="max-w-5xl mx-auto space-y-6" initial="hidden" animate="visible" variants={pageContainer}>
@@ -84,7 +97,7 @@ export default function AdminOverview() {
 
       <motion.div variants={fadeUp} className="grid grid-cols-2 lg:grid-cols-4 gap-4">
         {[
-          { label: "Org Avg SQ", value: "54", trend: "+3", icon: TrendingUp, color: "text-chart-1" },
+          { label: "Org Avg SQ", value: `${projectionSummary.avgCurrentSq}`, trend: `→ ${projectionSummary.avgProbableSq}`, icon: TrendingUp, color: "text-chart-1" },
           { label: "Active Users", value: "91%", trend: "120 DAU", icon: Users, color: "text-chart-3" },
           { label: "Training Completion", value: "68%", trend: "+12%", icon: GraduationCap, color: "text-chart-2" },
           { label: "Hours Recovered", value: "1,420", trend: "This quarter", icon: Clock, color: "text-chart-4" },
@@ -98,6 +111,105 @@ export default function AdminOverview() {
             <Badge variant="secondary" className="text-[10px] mt-1">{kpi.trend}</Badge>
           </Card>
         ))}
+      </motion.div>
+
+      <motion.div variants={fadeUp}>
+        <Card className="p-5">
+          <div className="flex items-start justify-between gap-4 flex-wrap mb-5">
+            <div>
+              <h3 className="font-semibold text-sm">Proyeccion del colaborador</h3>
+              <p className="text-xs text-muted-foreground mt-1">
+                Vista probabilistica del potencial de mejora de SQ y de la propension a desarrollar skills por colaborador.
+              </p>
+            </div>
+            <Badge variant="secondary" className="text-xs">
+              {projectionSummary.highPotentialCount} colaboradores con alta probabilidad de mejora
+            </Badge>
+          </div>
+
+          <div className="grid md:grid-cols-3 gap-4 mb-6">
+            <Card className="p-4 bg-muted/30">
+              <p className="text-xs text-muted-foreground">SQ promedio actual</p>
+              <p className="text-3xl font-bold mt-2">{projectionSummary.avgCurrentSq}</p>
+            </Card>
+            <Card className="p-4 bg-muted/30">
+              <p className="text-xs text-muted-foreground">SQ promedio probable</p>
+              <p className="text-3xl font-bold mt-2">{projectionSummary.avgProbableSq}</p>
+              <p className="text-xs text-green-600 mt-1">+{projectionSummary.avgProbableSq - projectionSummary.avgCurrentSq} pts esperados</p>
+            </Card>
+            <Card className="p-4 bg-muted/30">
+              <p className="text-xs text-muted-foreground">Probabilidad media de mejora</p>
+              <p className="text-3xl font-bold mt-2">{projectionSummary.avgProbability}%</p>
+              <div className="w-full h-2 rounded-full bg-background mt-3">
+                <div className="h-2 rounded-full bg-chart-2 transition-all" style={{ width: `${projectionSummary.avgProbability}%` }} />
+              </div>
+            </Card>
+          </div>
+
+          <div className="grid lg:grid-cols-2 gap-6">
+            <div>
+              <h4 className="text-sm font-medium mb-3">Top colaboradores con mayor upside</h4>
+              <div className="space-y-3">
+                {projectionSummary.topMovers.map((item, index) => (
+                  <div key={item.user.name || index} className="rounded-xl border p-4">
+                    <div className="flex items-start justify-between gap-3">
+                      <div>
+                        <p className="text-sm font-medium">{item.user.name}</p>
+                        <p className="text-xs text-muted-foreground mt-1">{item.user.department || "Sin equipo"}</p>
+                      </div>
+                      <Badge variant="secondary" className="text-xs">
+                        {item.projection.sqImprovementProbability}% prob.
+                      </Badge>
+                    </div>
+                    <div className="grid grid-cols-3 gap-3 mt-3 text-xs">
+                      <div>
+                        <p className="text-muted-foreground">SQ actual</p>
+                        <p className="font-semibold text-sm mt-1">{item.projection.currentSq}</p>
+                      </div>
+                      <div>
+                        <p className="text-muted-foreground">SQ probable</p>
+                        <p className="font-semibold text-sm mt-1">{item.projection.probableSq}</p>
+                      </div>
+                      <div>
+                        <p className="text-muted-foreground">Upside</p>
+                        <p className="font-semibold text-sm mt-1 text-green-600">+{item.projection.expectedSqLift}</p>
+                      </div>
+                    </div>
+                    <p className="text-xs text-muted-foreground mt-3">
+                      Skill con mejor respuesta esperada: <span className="font-medium text-foreground">{item.projection.topFocusSkills[0]?.name}</span>.
+                    </p>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div>
+              <h4 className="text-sm font-medium mb-3">Outlook por equipo</h4>
+              <div className="space-y-3">
+                {projectionSummary.departmentOutlook.slice(0, 6).map((department) => (
+                  <div key={department.department} className="rounded-xl border p-4">
+                    <div className="flex items-center justify-between gap-3 mb-2">
+                      <div>
+                        <p className="text-sm font-medium">{department.department}</p>
+                        <p className="text-xs text-muted-foreground mt-1">{department.headcount} colaboradores</p>
+                      </div>
+                      <Badge variant="secondary" className="text-xs">
+                        {department.avgProbability}% prob.
+                      </Badge>
+                    </div>
+                    <div className="w-full h-2 rounded-full bg-muted">
+                      <div className="h-2 rounded-full bg-chart-1 transition-all" style={{ width: `${department.avgProbability}%` }} />
+                    </div>
+                    <div className="flex items-center justify-between gap-3 text-xs mt-3">
+                      <span className="text-muted-foreground">SQ {department.avgCurrentSq} → {department.avgProbableSq}</span>
+                      <span className="font-medium text-green-600">+{department.projectedLift}</span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </Card>
       </motion.div>
 
       <div className="grid lg:grid-cols-2 gap-6">

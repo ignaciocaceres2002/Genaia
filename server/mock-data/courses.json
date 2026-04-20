@@ -1,0 +1,18 @@
+[
+  {
+    "id": "1",
+    "title": "Reading the Machine",
+    "skill": "Data Fluency",
+    "description": "Learn to interpret AI outputs with confidence",
+    "modulesCount": 6,
+    "orderIndex": 1
+  },
+  {
+    "id": "2",
+    "title": "The Change Lab",
+    "skill": "Adaptive Mindset",
+    "description": "Build learning agility for the AI era",
+    "modulesCount": 5,
+    "orderIndex": 2
+  }
+]
