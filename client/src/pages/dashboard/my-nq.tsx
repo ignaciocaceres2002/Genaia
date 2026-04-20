@@ -8,7 +8,7 @@ import { TrendingUp, TrendingDown, Minus, ArrowRight } from "lucide-react";
 import { Link } from "wouter";
 import { useQuery } from "@tanstack/react-query";
 import type { User } from "@shared/schema";
-import { ResponsiveContainer, RadarChart, PolarGrid, PolarAngleAxis, Radar, LineChart, Line, XAxis, YAxis, Tooltip, BarChart, Bar, CartesianGrid } from "recharts";
+import { ResponsiveContainer, RadarChart, PolarGrid, PolarAngleAxis, Radar, LineChart, Line, XAxis, YAxis, Tooltip, BarChart, Bar, CartesianGrid, ReferenceLine, Legend } from "recharts";
 import { fadeUp, pageContainer } from "@/lib/motion-variants";
 import { buildCollaboratorProjection } from "@/lib/collaborator-projection";
 import { getOnboardingProfile, hasCompletedInitialAssessment, mergeUserWithInitialSqSnapshot } from "@/lib/user-onboarding";
@@ -53,7 +53,8 @@ export default function MySQPage() {
   const historyData = [
     { week: "W1", score: 42 }, { week: "W2", score: 45 }, { week: "W3", score: 48 },
     { week: "W4", score: 52 }, { week: "W5", score: 55 }, { week: "W6", score: 58 },
-    { week: "W7", score: 61 }, { week: "W8", score: 64 }, { week: "W9", score: 67 },
+    { week: "W7", score: 61 }, { week: "W8", score: 64 }, { week: "W9", score: 67, projected: 67 },
+    { week: "W10", projected: 70 }, { week: "W11", projected: 73 }, { week: "W12", projected: 76 },
   ];
 
   const benchmarkData = [
@@ -213,15 +214,24 @@ export default function MySQPage() {
       <div className="grid md:grid-cols-2 gap-6">
         <motion.div variants={fadeUp}>
           <Card className="p-6">
-            <h3 className="font-semibold mb-4">SQ History</h3>
-            <div className="h-[200px]">
+            <div className="flex items-start justify-between gap-4 flex-wrap mb-1">
+              <h3 className="font-semibold">SQ History</h3>
+              <div className="flex items-center gap-4 text-xs text-muted-foreground">
+                <span>Actual: <strong className="text-foreground">67</strong></span>
+                <span>Proyección W12: <strong className="text-chart-2">76</strong></span>
+              </div>
+            </div>
+            <div className="h-[220px]">
               <ResponsiveContainer width="100%" height="100%">
                 <LineChart data={historyData}>
                   <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
                   <XAxis dataKey="week" tick={{ fontSize: 11, fill: "hsl(var(--muted-foreground))" }} />
                   <YAxis tick={{ fontSize: 11, fill: "hsl(var(--muted-foreground))" }} domain={[0, 100]} />
                   <Tooltip contentStyle={tooltipStyle} />
-                  <Line type="monotone" dataKey="score" stroke={CHART_1} strokeWidth={2} dot={{ fill: CHART_1, r: 3 }} />
+                  <ReferenceLine x="W9" stroke="hsl(var(--muted-foreground))" strokeDasharray="3 3" label={{ value: "Hoy", position: "insideTopRight", fontSize: 10, fill: "hsl(var(--muted-foreground))" }} />
+                  <Line type="monotone" dataKey="score" stroke={CHART_1} strokeWidth={2} dot={{ fill: CHART_1, r: 3 }} connectNulls={false} name="Actual" />
+                  <Line type="monotone" dataKey="projected" stroke={CHART_2} strokeWidth={2} strokeDasharray="5 5" dot={{ fill: CHART_2, r: 2 }} connectNulls={false} name="Proyección" />
+                  <Legend iconType="line" wrapperStyle={{ fontSize: "11px" }} />
                 </LineChart>
               </ResponsiveContainer>
             </div>

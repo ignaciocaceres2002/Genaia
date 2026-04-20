@@ -289,6 +289,13 @@ export default function AssessmentPage() {
 
 
 
+  const initializeTasks = useCallback((role: AssessmentRole) => {
+    const tasks = ROLE_TASKS[role];
+    setTaskHours(tasks.map((t) => t.defaultHours));
+    setDismissedTasks(new Set());
+    setDrains([]);
+  }, []);
+
   useEffect(() => {
     if (!isOnboardingAssessment) return;
     if (onboardingRole && !selectedRole) {
@@ -323,13 +330,6 @@ export default function AssessmentPage() {
       }
     }, 500);
   }, [scenarioIndex]);
-
-  const initializeTasks = useCallback((role: AssessmentRole) => {
-    const tasks = ROLE_TASKS[role];
-    setTaskHours(tasks.map((t) => t.defaultHours));
-    setDismissedTasks(new Set());
-    setDrains([]);
-  }, []);
 
   const computeResults = useCallback(() => {
     if (!selectedRole) return;

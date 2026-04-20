@@ -5,7 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { useQuery } from "@tanstack/react-query";
 import type { Team, User } from "@shared/schema";
 import { TrendingUp, Users, GraduationCap, Clock, Send, FileText, Wrench, Download } from "lucide-react";
-import { ResponsiveContainer, BarChart, Bar, Cell, XAxis, YAxis, Tooltip, CartesianGrid, LineChart, Line, Treemap } from "recharts";
+import { ResponsiveContainer, BarChart, Bar, Cell, XAxis, YAxis, Tooltip, CartesianGrid, LineChart, Line, Treemap, ReferenceLine, Legend } from "recharts";
 import { SEO } from "@/components/seo";
 import { fadeUp, staggerContainer, pageContainer } from "@/lib/motion-variants";
 import { buildProjectionSummary } from "@/lib/collaborator-projection";
@@ -18,10 +18,10 @@ const CHART_5 = "hsl(var(--chart-5))";
 const tooltipStyle = { backgroundColor: "hsl(var(--card))", border: "1px solid hsl(var(--border))", borderRadius: "6px", fontSize: "12px", color: "hsl(var(--foreground))" };
 
 const sqDistribution = [
-  { range: "0-25", count: 12, level: "Novice" },
-  { range: "26-50", count: 38, level: "Aware" },
-  { range: "51-75", count: 52, level: "Practitioner" },
-  { range: "76-100", count: 18, level: "Catalyst" },
+  { range: "0-25", count: 12, projected: 8, level: "Novice" },
+  { range: "26-50", count: 38, projected: 30, level: "Aware" },
+  { range: "51-75", count: 52, projected: 58, level: "Practitioner" },
+  { range: "76-100", count: 18, projected: 24, level: "Catalyst" },
 ];
 
 const sqBarColors = [CHART_5, CHART_4, CHART_1, CHART_2];
@@ -29,7 +29,8 @@ const sqBarColors = [CHART_5, CHART_4, CHART_1, CHART_2];
 const engagementData = [
   { day: "Jan 1", dau: 65 }, { day: "Jan 8", dau: 72 }, { day: "Jan 15", dau: 68 },
   { day: "Jan 22", dau: 78 }, { day: "Jan 29", dau: 82 }, { day: "Feb 5", dau: 85 },
-  { day: "Feb 12", dau: 88 }, { day: "Feb 19", dau: 91 },
+  { day: "Feb 12", dau: 88 }, { day: "Feb 19", dau: 91, projected: 91 },
+  { day: "Feb 26", projected: 94 }, { day: "Mar 5", projected: 97 }, { day: "Mar 12", projected: 100 },
 ];
 
 const heatmapData = [
@@ -215,19 +216,23 @@ export default function AdminOverview() {
       <div className="grid lg:grid-cols-2 gap-6">
         <motion.div variants={fadeUp}>
           <Card className="p-5">
-            <h3 className="font-semibold text-sm mb-4">SQ Distribution</h3>
-            <div className="h-[220px]">
+            <div className="flex items-start justify-between gap-4 flex-wrap mb-1">
+              <h3 className="font-semibold text-sm">SQ Distribution</h3>
+              <div className="flex items-center gap-4 text-xs text-muted-foreground">
+                <span>Total actual: <strong className="text-foreground">120</strong></span>
+                <span>Proyección: <strong className="text-chart-2">120</strong> redistribuídos</span>
+              </div>
+            </div>
+            <div className="h-[240px]">
               <ResponsiveContainer width="100%" height="100%">
-                <BarChart data={sqDistribution}>
+                <BarChart data={sqDistribution} barGap={2}>
                   <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
                   <XAxis dataKey="range" tick={{ fontSize: 11, fill: "hsl(var(--muted-foreground))" }} />
                   <YAxis tick={{ fontSize: 11, fill: "hsl(var(--muted-foreground))" }} />
                   <Tooltip contentStyle={tooltipStyle} />
-                  <Bar dataKey="count" radius={[4, 4, 0, 0]}>
-                    {sqDistribution.map((_entry, i) => (
-                      <Cell key={i} fill={sqBarColors[i % sqBarColors.length]} />
-                    ))}
-                  </Bar>
+                  <Bar dataKey="count" fill={CHART_1} radius={[4, 4, 0, 0]} name="Actual" />
+                  <Bar dataKey="projected" fill={CHART_2} radius={[4, 4, 0, 0]} name="Proyección" opacity={0.75} />
+                  <Legend iconType="square" wrapperStyle={{ fontSize: "11px" }} />
                 </BarChart>
               </ResponsiveContainer>
             </div>
@@ -253,15 +258,24 @@ export default function AdminOverview() {
 
       <motion.div variants={fadeUp}>
         <Card className="p-5">
-          <h3 className="font-semibold text-sm mb-4">Engagement Timeline (30 days)</h3>
-          <div className="h-[200px]">
+          <div className="flex items-start justify-between gap-4 flex-wrap mb-1">
+            <h3 className="font-semibold text-sm">Engagement Timeline</h3>
+            <div className="flex items-center gap-4 text-xs text-muted-foreground">
+              <span>Actual: <strong className="text-foreground">91 DAU</strong></span>
+              <span>Proyección (Mar 12): <strong className="text-chart-2">100 DAU</strong></span>
+            </div>
+          </div>
+          <div className="h-[220px]">
             <ResponsiveContainer width="100%" height="100%">
               <LineChart data={engagementData}>
                 <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" />
                 <XAxis dataKey="day" tick={{ fontSize: 10, fill: "hsl(var(--muted-foreground))" }} />
-                <YAxis tick={{ fontSize: 11, fill: "hsl(var(--muted-foreground))" }} domain={[0, 100]} />
+                <YAxis tick={{ fontSize: 11, fill: "hsl(var(--muted-foreground))" }} domain={[0, 120]} />
                 <Tooltip contentStyle={tooltipStyle} />
-                <Line type="monotone" dataKey="dau" stroke={CHART_1} strokeWidth={2.5} dot={{ fill: CHART_1, r: 3 }} />
+                <ReferenceLine x="Feb 19" stroke="hsl(var(--muted-foreground))" strokeDasharray="3 3" label={{ value: "Hoy", position: "insideTopRight", fontSize: 10, fill: "hsl(var(--muted-foreground))" }} />
+                <Line type="monotone" dataKey="dau" stroke={CHART_1} strokeWidth={2.5} dot={{ fill: CHART_1, r: 3 }} connectNulls={false} name="DAU" />
+                <Line type="monotone" dataKey="projected" stroke={CHART_2} strokeWidth={2} strokeDasharray="5 5" dot={{ fill: CHART_2, r: 2 }} connectNulls={false} name="Proyección" />
+                <Legend iconType="line" wrapperStyle={{ fontSize: "11px" }} />
               </LineChart>
             </ResponsiveContainer>
           </div>
